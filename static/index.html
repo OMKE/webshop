@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="css/custom.css">
+
+    <title>Webshop</title>
+</head>
+
+<body ng-app="app">
+    <nav class="navbar py-0 navbar-light navbar-expand-lg navbar-expand-md navbar-expand-sm navbar-expand-xs py-md-0">
+        <div class="container">
+            
+            <div class="navbar-collapse " id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item py-0"><a class="nav-link" ui-sref="login">Login</a></li>
+                    <li class="nav-item py-0"><a class="nav-link" ui-sref="register">Register</a></li>
+                    <li class="nav-item py-0"><a class="nav-link">Daily Deals</a></li>
+                    <li class="nav-item py-0"><a class="nav-link">Help & Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Webshop</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="home">Home </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="mt-4 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <form class="form-inline mx-auto text-center">
+                    <input class="form-control mr-sm-2 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 text-center"
+                        type="search" placeholder="Search for anything">
+                    <div class="mx-auto">
+                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <ui-view></ui-view>
+    </div>
+
+
+
+
+
+
+    <!-- Include scripts -->
+    <script src="scripts/jquery-3.3.1.min.js"></script>
+    <script src="scripts/popper.min.js"></script>
+    <script src="scripts/bootstrap.bundle.min.js"></script>
+    <!-- Angular -->
+    <script src="scripts/angular.min.js"></script>
+    <script src="scripts/angular-ui-router.min.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/components/homepage/homepage.ctrl.js"></script>
+    <script src="app/components/login/login.ctrl.js"></script>
+    <script src="app/components/register/register.ctrl.js"></script>
+</body>
+
+</html>
