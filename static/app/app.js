@@ -2,8 +2,16 @@
     
     let app = angular.module("app", ["ui.router"]);
 
-    app.config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouterProvider) {
+    app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $httpProvider) {
         
+        // $httpProvider.interceptors.push(function($q, $cookies){
+        //     return {
+        //         'request': function(config){
+        //             config.headers['Token'] = $cookies.loginTokenCookie;
+        //             return config;
+        //         }
+        //     }
+        // })
 
         
 

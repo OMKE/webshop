@@ -52,21 +52,22 @@ def customer_token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = None
-        if 'x-access-token' in request.headers:
-            
-            token = request.headers['x-access-token']
+
+        if request.cookies.get('token'):
+            token = request.cookies.get('token')
+        
         if not token:
             return jsonify({"message":'Token is missing'}), 401
-
+        print(token)
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'])
-            print(data)
             cursor = mysql_db.get_db().cursor()
-            cursor.execute("SELECT * FROM customers WHERE id=%s", (id, ))
+            cursor.execute("SELECT * FROM customers WHERE id=%s", (data['id'], ))
             current_user = cursor.fetchone()
             
+            
 
-        except:
-            return jsonify({'message':'Token is invalid'}), 401
+        except jwt.ExpiredSignature:
+            return jsonify({"message':'Token expired"}), 401
         return f(current_user, *args, **kwargs)
     return decorated

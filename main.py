@@ -2,7 +2,7 @@
 
 from flask import Flask, request, jsonify, make_response, redirect
 import datetime
-from config import app, mysql_db, admin_token_required
+from config import app, mysql_db, admin_token_required, customer_token_required
 from os import urandom # os module to generate random secret key
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
@@ -21,8 +21,6 @@ import jwt
 @app.route('/index')
 def index():
     return app.send_static_file('index.html')
-
-
 
 
 # Admin CMS
@@ -66,7 +64,7 @@ def create_admin():
 # GOD Admin Routes 
 #TODO Make auth so basic admins can't access these routes
 @app.route('/admin', methods=['GET'])
-@admin_token_required
+@customer_token_required
 def get_all_admins(current_user):
 
     if not current_user:
@@ -90,7 +88,7 @@ def customer_login():
     cursor.execute("SELECT * FROM customers WHERE username=%(username)s", auth)
     customer = cursor.fetchone()
 
-    print(customer)
+    
 
     if not auth or not auth.username or not auth.password:
         return make_response("Could not verify 1", 401, {"WWW-Authenticate": "Basic realm='Login required!'"})
@@ -100,7 +98,9 @@ def customer_login():
     
     if check_password_hash(customer.get('password'), auth.password):
         token = jwt.encode({'id':customer.get('id'), 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
-        return jsonify({'token':token.decode('UTF-8')})
+        response = make_response("Verified", 200)
+        response.set_cookie('token', token.decode('UTF-8'), max_age=60*60*24*30), 200
+        return response
 
     return make_response("Could not verify 3", 401, {"WWW-Authenticate": "Basic realm='Login required!'"})
 
@@ -126,6 +126,6 @@ def customer_registration():
     return "", 201
 
 if __name__ == "__main__":
-    app.run(host='localhost', port=5000)
+    app.run(host='localhost', port=5000, debug=False)
 
 
