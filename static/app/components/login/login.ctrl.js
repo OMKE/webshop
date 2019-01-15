@@ -1,5 +1,5 @@
 (function (angular) {
-    angular.module("app").controller("LoginCtrl", ["$http" ,"$state", "$scope", function ($http, $state, $scope) {
+    angular.module("app").controller("LoginCtrl", ["$http" ,"$state", "$scope", function ($http, $state, $scope, logged) {
         let that = this;
         
         this.customer = {
@@ -9,6 +9,7 @@
         this.state = {
             loggedIn: false
         }
+        $scope.logged = false;
 
         
 
@@ -21,10 +22,10 @@
             
 
             $http.post("/login", that.customer).then(function (response) {
+                $scope.logged = true;
                 $state.go("home", {}, { reload:true });
-                that.loggedIn = true;
-                // that.callback()
-                // response.data is token 
+                
+               
                 
             }, function () {
                 alert("Unsuccessful login")
@@ -32,9 +33,11 @@
                 
             })
         }
-        // this.getcookie = function () {
-            
-        // }
+        this.logOut = function () {
+            $scope.logged = false;
+            $state.go("home", {}, {reload:true});
+        }
+        
 
        
         

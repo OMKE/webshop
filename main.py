@@ -2,17 +2,14 @@
 
 from flask import Flask, request, jsonify, make_response, redirect
 import datetime
-from config import app, mysql_db, admin_token_required, customer_token_required
+from config import app, mysql_db, token_required, access_helper
 from os import urandom # os module to generate random secret key
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 
 
 #TODO
-#   POPRAVITI JWT DEKORATOR FUNKCIJU, DODATI RUTU ZA LOCALHOST/LOGIN/AUTH DA SE DOBIJE TOKEN ONDA TAJ TOKEN PROLIJEDITI UZ LOGIN PODATKE I 
-#   KASNIJE UZ ZVAKU AKCIJU
-#   U ANGULARU NAPRAVITI DA SE SALJE AUTHORIZATION HEADER, PROUCITI JOS HEADERE
-
+# enkriptovati token koji se nalazi u cookie-u
 
 
 # Routes
@@ -44,37 +41,40 @@ def admin_login():
 
 
 @app.route('/admin/register', methods=['POST'])
-# @admin_token_required
-def create_admin():
-    # if not current_user:
-    #     return jsonify({'message':'Cannot perform that action!'})
+@token_required
+def create_admin(current_user):
+    if access_helper(current_user):
+        data = request.get_json()
+        hashed_password = generate_password_hash(data['password'], method='sha256')
+        db = mysql_db.get_db()
+        cursor = db.cursor()
+        data['password'] = hashed_password
+        cursor.execute("INSERT INTO admins (email, username, password, first_name, last_name, phone_number, gender) VALUES(%(email)s, %(username)s, %(password)s, %(first_name)s, %(last_name)s, %(phone_number)s, %(gender)s)", data)
+        db.commit()
+        return "Admin successfully created", 201
+    else:
+        return jsonify({'message':'Not verified'}), 401
 
-    data = request.get_json()
-    hashed_password = generate_password_hash(data['password'], method='sha256')
-    db = mysql_db.get_db()
-    cursor = db.cursor()
-    data['password'] = hashed_password
-    cursor.execute("INSERT INTO admins (email, username, password, first_name, last_name, phone_number, gender) VALUES(%(email)s, %(username)s, %(password)s, %(first_name)s, %(last_name)s, %(phone_number)s, %(gender)s)", data)
-    db.commit()
-    return "Admin successfully created", 201
-
+    
 
 
 
 # GOD Admin Routes 
 #TODO Make auth so basic admins can't access these routes
 @app.route('/admin', methods=['GET'])
-@customer_token_required
+@token_required
 def get_all_admins(current_user):
+    if access_helper(current_user): # returns True if user has attribute of admin(bool)==True
+        db = mysql_db.get_db().cursor()
+        db.execute("SELECT * FROM admins")
+        admins = db.fetchall()
+        return jsonify(admins), 200
+    else:
+        return jsonify({'message':'Not verified'}), 401
+        
+            
+    
 
-    if not current_user:
-        return jsonify({'message':'Not verified'})
-
-    db = mysql_db.get_db().cursor()
-
-    db.execute("SELECT * FROM admins")
-    admins = db.fetchall()
-    return jsonify(admins)
 
 
 
@@ -91,7 +91,7 @@ def customer_login():
     
 
     if not auth or not auth.username or not auth.password:
-        return make_response("Could not verify 1", 401, {"WWW-Authenticate": "Basic realm='Login required!'"})
+        return make_response("Could not verify", 401, {"WWW-Authenticate": "Basic realm='Login required!'"})
 
     if not customer:
         return jsonify({"message":"No user found"}), 401   
@@ -99,10 +99,13 @@ def customer_login():
     if check_password_hash(customer.get('password'), auth.password):
         token = jwt.encode({'id':customer.get('id'), 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
         response = make_response("Verified", 200)
-        response.set_cookie('token', token.decode('UTF-8'), max_age=60*60*24*30), 200
+        # Check if cookie with token exists
+        get_cookie = request.cookies.get('token')
+        if not get_cookie:
+            response.set_cookie('token', token.decode("UTF-8").encode(), max_age=60*60*24*30), 200
         return response
 
-    return make_response("Could not verify 3", 401, {"WWW-Authenticate": "Basic realm='Login required!'"})
+    return make_response("Could not verify", 401, {"WWW-Authenticate": "Basic realm='Login required!'"})
 
 
 # Register Route

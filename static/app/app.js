@@ -13,6 +13,7 @@
         //     }
         // })
 
+    
         
 
         $stateProvider.state({
@@ -36,4 +37,10 @@
         });
         $urlRouterProvider.otherwise("/");
     }]);
+
+    app.factory('loginStatus', function () {
+        let logged = false;
+        
+        return logged;
+    })
 })(angular);
