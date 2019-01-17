@@ -5,3 +5,7 @@
 .login-a {
     color: #03A8F3;
 }
+
+.logout {
+    cursor: pointer;
+}

@@ -17,6 +17,7 @@ import jwt
 @app.route('/')
 @app.route('/index')
 def index():
+    
     return app.send_static_file('index.html')
 
 
@@ -79,7 +80,7 @@ def get_all_admins(current_user):
 
 
 # Customer Routes
-
+#TODO fix expired cookie login and check user data
 # Login Route
 @app.route('/login', methods=["POST"])
 def customer_login():
@@ -107,6 +108,33 @@ def customer_login():
 
     return make_response("Could not verify", 401, {"WWW-Authenticate": "Basic realm='Login required!'"})
 
+# Customer logout
+@app.route('/logout')
+def customer_logout():
+    response = make_response("Logout", 200)
+    response.set_cookie('token', expires=0)
+    return response
+
+
+
+# Get user data from cookie and send it to frontend
+@app.route('/login/user', methods=['GET'])
+def get_user_data():
+    token = None
+
+    if request.cookies.get('token'):
+        token = request.cookies.get('token')
+    
+    try:
+        data = jwt.decode(token, app.config['SECRET_KEY'])
+        cursor = mysql_db.get_db().cursor()
+        cursor.execute("SELECT * FROM customers WHERE id=%s", (data['id'], ))
+        current_user = cursor.fetchone()
+        current_user['password'] = ""
+        return jsonify(current_user), 200
+    except:
+        if not token:
+            return "", 205
 
 # Register Route
 @app.route('/register', methods=['POST'])
@@ -128,6 +156,16 @@ def customer_registration():
     db.commit()
     return "", 201
 
+
+
+
+
+
+
+
+
+
+# App run
 if __name__ == "__main__":
     app.run(host='localhost', port=5000, debug=False)
 

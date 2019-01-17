@@ -1,8 +1,12 @@
 (function (angular) {
-    angular.module("app").controller("HomepageCtrl", ["$stateParams", "$http", "$scope", "$state", function ($stateParams, $http, $scope, logged, $state) {
+    angular.module("app").controller("HomepageCtrl", ["$stateParams", "$http" ,function ($stateParams, $http, $scope ) {
         let that = this;
 
-        $scope.logged = true;
+        
+        
+
+        
+        
 
         
         

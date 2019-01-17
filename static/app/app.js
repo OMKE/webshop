@@ -2,18 +2,11 @@
     
     let app = angular.module("app", ["ui.router"]);
 
-    app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $httpProvider) {
+    app.config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouterProvider) {
         
-        // $httpProvider.interceptors.push(function($q, $cookies){
-        //     return {
-        //         'request': function(config){
-        //             config.headers['Token'] = $cookies.loginTokenCookie;
-        //             return config;
-        //         }
-        //     }
-        // })
+        
 
-    
+        
         
 
         $stateProvider.state({
@@ -36,11 +29,24 @@
             controllerAs: "register"
         });
         $urlRouterProvider.otherwise("/");
-    }]);
-
-    app.factory('loginStatus', function () {
-        let logged = false;
         
-        return logged;
-    })
+        
+    }])
+    .run(function($rootScope,$location, $http){
+        $rootScope.$on('$locationChangeStart', function () {
+            $http.get("/login/user").then(function (response) {
+                if(response.status == 200){
+                    $rootScope.user = response.data;
+                    $rootScope.loggedIn = true;
+                }
+            }, function (response) {
+                
+            });
+        });
+    });
+
+
+    
+    
+
 })(angular);

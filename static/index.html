@@ -9,21 +9,28 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="css/fontawesome/css/all.min.css" />
     <link rel="stylesheet" href="css/custom.css">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
     <title>Webshop</title>
 </head>
 
 <body ng-app="app">
+
+    <!-- <div ng-controller="HomepageCtrl">{{callFoo()}}</div> -->
+    
     <nav class="navbar py-0 navbar-light navbar-expand-lg navbar-expand-md navbar-expand-sm navbar-expand-xs py-md-0">
         <div class="container">
             
             <div class="navbar-collapse " id="navbarNav">
                 <ul class="navbar-nav">
                     
-                    <li class="nav-item py-0"><a class="nav-link" ui-sref="login">Login</a></li>
-                    <li class="nav-item py-0"><a class="nav-link" ui-sref="register">Register</a></li>
+                    <li ng-if="!loggedIn" class="nav-item py-0"><a class="nav-link" ui-sref="login">Login</a></li>
+                    <li ng-if="!loggedIn" class="nav-item py-0"><a class="nav-link" ui-sref="register">Register</a></li>
+                    <!-- Make ui-sref to user-s profile -->
+                    <li ng-if="loggedIn" class="nav-item py-0"><a class="nav-link" >Hi <b>{{user.first_name}}</b></a></li> 
                     <li class="nav-item py-0"><a class="nav-link">Daily Deals</a></li>
                     <li class="nav-item py-0"><a class="nav-link">Help & Contact</a></li>
+                    <li ng-controller="LoginCtrl as login" ng-if="loggedIn" class="nav-item py-0"><a ng-click="login.logOut()" class="nav-link logout">Logout</a></li>
                     
                 </ul>
             </div>
@@ -70,8 +77,9 @@
         <ui-view></ui-view>
     </div>
 
+    
 
-
+    
 
 
 
