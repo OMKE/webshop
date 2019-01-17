@@ -4,11 +4,6 @@
 
     app.config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouterProvider) {
         
-        
-
-        
-        
-
         $stateProvider.state({
             name: "home", 
             url: "/",

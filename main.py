@@ -2,15 +2,17 @@
 
 from flask import Flask, request, jsonify, make_response, redirect
 import datetime
-from config import app, mysql_db, token_required, access_helper
+from config import app, mysql_db, token_required, access_helper, cookie_crypt_password
 from os import urandom # os module to generate random secret key
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 
 
-#TODO
-# enkriptovati token koji se nalazi u cookie-u
 
+
+
+#TODO ENCRYPT LOGIN TOKEN
+#TODO FIX ADMIN LOGIN
 
 # Routes
 
@@ -34,7 +36,7 @@ def admin_login():
     
     
     if check_password_hash(admin.get('password'), auth.password):
-        token = jwt.encode({'id':admin.get('id'), 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
+        token = jwt.encode({'id':admin.get('id'), 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=12)}, app.config['SECRET_KEY'])
         return jsonify({'token':token.decode('UTF-8')})
 
     return make_response("Could not verify 3", 401, {"WWW-Authenticate": "Basic realm='Login required!'"})
@@ -43,7 +45,7 @@ def admin_login():
 
 @app.route('/admin/register', methods=['POST'])
 @token_required
-def create_admin(current_user):
+def admin_register(current_user):
     if access_helper(current_user):
         data = request.get_json()
         hashed_password = generate_password_hash(data['password'], method='sha256')
@@ -61,7 +63,7 @@ def create_admin(current_user):
 
 
 # GOD Admin Routes 
-#TODO Make auth so basic admins can't access these routes
+#TODO MAKE ACCESS CONTROL SO BASIC ADMINS CAN'T ACCESS THESE ROUTES
 @app.route('/admin', methods=['GET'])
 @token_required
 def get_all_admins(current_user):
@@ -80,7 +82,6 @@ def get_all_admins(current_user):
 
 
 # Customer Routes
-#TODO fix expired cookie login and check user data
 # Login Route
 @app.route('/login', methods=["POST"])
 def customer_login():
@@ -98,12 +99,12 @@ def customer_login():
         return jsonify({"message":"No user found"}), 401   
     
     if check_password_hash(customer.get('password'), auth.password):
-        token = jwt.encode({'id':customer.get('id'), 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
+        token = jwt.encode({'id':customer.get('id'), 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=12)}, app.config['SECRET_KEY'], algorithm='HS256')
         response = make_response("Verified", 200)
         # Check if cookie with token exists
         get_cookie = request.cookies.get('token')
         if not get_cookie:
-            response.set_cookie('token', token.decode("UTF-8").encode(), max_age=60*60*24*30), 200
+            response.set_cookie('token', token, max_age=60*60*13), 200
         return response
 
     return make_response("Could not verify", 401, {"WWW-Authenticate": "Basic realm='Login required!'"})
@@ -135,6 +136,8 @@ def get_user_data():
     except:
         if not token:
             return "", 205
+    
+        
 
 # Register Route
 @app.route('/register', methods=['POST'])
