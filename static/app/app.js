@@ -22,12 +22,18 @@
             templateUrl:"/app/components/register/register.tpl.html",
             controller: "RegisterCtrl",
             controllerAs: "register"
+        }).state({
+            name:"user",
+            url:"/user/{username:string}}",
+            templateUrl:"/app/components/user/user.tpl.html",
+            controller:"UserCtrl",
+            controllerAs:"user"
         });
         $urlRouterProvider.otherwise("/");
         
         
     }])
-    .run(function($rootScope,$location, $http){
+    .run(function($rootScope, $http){
         $rootScope.$on('$locationChangeStart', function () {
             $http.get("/login/user").then(function (response) {
                 if(response.status == 200){

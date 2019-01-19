@@ -9,7 +9,7 @@
             first_name:"",
             last_name:"",
             gender:"",
-            date_of_birth:""
+            date_of_birth: new Date(document.getElementById('birth_date').value).getTime()
         }
         this.state = {
             registered: false

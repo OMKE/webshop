@@ -27,11 +27,14 @@
                     <li ng-if="!loggedIn" class="nav-item py-0"><a class="nav-link" ui-sref="login">Login</a></li>
                     <li ng-if="!loggedIn" class="nav-item py-0"><a class="nav-link" ui-sref="register">Register</a></li>
                     <!-- Make ui-sref to user-s profile -->
-                    <li ng-if="loggedIn" class="nav-item py-0"><a class="nav-link" >Hi <b>{{user.first_name}}</b></a></li> 
+                    <li ng-if="loggedIn" class="nav-item py-0"><a class="nav-link" ui-sref="user({username:user.username})">Hi <b>{{user.first_name}}</b></a></li> 
                     <li class="nav-item py-0"><a class="nav-link">Daily Deals</a></li>
                     <li class="nav-item py-0"><a class="nav-link">Help & Contact</a></li>
-                    <li ng-controller="LoginCtrl as login" ng-if="loggedIn" class="nav-item py-0"><a ng-click="login.logOut()" class="nav-link logout">Logout</a></li>
                     
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item py-0"><a class="nav-link">Cart</a></li>
+                    <li ng-controller="LoginCtrl as login" ng-if="loggedIn" class="nav-item py-0"><a ng-click="login.logOut()" class="nav-link logout">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -94,6 +97,7 @@
     <script src="app/components/homepage/homepage.ctrl.js"></script>
     <script src="app/components/login/login.ctrl.js"></script>
     <script src="app/components/register/register.ctrl.js"></script>
+    <script src="app/components/user/user.ctrl.js"></script>
 </body>
 
 </html>

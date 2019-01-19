@@ -116,7 +116,7 @@ def customer_logout():
     response.set_cookie('token', expires=0)
     return response
 
-
+    
 
 # Get user data from cookie and send it to frontend
 @app.route('/login/user', methods=['GET'])
@@ -132,6 +132,7 @@ def get_user_data():
         cursor.execute("SELECT * FROM customers WHERE id=%s", (data['id'], ))
         current_user = cursor.fetchone()
         current_user['password'] = ""
+        current_user['date_of_birth'] = current_user['date_of_birth'].isoformat()
         return jsonify(current_user), 200
     except:
         if not token:
@@ -140,6 +141,10 @@ def get_user_data():
         
 
 # Register Route
+#TODO Email confirmation
+# Tutorial
+# https://realpython.com/handling-email-confirmation-in-flask/
+
 @app.route('/register', methods=['POST'])
 def customer_registration():
     data = request.get_json()
@@ -147,15 +152,12 @@ def customer_registration():
     db = mysql_db.get_db()
     cursor = db.cursor()
     data['password'] = hashed_password
-    date = None
-    try:
-        date = datetime.datetime.strptime(data['date_of_birth'], "%Y-%m-%dT%H:%M:%S")
-    except ValueError:
-        pass
-    data['date_of_birth'] = date
+    #
+    data['date_of_birth'] = datetime.datetime.strptime(data['date_of_birth'][:-5], "%Y-%m-%dT%H:%M:%S") + datetime.timedelta(hours=1)
+    data['registration_date'] = datetime.datetime.now()
     
     
-    cursor.execute("INSERT INTO customers (email, username, password, first_name, last_name, gender, date_of_birth) VALUES(%(email)s, %(username)s, %(password)s, %(first_name)s, %(last_name)s, %(gender)s, %(date_of_birth)s)", data)
+    cursor.execute("INSERT INTO customers (email, username, password, first_name, last_name, gender, date_of_birth, registration_date) VALUES(%(email)s, %(username)s, %(password)s, %(first_name)s, %(last_name)s, %(gender)s, %(date_of_birth)s, %(registration_date)s)", data)
     db.commit()
     return "", 201
 
