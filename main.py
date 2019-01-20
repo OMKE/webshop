@@ -170,7 +170,7 @@ def customer_registration():
     
     cursor.execute("INSERT INTO customers (email, username, password, first_name, last_name, gender, date_of_birth, registration_date) VALUES(%(email)s, %(username)s, %(password)s, %(first_name)s, %(last_name)s, %(gender)s, %(date_of_birth)s, %(registration_date)s)", data)
     db.commit()
-    return "A confirmation email has been sent to your email address", 201
+    return jsonify({"message":"A confirmation email has been sent to your email address"}), 201
 
 
 # Email confirmation handler
@@ -191,7 +191,7 @@ def confirm_email(token):
         user['confirmed_on'] = datetime.datetime.now()
         cursor.execute("UPDATE customers SET confirmed=%(confirmed)s, confirmed_on=%(confirmed_on)s WHERE email=%(email)s", user)
         db.commit()
-        return redirect(url_for("index")), 201
+        return redirect("/"), 201 #FIXME URL needs a fix, looks weird example: localhost:5000/index#!/, needs tobe just /#!/
 
 
 
