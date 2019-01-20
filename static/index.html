@@ -33,7 +33,7 @@
                     
                 </ul>
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item py-0"><a class="nav-link">Cart</a></li>
+                    <li ng-controller="LoginCtrl as login" ng-if="loggedIn" class="nav-item py-0"><a class="nav-link">Cart</a></li>
                     <li ng-controller="LoginCtrl as login" ng-if="loggedIn" class="nav-item py-0"><a ng-click="login.logOut()" class="nav-link logout">Logout</a></li>
                 </ul>
             </div>
