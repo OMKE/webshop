@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, make_response
 from flaskext.mysql import MySQL
 from pymysql.cursors import DictCursor
+from flask_mail import Mail
 from functools import wraps
 import base64
 import jwt
@@ -17,6 +18,18 @@ app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'desoarmmraosed'
 app.config['MYSQL_DATABASE_DB'] = 'webshop'
 app.config['SECRET_KEY'] = 'dev'
+app.config['SECURITY_PASSWORD_SALT'] = 'email_confirmation_pass'
+app.config['MAIL_DEFAULT_SENDER'] = 'webshop.omaririskic@gmail.com'
+
+app.config.update(
+	DEBUG=True,
+	#EMAIL SETTINGS
+	MAIL_SERVER='smtp.gmail.com',
+	MAIL_PORT=465,
+	MAIL_USE_SSL=True,
+	MAIL_USERNAME = 'webshop.omaririskic@gmail.com',
+	MAIL_PASSWORD = 'webshop123'
+	)
 
 cookie_crypt_password = 'piskota'
 
@@ -24,7 +37,7 @@ cookie_crypt_password = 'piskota'
 mysql_db = MySQL(cursorclass=DictCursor)    
 mysql_db.init_app(app)
 
-
+mail = Mail(app)
 
 
 # DECORATOR FOR ACCESS TOKEN

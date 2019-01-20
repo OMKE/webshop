@@ -1,8 +1,9 @@
 #                                   Web shop, Flask REST API with Angular 1 as frontend - Omar Iriskic
 
-from flask import Flask, request, jsonify, make_response, redirect
+from flask import Flask, request, jsonify, make_response, redirect, url_for, render_template
 import datetime
 from config import app, mysql_db, token_required, access_helper, cookie_crypt_password
+from email_confirmation import generate_confirmation_token, confirm_token, send_email
 from os import urandom # os module to generate random secret key
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
@@ -116,7 +117,11 @@ def customer_logout():
     response.set_cookie('token', expires=0)
     return response
 
-    
+
+
+
+
+
 
 # Get user data from cookie and send it to frontend
 @app.route('/login/user', methods=['GET'])
@@ -155,15 +160,38 @@ def customer_registration():
     #
     data['date_of_birth'] = datetime.datetime.strptime(data['date_of_birth'][:-5], "%Y-%m-%dT%H:%M:%S") + datetime.timedelta(hours=1)
     data['registration_date'] = datetime.datetime.now()
-    
+
+    token = generate_confirmation_token(data['email'])
+    confirm_url = url_for("confirm_email", token=token, _external=True)
+    html = render_template('email_confirmation.html', confirm_url=confirm_url)
+    subject = "WebShop - Email confirmation"
+    send_email(data['email'], subject, html)
+
     
     cursor.execute("INSERT INTO customers (email, username, password, first_name, last_name, gender, date_of_birth, registration_date) VALUES(%(email)s, %(username)s, %(password)s, %(first_name)s, %(last_name)s, %(gender)s, %(date_of_birth)s, %(registration_date)s)", data)
     db.commit()
-    return "", 201
+    return "A confirmation email has been sent to your email address", 201
 
 
-
-
+# Email confirmation handler
+@app.route('/confirm/<token>')
+def confirm_email(token):
+    try:
+        email = confirm_token(token)
+    except:
+        return jsonify({"message':'Expired or it's invalid token"}), 401
+    db = mysql_db.get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM customers WHERE email=%s", (email, ))
+    user = cursor.fetchone()
+    if user['confirmed']:
+        return jsonify({"message":"Account is already confirmed. Please login"}), 200
+    else:
+        user['confirmed'] = True
+        user['confirmed_on'] = datetime.datetime.now()
+        cursor.execute("UPDATE customers SET confirmed=%(confirmed)s, confirmed_on=%(confirmed_on)s WHERE email=%(email)s", user)
+        db.commit()
+        return redirect(url_for("index")), 201
 
 
 

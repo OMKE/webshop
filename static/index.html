@@ -41,6 +41,10 @@
     </nav>
 
 
+    <div ng-if="loggedIn" class="container mt-2 mb-2">
+            <h6 ng-if="!user.confirmed" class="text-center text-danger">An email with confirmation link has been sent to you.</h6>
+    </div>
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="#">Webshop</a>

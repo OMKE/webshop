@@ -1,0 +1,40 @@
+<!-- <h1>{{user.loggedUser.id}}</h1> -->
+
+<h1>Profile</h1>
+
+<hr>
+
+<div class="row mt-2">
+    <div class="col-xl-8 col-lg-8 col-md-8 bg-light mx-auto">
+        <div class="col-xl-12">
+            <!-- img-src treba staviti da hvata url iz baze podataka -->
+            <img src="../../../img/150.jpeg" class="d-block mx-auto rounded-circle p-4">
+
+        </div>
+        <div class="col-xl-12 col-lg-12 col-md-12 text-center">
+
+            <h4>{{user.loggedUser.username}}</h4>
+        </div>
+        <div class="col-xl-12 col-lg-12 col-md-12 mt-3">
+            
+            <div class="card mx-auto text-center" style="width: 18rem;">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Email: <b>{{user.loggedUser.email}}</b></li>
+                    <li class="list-group-item">Name: <b>{{user.loggedUser.first_name}} {{user.loggedUser.last_name}}</b></li>
+                    <li class="list-group-item">Birth date: <b>{{user.loggedUser.date_of_birth|date:'dd-MM-yyyy'}}</b></li>
+                    <li class="list-group-item" ng-show="user.loggedUser.address_1">Address 1: <b>{{user.loggedUser.address_1}}</b></li>
+                    <li class="list-group-item" ng-show="!user.loggedUser.address_1">Address 1: <b>Not provided</b></li>
+                    <li class="list-group-item" ng-if="user.loggedUser.address_1">Address 2: <b>{{user.loggedUser.address_2}}</b></li>
+                    <li class="list-group-item" ng-show="user.loggedUser.city">City: <b>{{user.loggedUser.city}}</b></li>
+                    <li class="list-group-item" ng-show="!user.loggedUser.city">City: <b>Not provided</b></li>
+                    <li class="list-group-item" ng-show="user.loggedUser.country">Country: <b>{{user.loggedUser.country}}</b></li>
+                    <li class="list-group-item" ng-show="!user.loggedUser.country">Country: <b>Not provided</b></li>
+                    <li class="list-group-item" ng-show="user.loggedUser.postal_code">Postal code: <b>{{user.loggedUser.postal_code}}</b></li>
+                    <li class="list-group-item" ng-show="!user.loggedUser.postal_code">Postal code: <b>Not provided</b></li>
+                    <li class="list-group-item" ng-show="user.loggedUser.phone_number">Phone number: <b>{{user.loggedUser.phone_number}}</b></li>
+                    <li class="list-group-item" ng-show="!user.loggedUser.phone_number">Phone number: <b>Not provided</b></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
