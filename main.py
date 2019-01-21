@@ -2,17 +2,18 @@
 
 from flask import Flask, request, jsonify, make_response, redirect, url_for, render_template
 import datetime
-from config import app, mysql_db, token_required, access_helper, cookie_crypt_password
+from config import app, mysql_db, token_required, access_helper, encrypt_jwt, decrypt_jwt
 from email_confirmation import generate_confirmation_token, confirm_token, send_email
 from os import urandom # os module to generate random secret key
 from werkzeug.security import generate_password_hash, check_password_hash
-import jwt
+import jwt, base64
 
 
 
 
 
-#TODO ENCRYPT LOGIN TOKEN
+
+
 #TODO FIX ADMIN LOGIN
 
 # Routes
@@ -100,12 +101,14 @@ def customer_login():
         return jsonify({"message":"No user found"}), 401   
     
     if check_password_hash(customer.get('password'), auth.password):
-        token = jwt.encode({'id':customer.get('id'), 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=12)}, app.config['SECRET_KEY'], algorithm='HS256')
+        token = jwt.encode({'id':customer.get('id'), 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=12)}, app.config['SECRET_KEY'], 'HS256')
         response = make_response("Verified", 200)
         # Check if cookie with token exists
         get_cookie = request.cookies.get('token')
+        
+        
         if not get_cookie:
-            response.set_cookie('token', token, max_age=60*60*13), 200
+            response.set_cookie('token', encrypt_jwt(token), max_age=60*60*13), 200
         return response
 
     return make_response("Could not verify", 401, {"WWW-Authenticate": "Basic realm='Login required!'"})
@@ -120,9 +123,6 @@ def customer_logout():
 
 
 
-
-
-
 # Get user data from cookie and send it to frontend
 @app.route('/login/user', methods=['GET'])
 def get_user_data():
@@ -130,9 +130,11 @@ def get_user_data():
 
     if request.cookies.get('token'):
         token = request.cookies.get('token')
-    
+        token = token.encode()
+        token = decrypt_jwt(token)
+        
     try:
-        data = jwt.decode(token, app.config['SECRET_KEY'])
+        data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
         cursor = mysql_db.get_db().cursor()
         cursor.execute("SELECT * FROM customers WHERE id=%s", (data['id'], ))
         current_user = cursor.fetchone()
@@ -146,9 +148,6 @@ def get_user_data():
         
 
 # Register Route
-#TODO Email confirmation
-# Tutorial
-# https://realpython.com/handling-email-confirmation-in-flask/
 
 @app.route('/register', methods=['POST'])
 def customer_registration():
@@ -200,6 +199,6 @@ def confirm_email(token):
 
 # App run
 if __name__ == "__main__":
-    app.run(host='localhost', port=5000, debug=False)
+    app.run(host='localhost', port=5000, debug=False, threaded=True)
 
 

@@ -1,5 +1,5 @@
 (function (angular) {
-    angular.module("app").controller("LoginCtrl", ["$http" ,"$state", "$rootScope", "$location", function ($http, $state, $rootScope, $location) {
+    angular.module("app").controller("LoginCtrl", ["$http" ,"$state", "$rootScope", function ($http, $state, $rootScope) {
         let that = this;
         
         this.userCred = {
