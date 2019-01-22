@@ -194,8 +194,24 @@ def confirm_email(token):
 
 
 
+# Get products route
+@app.route('/products')
+def get_all_products():
+    cursor = mysql_db.get_db().cursor()
+    cursor.execute("SELECT * FROM products")
+    products = cursor.fetchall()
+    for i in products:
+        i["created_at"] = i["created_at"].isoformat()
+    return jsonify(products)
 
 
+@app.route('/products/<int:id>')
+def get_one_product(id):
+    cursor = mysql_db.get_db().cursor()
+    cursor.execute("SELECT * FROM products where id=%s", (id, ))
+    product = cursor.fetchone()
+    product["created_at"] = product["created_at"].isoformat()
+    return jsonify(product)
 
 # App run
 if __name__ == "__main__":

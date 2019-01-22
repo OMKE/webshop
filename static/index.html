@@ -17,24 +17,28 @@
 <body ng-app="app">
 
     <!-- <div ng-controller="HomepageCtrl">{{callFoo()}}</div> -->
+
     
-    <nav class="navbar py-0 navbar-light navbar-expand-lg navbar-expand-md navbar-expand-sm navbar-expand-xs py-md-0">
+
+    <nav class="navbar py-0 navbar-light navbar-expand-lg navbar-expand-md  py-md-0 shadow-sm p-3 mb-1">
         <div class="container">
-            
+
             <div class="navbar-collapse " id="navbarNav">
                 <ul class="navbar-nav">
-                    
+
                     <li ng-if="!loggedIn" class="nav-item py-0"><a class="nav-link" ui-sref="login">Login</a></li>
                     <li ng-if="!loggedIn" class="nav-item py-0"><a class="nav-link" ui-sref="register">Register</a></li>
                     <!-- Make ui-sref to user-s profile -->
-                    <li ng-if="loggedIn" class="nav-item py-0"><a class="nav-link" ui-sref="user({username:user.username})">Hi <b>{{user.first_name}}</b></a></li> 
+                    <li ng-if="loggedIn" class="nav-item py-0"><a class="nav-link" ui-sref="user({username:user.username})">Hi
+                            <b>{{user.first_name}}</b></a></li>
                     <li class="nav-item py-0"><a class="nav-link">Daily Deals</a></li>
                     <li class="nav-item py-0"><a class="nav-link">Help & Contact</a></li>
-                    
+
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li ng-controller="LoginCtrl as login" ng-if="loggedIn" class="nav-item py-0"><a class="nav-link">Cart</a></li>
-                    <li ng-controller="LoginCtrl as login" ng-if="loggedIn" class="nav-item py-0"><a ng-click="login.logOut()" class="nav-link logout">Logout</a></li>
+                    <li ng-controller="LoginCtrl as login" ng-if="loggedIn" class="nav-item py-0"><a ng-click="login.logOut()"
+                            class="nav-link logout">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -42,7 +46,8 @@
 
 
     <div ng-if="loggedIn" class="container mt-2 mb-2">
-            <h6 ng-if="!user.confirmed" class="text-center text-danger">An email with confirmation link has been sent to you.</h6>
+        <h6 ng-if="!user.confirmed" class="text-center text-danger">An email with confirmation link has been sent to
+            you.</h6>
     </div>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -58,7 +63,21 @@
                     <li class="nav-item" ui-sref-active="active">
                         <a class="nav-link" ui-sref="home">Home </a>
                     </li>
-
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="home">Electronics </a>
+                    </li>
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="home">Fashion </a>
+                    </li>
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="home">Health & Beauty </a>
+                    </li>
+                    <li class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="home">Sports </a>
+                    </li>
+                    <li class="nav-item" ui-sref-active="active">
+                            <a class="nav-link" ui-sref="home">Home & Garden </a>
+                        </li>
                 </ul>
             </div>
         </div>
@@ -84,9 +103,9 @@
         <ui-view></ui-view>
     </div>
 
-    
 
-    
+
+
 
 
 
