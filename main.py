@@ -122,7 +122,7 @@ def customer_logout():
 
 
 
-
+#TODO catch error if token is invalid or there is not user provided, return appropriate messages
 # Get user data from cookie and send it to frontend
 @app.route('/login/user', methods=['GET'])
 def get_user_data():
