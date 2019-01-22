@@ -77,12 +77,14 @@ def token_required(f):
 
         if request.cookies.get('token'):
             token = request.cookies.get('token')
+            token = token.encode()
+            token = decrypt_jwt(token)
             
     
         if not token:
             return jsonify({"message":'Missing token'}), 401
         try:
-            data = decrypt_jwt(jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256']))
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
             cursor = mysql_db.get_db().cursor()
             cursor.execute("SELECT * FROM customers WHERE id=%s", (data['id'], ))
             current_user = cursor.fetchone()
