@@ -1,3 +1,8 @@
 static/css/* linguist-vendored
 static/templates/* linguist-vendored
 static/fonts/* linguist-vendored
+static/app/components/category/category.tpl.html linguist-vendored
+static/app/components/homepage/homepage.tpl.html linguist-vendored
+static/app/components/login/login.tpl.html linguist-vendored
+static/app/components/register/register.tpl.html linguist-vendored
+static/app/components/user/user.tpl.html linguist-vendored
