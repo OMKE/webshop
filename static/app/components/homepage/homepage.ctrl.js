@@ -4,13 +4,13 @@
 
         this.products = []
         
-        this.getProducts = function () {
-            $http.get("/products").then(function (response) {
-                that.products = response.data;
-            }, function (response) {
+        // this.getProducts = function () {
+        //     $http.get("/api/products").then(function (response) {
+        //         that.products = response.data;
+        //     }, function (response) {
                 
-            })
-        }
+        //     })
+        // }
         
         
 

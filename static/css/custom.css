@@ -10,12 +10,6 @@
     cursor: pointer;
 }
 
-@media all and (max-width: 576px){
-    .ml-sm-3 {
-        margin-left: 20px;
-     }
-}
-
 .popular_cat_img {
     margin-bottom: 5px;
 }
@@ -31,3 +25,17 @@ ul {
 .copyright-text {
     font-size: 12px;
 }
+
+
+
+@media all and (max-width: 576px){
+    .ml-sm-3 {
+        margin-left: 20px;
+     }
+}
+
+/* @media all and (max-width: 992px){
+    .sub-cats {
+        display: none;
+    }
+} */

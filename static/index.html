@@ -9,16 +9,15 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="css/fontawesome/css/all.min.css" />
     <link rel="stylesheet" href="css/custom.css">
+    <link href="css/ui.css" rel="stylesheet" type="text/css"/>
+    <link href="css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)"/>
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
-    <title>Webshop</title>
+    <title>Webshop by Omar Iriskic</title>
 </head>
 
 <body ng-app="app">
 
-    <!-- <div ng-controller="HomepageCtrl">{{callFoo()}}</div> -->
-
-    
 
     <nav class="navbar py-0 navbar-light navbar-expand-lg navbar-expand-md  py-md-0 shadow-sm p-3 mb-1">
         <div class="container">
@@ -58,26 +57,11 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div ng-controller="CategoriesCtrl as categories" class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item" ui-sref-active="active">
-                        <a class="nav-link" ui-sref="home">Home </a>
+                    <li ng-repeat="cat in categories.categories" class="nav-item" ui-sref-active="active">
+                        <a class="nav-link" ui-sref="category({id:cat.id})">{{cat.category_name}}</a>
                     </li>
-                    <li class="nav-item" ui-sref-active="active">
-                        <a class="nav-link" ui-sref="home">Electronics </a>
-                    </li>
-                    <li class="nav-item" ui-sref-active="active">
-                        <a class="nav-link" ui-sref="home">Fashion </a>
-                    </li>
-                    <li class="nav-item" ui-sref-active="active">
-                        <a class="nav-link" ui-sref="home">Health & Beauty </a>
-                    </li>
-                    <li class="nav-item" ui-sref-active="active">
-                        <a class="nav-link" ui-sref="home">Sports </a>
-                    </li>
-                    <li class="nav-item" ui-sref-active="active">
-                            <a class="nav-link" ui-sref="home">Home & Garden </a>
-                        </li>
                 </ul>
             </div>
         </div>
@@ -92,7 +76,7 @@
                     <input class="form-control mr-sm-2 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 text-center"
                         type="search" placeholder="Search for anything">
                     <div class="mx-auto">
-                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+                        <button class="btn btn-outline-primary my-2 my-sm-2" type="submit">Search</button>
                     </div>
                 </form>
             </div>
@@ -121,6 +105,9 @@
     <script src="app/components/login/login.ctrl.js"></script>
     <script src="app/components/register/register.ctrl.js"></script>
     <script src="app/components/user/user.ctrl.js"></script>
+    <script src="app/components/categories/categories.ctrl.js"></script>
+    <script src="app/components/category/category.ctrl.js"></script>
+    <script src="app/components/category/subcategory.ctrl.js"></script>
 </body>
 
 </html>

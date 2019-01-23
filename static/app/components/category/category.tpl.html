@@ -1,0 +1,86 @@
+<h1>{{category.category.category_name}}</h1>
+
+<hr>
+
+<div class="row mt-5">
+    <div class="col-sm-12 col-md-4  sub-cats mb-3">
+        <h4>Shop by Category</h4>
+        <ul class="list-group list-group-flush mt-3" ui-sref-active="active">
+            <!-- Set currently showing category to active link-->
+            <li ng-repeat="cat in category.subCategories" ui-sref="subcategory({id:sub_category.id})" class="list-group-item">{{cat.sub_category_name}}</li>
+        </ul>
+        <article class="card-group-item mt-4">
+            <!-- <i class="icon-action fa fa-chevron-down"></i> -->
+            <h4>Shop by Price</h4>
+            <div class="filter-content collapse show" id="collapse33">
+                <div class="card-body">
+                    <!-- <input type="range" class="custom-range" min="0" max="100" name=""> -->
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Min</label>
+                            <input class="form-control" placeholder="$0" type="number">
+                        </div>
+                        <div class="form-group text-right col-md-6">
+                            <label>Max</label>
+                            <input class="form-control" placeholder="$1,0000" type="number">
+                        </div>
+                    </div> 
+                    <button class="btn btn-block btn-outline-success">Apply</button>
+                </div> 
+            </div> 
+        </article>
+    </div>
+
+    <div class="col-md-8">
+        <article class="card card-product" ng-repeat="p in category.products">
+            <div class="card-body">
+                <div class="row">
+                    <aside class="col-sm-3">
+                        <div class="img-wrap"><img src="https://via.placeholder.com/150/"></div>
+                    </aside> <!-- col.// -->
+                    <article class="col-sm-6">
+                        <h4 class="title">{{p.name}}</h4>
+
+                        <p> {{p.desc}} </p>
+                        <dl class="dlist-align">
+                            <dt>Color</dt>
+                            <dd>{{p.color}}</dd>
+                        </dl>
+                        <!-- <dl class="dlist-align">
+                            <dt>Material</dt>
+                            <dd>Syntetic, wooden</dd>
+                        </dl> -->
+                        <dl class="dlist-align">
+                            <dt>Delivery</dt>
+                            <dd>Global</dd>
+                        </dl>
+
+                    </article>
+                    <aside class="col-sm-3 border-left">
+                        <div class="action-wrap">
+                            <div class="price-wrap h4">
+                                <span class="price"> ${{p.price}} </span>
+                                <!-- <del class="price-old"> $98</del> -->
+                            </div>
+                            <p class="text-warning">Calculating shipping?</p>
+                            <br>
+                            <p>
+                                <a href="#" class="btn btn-primary mb-2"> Buy now </a>
+                                <a href="#" class="btn btn-secondary"> Details </a>
+                            </p>
+                            <!-- <a href="#"><i class="fa fa-heart"></i> Add to wishlist</a> -->
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </article>
+
+
+
+    </div>
+    <div class="col-md-12 mt-5">
+        <p class="copyright-text text-center">Copyright © 2019 WebShop by Omar Iriskic. All Rights Reserved. <a href="https://omaririskic.com/">www.omaririskic.com</a></p>
+
+    </div>
+
+</div>

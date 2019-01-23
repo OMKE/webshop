@@ -138,9 +138,12 @@ def get_user_data():
         cursor = mysql_db.get_db().cursor()
         cursor.execute("SELECT * FROM customers WHERE id=%s", (data['id'], ))
         current_user = cursor.fetchone()
-        current_user['password'] = ""
-        current_user['date_of_birth'] = current_user['date_of_birth'].isoformat()
-        return jsonify(current_user), 200
+        if not current_user:
+            return jsonify({"message":"No user found"}), 404
+        else:
+            del current_user['password'] 
+            current_user['date_of_birth'] = current_user['date_of_birth'].isoformat()
+            return jsonify(current_user), 200
     except:
         if not token:
             return "", 205
@@ -148,7 +151,7 @@ def get_user_data():
         
 
 # Register Route
-
+#TODO check input, match password, 
 @app.route('/register', methods=['POST'])
 def customer_registration():
     data = request.get_json()
@@ -194,8 +197,8 @@ def confirm_email(token):
 
 
 
-# Get products route
-@app.route('/products')
+# Get products Route
+@app.route('/api/products')
 def get_all_products():
     cursor = mysql_db.get_db().cursor()
     cursor.execute("SELECT * FROM products")
@@ -205,13 +208,76 @@ def get_all_products():
     return jsonify(products)
 
 
-@app.route('/products/<int:id>')
+# Get one product Route
+@app.route('/api/products/<int:id>')
 def get_one_product(id):
     cursor = mysql_db.get_db().cursor()
     cursor.execute("SELECT * FROM products where id=%s", (id, ))
     product = cursor.fetchone()
     product["created_at"] = product["created_at"].isoformat()
     return jsonify(product)
+
+
+# Get categories Route
+@app.route('/api/categories')
+def get_categories():
+    cursor = mysql_db.get_db().cursor()
+    cursor.execute("SELECT * FROM categories")
+    categories = cursor.fetchall()
+    return jsonify(categories)
+
+# Get one category Route
+@app.route('/api/categories/<int:id>')
+def get_one_category(id):
+    cursor = mysql_db.get_db().cursor()
+    cursor.execute("SELECT * FROM categories WHERE id=%s", (id, ))
+    category = cursor.fetchone()
+    return jsonify(category)
+
+
+# Get products from main categories Route
+@app.route('/api/categories/<int:id>/products')
+def get_products_category(id):
+    cursor = mysql_db.get_db().cursor()
+    cursor.execute("SELECT * FROM products WHERE category_id=%s", (id, ))
+    products = cursor.fetchall()
+    return jsonify(products)
+
+
+
+# Get subcategories from one of main categories Route
+@app.route('/api/subcategories/<int:id>')
+def get_sub_categories(id):
+   cursor = mysql_db.get_db().cursor()
+   cursor.execute("SELECT * FROM sub_categories WHERE category_id=%s", (id, ))
+   sub_categories = cursor.fetchall()
+   return jsonify(sub_categories)
+
+# Get one subcategory Route
+@app.route('/api/subcategories/<int:id>')
+def get_one_sub_category(id):
+   cursor = mysql_db.get_db().cursor()
+   cursor.execute("SELECT * FROM sub_categories WHERE id=%s", (id, ))
+   sub_category = cursor.fetchone()
+   return jsonify(sub_category)
+
+
+
+# Get all products from one sub-category Route
+@app.route('/api/subcategories/<int:id>/products/')
+def get_products_subcategory(id):
+   cursor = mysql_db.get_db().cursor()
+   cursor.execute("SELECT * FROM products WHERE sub_category_id=%s", (id, ))
+   products = cursor.fetchall()
+   return jsonify(products)
+
+
+
+
+
+
+
+
 
 # App run
 if __name__ == "__main__":

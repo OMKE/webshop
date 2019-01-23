@@ -6,9 +6,9 @@
     <div class="col-12 mx-auto">
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item active">
+                <div class="carousel-item active" ng-controller="CategoriesCtrl as categories">
                     <!-- Make link when click on img to show items by that category -->
-                    <img class="d-block w-100" src="../../../img/fashion_carousel.png" alt="First slide">
+                    <a ui-sref="category({id:2})"><img class="d-block w-100" src="../../../img/fashion_carousel.png" alt="First slide"></a>
                 </div>
                 <div class="carousel-item">
                     <img class="d-block w-100" src="../../../img/school_carousel.png" alt="Second slide">

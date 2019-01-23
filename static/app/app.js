@@ -28,6 +28,17 @@
             templateUrl:"/app/components/user/user.tpl.html",
             controller:"UserCtrl",
             controllerAs:"user"
+        }).state({
+            name: "category",
+            url: "/category/{id:int}",
+            templateUrl: "/app/components/category/category.tpl.html",
+            controller: "CategoryCtrl",
+            controllerAs: "category"
+        }).state({
+            name:"subCategory",
+            url:"/category/subcategory/{id:int}",
+            controller: "SubCategoryCtrl",
+            controllerAs: "subcategory"
         });
         $urlRouterProvider.otherwise("/");
         
