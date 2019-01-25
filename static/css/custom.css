@@ -6,9 +6,7 @@
     color: #03A8F3;
 }
 
-.logout {
-    cursor: pointer;
-}
+
 
 .popular_cat_img {
     margin-bottom: 5px;
@@ -28,10 +26,66 @@ ul {
 
 
 
+/* First navigation: Login, Register Help & Contact, Cart */
+.sub-nav a:first-child {
+    padding-left: 0;
+}
+.sub-nav a {
+    padding-left: 3%;
+    color: white;
+}
+.sub-nav {
+    padding: 1% 0 1% 0;
+}
+.sub-nav-wrap {
+    background-color: #64b5f6;
+    color: white;
+    width: 100%;
+}
+#loggedUser {
+    color: white;
+}
+
+
+
+#logoutBtn {
+    cursor: pointer;
+}
+#cartBtn {
+    float: right;
+}
+
+
+
 @media all and (max-width: 576px){
     .ml-sm-3 {
         margin-left: 20px;
-     }
+    }
+    .sub-nav {
+        text-align: center;
+        padding: 3% 0 3% 0;
+        
+    }
+    .sub-nav:first-child {
+        padding-left: 0;
+    }
+    .sub-nav a {
+        padding-left: 4%;
+    }
+    
+    #cartBtn {
+        float: none;
+    }
+    #helpcontact {
+        display: none;
+    }
+    
+    
+}
+@media all and (max-width: 786px){
+    .sub-nav {
+        padding: 2% 0 2% 0;
+    }
 }
 
 /* @media all and (max-width: 992px){
