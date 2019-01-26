@@ -2,10 +2,11 @@
 
 from flask import Flask, request, jsonify, make_response, redirect, url_for, render_template
 import datetime
-from config import app, mysql_db, token_required, access_helper, encrypt_jwt, decrypt_jwt
+from config import app, mysql_db, token_required, isAdmin, encrypt_jwt, decrypt_jwt
 from email_confirmation import generate_confirmation_token, confirm_token, send_email
 from os import urandom # os module to generate random secret key
 from werkzeug.security import generate_password_hash, check_password_hash
+from uuid import uuid4
 import jwt, base64
 
 
@@ -18,8 +19,8 @@ import jwt, base64
 
 # Routes
 
-@app.route('/')
 @app.route('/index')
+@app.route('/')
 def index():
     
     return app.send_static_file('index.html')
@@ -46,19 +47,16 @@ def admin_login():
 
 
 @app.route('/admin/register', methods=['POST'])
-@token_required
 def admin_register(current_user):
-    if access_helper(current_user):
-        data = request.get_json()
-        hashed_password = generate_password_hash(data['password'], method='sha256')
-        db = mysql_db.get_db()
-        cursor = db.cursor()
-        data['password'] = hashed_password
-        cursor.execute("INSERT INTO admins (email, username, password, first_name, last_name, phone_number, gender) VALUES(%(email)s, %(username)s, %(password)s, %(first_name)s, %(last_name)s, %(phone_number)s, %(gender)s)", data)
-        db.commit()
-        return "Admin successfully created", 201
-    else:
-        return jsonify({'message':'Not verified'}), 401
+    data = request.get_json()
+    hashed_password = generate_password_hash(data['password'], method='sha256')
+    db = mysql_db.get_db()
+    cursor = db.cursor()
+    data['password'] = hashed_password
+    cursor.execute("INSERT INTO admins (email, username, password, first_name, last_name, phone_number, gender) VALUES(%(email)s, %(username)s, %(password)s, %(first_name)s, %(last_name)s, %(phone_number)s, %(gender)s)", data)
+    db.commit()
+    return "Admin successfully created", 201
+   
 
     
 
@@ -69,7 +67,7 @@ def admin_register(current_user):
 @app.route('/admin', methods=['GET'])
 @token_required
 def get_all_admins(current_user):
-    if access_helper(current_user): # returns True if user has attribute of admin(bool)==True
+    if isAdmin(current_user): # returns True if user has attribute of admin(bool)==True
         db = mysql_db.get_db().cursor()
         db.execute("SELECT * FROM admins")
         admins = db.fetchall()
@@ -89,7 +87,7 @@ def get_all_admins(current_user):
 def customer_login():
     auth = request.authorization
     cursor = mysql_db.get_db().cursor()
-    cursor.execute("SELECT * FROM customers WHERE username=%(username)s", auth)
+    cursor.execute("SELECT * FROM users WHERE username=%(username)s", auth)
     customer = cursor.fetchone()
 
     
@@ -125,7 +123,8 @@ def customer_logout():
 #TODO catch error if token is invalid or there is not user provided, return appropriate messages
 # Get user data from cookie and send it to frontend
 @app.route('/login/user', methods=['GET'])
-def get_user_data():
+@token_required
+def get_user_data(current_user):
     token = None
 
     if request.cookies.get('token'):
@@ -136,7 +135,7 @@ def get_user_data():
     try:
         data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
         cursor = mysql_db.get_db().cursor()
-        cursor.execute("SELECT * FROM customers WHERE id=%s", (data['id'], ))
+        cursor.execute("SELECT * FROM users WHERE id=%s", (data['id'], ))
         current_user = cursor.fetchone()
         if not current_user:
             return jsonify({"message":"No user found"}), 404
@@ -146,7 +145,7 @@ def get_user_data():
             return jsonify(current_user), 200
     except:
         if not token:
-            return "", 205
+            return jsonify({"message":"No user logged"}), 205
     
         
 
@@ -162,7 +161,7 @@ def customer_registration():
     #
     data['date_of_birth'] = datetime.datetime.strptime(data['date_of_birth'][:-5], "%Y-%m-%dT%H:%M:%S") + datetime.timedelta(hours=1)
     data['registration_date'] = datetime.datetime.now()
-
+    data['admin'] = False
     token = generate_confirmation_token(data['email'])
     confirm_url = url_for("confirm_email", token=token, _external=True)
     html = render_template('email_confirmation.html', confirm_url=confirm_url)
@@ -170,7 +169,7 @@ def customer_registration():
     send_email(data['email'], subject, html)
 
     
-    cursor.execute("INSERT INTO customers (email, username, password, first_name, last_name, gender, date_of_birth, registration_date) VALUES(%(email)s, %(username)s, %(password)s, %(first_name)s, %(last_name)s, %(gender)s, %(date_of_birth)s, %(registration_date)s)", data)
+    cursor.execute("INSERT INTO users (email, username, password, first_name, last_name, gender, date_of_birth, registration_date, admin) VALUES(%(email)s, %(username)s, %(password)s, %(first_name)s, %(last_name)s, %(gender)s, %(date_of_birth)s, %(registration_date)s, %(admin)s)", data)
     db.commit()
     return jsonify({"message":"A confirmation email has been sent to your email address"}), 201
 
@@ -181,21 +180,86 @@ def confirm_email(token):
     try:
         email = confirm_token(token)
     except:
-        return jsonify({"message':'Expired or it's invalid token"}), 401
-    db = mysql_db.get_db()
-    cursor = db.cursor()
-    cursor.execute("SELECT * FROM customers WHERE email=%s", (email, ))
-    user = cursor.fetchone()
-    if user['confirmed']:
-        return jsonify({"message":"Account is already confirmed. Please login"}), 200
-    else:
+        return jsonify({"message":"Invalid token"})
+    
+    
+    if email:
+        db = mysql_db.get_db()
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM users WHERE email=%s", (email, ))
+        user = cursor.fetchone()
+        if user['confirmed']:
+            return render_template('email_confirmed.html', url=url_for('index'), success=False), 201
         user['confirmed'] = True
         user['confirmed_on'] = datetime.datetime.now()
-        cursor.execute("UPDATE customers SET confirmed=%(confirmed)s, confirmed_on=%(confirmed_on)s WHERE email=%(email)s", user)
+        cursor.execute("UPDATE users SET confirmed=%(confirmed)s, confirmed_on=%(confirmed_on)s WHERE email=%(email)s", user)
         db.commit()
-        return redirect("/"), 201 #FIXME URL needs a fix, looks weird example: localhost:5000/index#!/, needs tobe just /#!/
+        return render_template('email_confirmed.html', url=url_for('index'), success=True), 201 
+    else:
+        return render_template('email_confirmed.html', url=url_for('index'), failed=True), 404
+
+# Change user password route
+@app.route('/user/changepassword', methods=['POST'])
+@token_required
+def change_password(current_user):
+    data = dict(request.json)
+    db = mysql_db.get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users WHERE id=%s", (current_user['id'], ))
+    user = cursor.fetchone()
+    user["password"] = generate_password_hash(data["newPass"], method='sha256')
+    
+    user["password_reset"] = False
+    cursor.execute("UPDATE users SET password=%(password)s, password_reset=%(password_reset)s WHERE email=%(email)s", current_user)
+    db.commit()
+    return jsonify({"message":"Password successfully changed"}), 200
 
 
+
+# Reset password Route
+@app.route('/login/resetpassword', methods=['POST'])
+def reset_password():
+    data = dict(request.json)
+    cursor = mysql_db.get_db().cursor()
+    cursor.execute("SELECT * FROM users WHERE email=%s", (data['email'], ))
+    user = cursor.fetchone()
+    if user:
+        token = generate_confirmation_token(user['email'])
+        reset_url = url_for("confirm_reset_password_token", token=token, _external=True)
+        html = render_template("reset_password_email.html", reset_url=reset_url)
+        subject = "WebShop - Account Recovery"
+        send_email(user['email'], subject, html)
+        return jsonify({"message":"An email with reset token has been sent to email address"}), 200
+    if not user:
+        return jsonify({"message":"No user found with email provided"}), 200
+
+
+
+# Reset password token 
+@app.route('/login/resetpassword/<token>')
+def confirm_reset_password_token(token):
+    try:
+        email = confirm_token(token)
+    except:
+        return jsonify({"message":"Expired or invalid link"}), 401
+
+    if email:
+        db = mysql_db.get_db()
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM users WHERE email=%s", (email, ))
+        user = cursor.fetchone()
+        temp_pass = str(uuid4())[:8]
+        user['password'] = generate_password_hash(temp_pass, method='sha256')
+        user['password_reset'] = True
+        cursor.execute("UPDATE users SET password_reset=%(password_reset)s, password=%(password)s WHERE email=%(email)s", user)
+        db.commit()
+        return render_template('reset_password.html', url=url_for('index'), success=True, password=temp_pass)    
+
+    else:
+        return render_template('reset_password.html',url=url_for('index'), success=False)
+    
+    
+    
 
 # Get products Route
 @app.route('/api/products')
@@ -212,7 +276,7 @@ def get_all_products():
 @app.route('/api/products/<int:id>')
 def get_one_product(id):
     cursor = mysql_db.get_db().cursor()
-    cursor.execute("SELECT * FROM products where id=%s", (id, ))
+    cursor.execute("SELECT * FROM products WHERE id=%s", (id, ))
     product = cursor.fetchone()
     product["created_at"] = product["created_at"].isoformat()
     return jsonify(product)
@@ -245,6 +309,7 @@ def get_products_category(id):
 
 
 
+
 # Get subcategories from one of main categories Route
 @app.route('/api/subcategories/<int:id>')
 def get_sub_categories(id):
@@ -253,18 +318,12 @@ def get_sub_categories(id):
    sub_categories = cursor.fetchall()
    return jsonify(sub_categories)
 
-# Get one subcategory Route
-@app.route('/api/subcategories/<int:id>')
-def get_one_sub_category(id):
-   cursor = mysql_db.get_db().cursor()
-   cursor.execute("SELECT * FROM sub_categories WHERE id=%s", (id, ))
-   sub_category = cursor.fetchone()
-   return jsonify(sub_category)
+
 
 
 
 # Get all products from one sub-category Route
-@app.route('/api/subcategories/<int:id>/products/')
+@app.route('/api/subcategories/<int:id>/products')
 def get_products_subcategory(id):
    cursor = mysql_db.get_db().cursor()
    cursor.execute("SELECT * FROM products WHERE sub_category_id=%s", (id, ))

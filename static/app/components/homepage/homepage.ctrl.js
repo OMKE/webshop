@@ -1,5 +1,5 @@
 (function (angular) {
-    angular.module("app").controller("HomepageCtrl", ["$stateParams", "$http" ,function ($stateParams, $http, $scope ) {
+    angular.module("app").controller("HomepageCtrl", ["$stateParams", "$http", "$rootScope", "$state", "$timeout" ,function ($stateParams, $http, $rootScope, $state, $timeout) {
         let that = this;
 
         this.products = []
@@ -11,7 +11,13 @@
                 
         //     })
         // }
+
         
+        
+        
+        
+        
+
         
 
         

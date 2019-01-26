@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>WebShop - Email confirmation</title>
+    
+</head>
+<body>
+        {% if success %}
+        <div class="container">
+                <h2>Account successfully confirmed. Enjoy</h2>
+                <a href="{{url}}">REDIRECT TO HOMEPAGE</a>
+        </div>
+        {% elif failed %}
+        <div class="container">
+                <h2>Invalid token.</h2>
+                <a href="{{url}}">REDIRECT TO HOMEPAGE</a>
+        </div>
+        {% else %}
+         <div class="container">  
+                <h2>Account already confirmed.</h2>
+                <a href="{{url}}">REDIRECT TO HOMEPAGE</a>
+         </div>
+         {% endif %}
+        
+        
+
+
+        <style>
+                body  {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background-color: #f9f9f9;
+                }
+                h2 {
+                    text-align: center;
+                    color: #428bca;
+                }
+                .container {
+                    margin-top: 30%;
+                    display: block;
+                    border: 1px solid;
+                    border-color: #3c3c3c;
+                    padding: 5%;
+                    border-radius: 4px;
+                    background-color: white;
+                    text-align: center;
+                }
+                a {
+                    color: #7f42ca;
+                    text-decoration: none;
+                    font-size: 20px;
+                }
+                #pass {
+                    color: rgb(255, 60, 60);
+                }
+            </style>
+
+        
+</body>
+</html>

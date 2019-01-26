@@ -7,7 +7,7 @@
         this.products = [];
 
         this.getProducts = function (id) {
-            $http.get(`/api/subcategories/${id}/products/`).then(function (response) {
+            $http.get(`/api/subcategories/${id}/products`).then(function (response) {
                 that.products = response.data;
             }, function (response) {
                 
@@ -15,5 +15,6 @@
         }
 
         this.getProducts($stateParams['id']);
+        
     }]);
 })(angular);

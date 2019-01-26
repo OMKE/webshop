@@ -63,10 +63,12 @@ mail = Mail(app)
 
 
 # DECORATOR FOR ACCESS TOKEN
-def access_helper(current_user):
+def isAdmin(current_user):
     try:
         if current_user["admin"]:
             return True
+        else:
+            return False
     except KeyError:
         return False
 
@@ -86,7 +88,7 @@ def token_required(f):
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
             cursor = mysql_db.get_db().cursor()
-            cursor.execute("SELECT * FROM customers WHERE id=%s", (data['id'], ))
+            cursor.execute("SELECT * FROM users WHERE id=%s", (data['id'], ))
             current_user = cursor.fetchone()
             
         except jwt.ExpiredSignatureError:

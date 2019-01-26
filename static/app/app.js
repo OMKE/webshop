@@ -36,20 +36,45 @@
             controllerAs: "category"
         }).state({
             name:"subCategory",
-            url:"/category/subcategory/{id:int}",
+            url: "/subcategory/{id:int}",
+            templateUrl:"/app/components/category/subcategory.tpl.html",
             controller: "SubCategoryCtrl",
             controllerAs: "subcategory"
+        }).state({
+            name:"passwordReset",
+            url:"/resetpassword",
+            templateUrl: "/app/components/password_reset/password_reset.tpl.html",
+            controller:"PasswordResetCtrl",
+            controllerAs:"passwordreset"
+        }).state({
+            name:"changePassword",
+            url:"/changepassword",
+            templateUrl:"/app/components/change_password/change_password.tpl.html",
+            controller: "ChangePasswordCtrl",
+            controllerAs: "changepassword",
+        }).state({
+            name: "privacypolicy",
+            url: "/privacy",
+            templateUrl: "/app/components/help_and_contact/privacypolicy.tpl.html"
+        }).state({
+            name:"termsandconditions",
+            url:"/termsandconditions",
+            templateUrl:"/app/components/help_and_contact/termsandconditions.tpl.html"
         });
         $urlRouterProvider.otherwise("/");
         
         
     }])
-    .run(function($rootScope, $http){
+    .run(function($rootScope, $http, $state){
         $rootScope.$on('$locationChangeStart', function () {
             $http.get("/login/user").then(function (response) {
                 if(response.status == 200){
                     $rootScope.user = response.data;
                     $rootScope.loggedIn = true;
+                    if($rootScope.user.password_reset == 1){
+                        $state.go("changePassword", {}, { reload: false })
+                    }
+                    
                 }
             }, function (response) {
                 

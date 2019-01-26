@@ -22,6 +22,7 @@
             })
         }
 
+        // Gets products from main category
         this.getProducts = function (id) {
             $http.get(`/api/categories/${id}/products`).then(function (response) {
                 that.products = response.data;
@@ -30,9 +31,12 @@
             })
         }
 
+        
+
         this.getCategory($stateParams["id"]);
-        this.getSubCategories($stateParams["id"]);
+        this.getSubCategories($stateParams['id']);
         this.getProducts($stateParams['id']);
+        
         
 
         

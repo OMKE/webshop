@@ -4,10 +4,10 @@
 
 <div class="row mt-5">
     <div class="col-sm-12 col-md-4  sub-cats mb-3">
-        <h4>Shop by Category</h4>
+        <h4>Shop by Sub-Category</h4>
         <ul class="list-group list-group-flush mt-3" ui-sref-active="active">
             <!-- Set currently showing category to active link-->
-            <li ng-repeat="cat in category.subCategories" ui-sref="subcategory({id:sub_category.id})" class="list-group-item">{{cat.sub_category_name}}</li>
+            <li ng-repeat="cat in category.subCategories" ui-sref="subCategory({id: cat.id})" class="list-group-item" ui-sref-active="active">{{cat.sub_category_name}}</li>
         </ul>
         <article class="card-group-item mt-4">
             <!-- <i class="icon-action fa fa-chevron-down"></i> -->
@@ -30,6 +30,9 @@
             </div> 
         </article>
     </div>
+    <ui-view>
+
+    </ui-view>
 
     <div class="col-md-8">
         <article class="card card-product" ng-repeat="p in category.products">

@@ -1,21 +1,24 @@
 <hr>
 <form class="p-5 col-lg-6 col-xl-6 mx-auto mt-2" ng-submit="register.register()">
-    
+
     <p class="h4 mb-4 text-center">Register</p>
-    
+
 
 
     <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" name="email" id="email" class="form-control mb-4" placeholder="john_doe@gmail.com" ng-model="register.newCustomer.email" required>
+        <input type="email" name="email" id="email" class="form-control mb-4" placeholder="john_doe@gmail.com" ng-model="register.newCustomer.email"
+            required>
     </div>
     <div class="form-group">
         <label for="username">Username</label>
-        <input type="text" name="username" id="username" class="form-control mb-4" placeholder="john_doe" ng-model="register.newCustomer.username" required>
+        <input type="text" name="username" id="username" class="form-control mb-4" placeholder="john_doe" ng-model="register.newCustomer.username"
+            required>
     </div>
     <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" name="password" id="password" class="form-control mb-4" placeholder="********" ng-model="register.newCustomer.password" required>
+        <input type="password" name="password" id="password" class="form-control mb-4" placeholder="********" ng-model="register.newCustomer.password"
+            required>
     </div>
     <div class="form-group">
         <label for="password2">Confirm password</label>
@@ -23,11 +26,13 @@
     </div>
     <div class="form-group">
         <label for="first_name">First name</label>
-        <input id="first_name" class="form-control mb-4" type="text" ng-model="register.newCustomer.first_name" placeholder="John" required>
+        <input id="first_name" class="form-control mb-4" type="text" ng-model="register.newCustomer.first_name"
+            placeholder="John" required>
     </div>
     <div class="form-group">
         <label for=last_name">Last name</label>
-        <input id="lastname" class="form-control mb-4" type="text" ng-model="register.newCustomer.last_name" placeholder="Doe" required>
+        <input id="lastname" class="form-control mb-4" type="text" ng-model="register.newCustomer.last_name"
+            placeholder="Doe" required>
     </div>
     <div class="form-group">
         <label for="gender">Gender</label>
@@ -39,23 +44,25 @@
     </div>
 
     <div class="form-group">
-      <label for="birth_date">Birth date</label>
-      <input type="date" name="date_of_birth" class="form-control mb-4" id="birth_date"  ng-model="register.newCustomer.date_of_birth" required>
+        <label for="birth_date">Birth date</label>
+        <input type="date" name="date_of_birth" class="form-control mb-4" id="birth_date" ng-model="register.newCustomer.date_of_birth"
+            required>
     </div>
-    
+
 
 
     <div class="d-flex justify-content-around text-center">
-        <div>
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" >
-                <div>
-                        <a href="">Terms of service</a>
-                </div>
-                <label class="custom-control-label" >I’ve read and accept the terms & conditions</label>
+        <div class="form-group">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck" required>
+                <a ui-sref="termsandconditions">Terms of service</a>
+                <label class="form-check-label" for="gridCheck">
+                    I’ve read and accept the terms & conditions
+                </label>
             </div>
         </div>
-        
+
+
     </div>
 
 
