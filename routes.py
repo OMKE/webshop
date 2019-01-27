@@ -121,39 +121,16 @@ def customer_logout():
 
 
 
-#TODO catch error if token is invalid or there is not user provided, return appropriate messages
-# Get user data from cookie and send it to frontend
+
+# token required decorator checks token from access_token header, if it's correct then user is saved in current_user
 @customer.route('/login/user', methods=['GET'])
 @token_required
 def get_user_data(current_user):
-    token = None
-    # Checks if token is stored in user's cookies storage
-    if request.headers['access_token']:
-        token = request.headers['access_token']
-        token = token.encode()
-        token = decrypt_jwt(token)
-    elif request.headers['access_token'] is None:
-        return "", 205
+    if current_user:
+        del current_user['password'] # it's not needed on frontend side
+        return jsonify(current_user), 200
     
-    # Validate token
-    try:
-        data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
-        cursor = mysql_db.get_db().cursor()
-        cursor.execute("SELECT * FROM users WHERE id=%s", (data['id'], )) # query checks if user is in db
-        current_user = cursor.fetchone()
-        if not current_user:
-            return jsonify({"message":"No user found"}), 404
-        else:
-            del current_user['password'] # deleting a password, for secury reasons and it's not needed on frontend side
-            current_user['date_of_birth'] = current_user['date_of_birth'].isoformat()
-            return jsonify(current_user), 200
-    except:
-        if not token:
-            return jsonify({"message":"No user logged"}), 205
 
-    
-        
-    
         
 
 # Register Route

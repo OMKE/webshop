@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, make_response
 from functools import wraps
 import jwt
 # Crypt cookie access token 
+import cryptography.fernet
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
@@ -45,15 +46,18 @@ def token_required(f):
     def decorated(*args, **kwargs):
         token = None
         
-        if request.headers['access_token']:
-            token = request.headers['access_token']
-            token = token.encode()
-            token = decrypt_jwt(token)
+        try:
+            if request.headers['access_token']:
+                token = request.headers['access_token']
+                token = token.encode()
+                try:
+                    token = decrypt_jwt(token)
+                except cryptography.fernet.InvalidToken:
+                    return "Invalid Token", 205
+        except KeyError:
+            return "No user logged in", 205
 
-        elif request.headers['access_token'] == None:
-            return "", 205
             
-    
         if not token:
             return jsonify({"message":'Missing token'}), 401
         try:

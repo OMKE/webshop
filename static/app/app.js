@@ -63,10 +63,14 @@
         });
         $urlRouterProvider.otherwise("/");
 
+
+
+        // In every http request it sends access token from cookie storage in header access_token
         $httpProvider.interceptors.push(function($q, $cookies) {
             return {
              'request': function(config) {
                   config.headers['access_token'] = $cookies.get('token');
+                  
                   return config;
               }
             };
@@ -75,6 +79,8 @@
         
         
     }])
+
+    // On every state change it sends a request to check if it's valid token, if it is then user info is saved in rootScope.user
     .run(function($rootScope, $http, $state){
         $rootScope.$on('$locationChangeStart', function () {
             $http.get("/login/user").then(function (response) {
