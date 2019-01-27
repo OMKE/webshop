@@ -49,6 +49,9 @@ def token_required(f):
             token = request.cookies.get('token')
             token = token.encode()
             token = decrypt_jwt(token)
+
+        elif request.cookies.get('token') == None:
+            return "", 205
             
     
         if not token:

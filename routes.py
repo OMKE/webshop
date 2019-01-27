@@ -15,37 +15,6 @@ admin = Blueprint("admin", __name__)
 
 
 
-
-# Error handler route
-@app.errorhandler(400)
-@app.errorhandler(401)
-@app.errorhandler(403)
-@app.errorhandler(404)
-@app.errorhandler(405)
-def _handle_api_error(ex):
-    ex = str(ex)[:3]
-    if ex == "400":
-        title = "Bad request"
-        message = "Sorry but your client has issued a malformed or illegal request"
-        return render_template("error_handlers/error_page.html", error_code=ex, message=message, title=title), 400
-    elif ex == "403":
-        title = "Forbidden"
-        message = "Sorry but your client does not have permission to get specified URL from server"
-        return render_template("error_handlers/error_page.html", error_code=ex, message=message, title=title), 403
-    elif ex == "404":
-        title = "Oops! This Page Could Not Be Found"
-        message = "Sorry but the page you are looking for does not exist, have been removed. name changed or is temporarily unavailable"
-        return render_template("error_handlers/error_page.html", error_code=ex, message=message, title=title), 404
-    elif ex == "405":
-        title = "Method not allowed"
-        message = "Sorry but the requested method is not allowed"
-        return render_template("error_handlers/error_page.html", error_code=ex, message=message, title=title), 405
-
-
-
-
-
-
 #TODO FIX ADMIN LOGIN
 
 # Routes
@@ -158,12 +127,13 @@ def customer_logout():
 @token_required
 def get_user_data(current_user):
     token = None
-
     if request.cookies.get('token'):
         token = request.cookies.get('token')
         token = token.encode()
         token = decrypt_jwt(token)
-        
+    elif request.cookies.get('token') is None:
+        return "", 205
+    
     try:
         data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
         cursor = mysql_db.get_db().cursor()
@@ -178,6 +148,9 @@ def get_user_data(current_user):
     except:
         if not token:
             return jsonify({"message":"No user logged"}), 205
+
+    
+        
     
         
 
@@ -293,5 +266,39 @@ def confirm_reset_password_token(token):
     
     
 
+
+
+
+
+
+
+
+
+
+
+# Error handler route
+@app.errorhandler(400)
+@app.errorhandler(401)
+@app.errorhandler(403)
+@app.errorhandler(404)
+@app.errorhandler(405)
+def _handle_api_error(ex):
+    ex = str(ex)[:3]
+    if ex == "400":
+        title = "Bad request"
+        message = "Sorry but your client has issued a malformed or illegal request"
+        return render_template("error_handlers/error_page.html", error_code=ex, message=message, title=title), 400
+    elif ex == "403":
+        title = "Forbidden"
+        message = "Sorry but your client does not have permission to get specified URL from server"
+        return render_template("error_handlers/error_page.html", error_code=ex, message=message, title=title), 403
+    elif ex == "404":
+        title = "Oops! This Page Could Not Be Found"
+        message = "Sorry but the page you are looking for does not exist, have been removed. name changed or is temporarily unavailable"
+        return render_template("error_handlers/error_page.html", error_code=ex, message=message, title=title), 404
+    elif ex == "405":
+        title = "Method not allowed"
+        message = "Sorry but the requested method is not allowed"
+        return render_template("error_handlers/error_page.html", error_code=ex, message=message, title=title), 405
 
 
