@@ -389,13 +389,4 @@ INSERT INTO `webshop`.`products` (`id`, `category_id`, `sub_category_id`, `name`
 COMMIT;
 
 
--- -----------------------------------------------------
--- Data for table `webshop`.`users`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `webshop`;
-INSERT INTO `webshop`.`users` (`id`, `email`, `username`, `password`, `first_name`, `last_name`, `gender`, `date_of_birth`, `phone_number`, `image`, `address_1`, `address_2`, `city`, `country`, `postal_code`, `registration_date`, `confirmed`, `confirmed_on`, `password_reset`, `admin`) VALUES (1, 'johndoe@webshop.com', 'john', '1234', 'John', 'Doe', 'Male', '1998-01-06', '009132132142', NULL, 'Manhattan 3 ', NULL, 'New York', 'USA', '1002', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `webshop`.`users` (`id`, `email`, `username`, `password`, `first_name`, `last_name`, `gender`, `date_of_birth`, `phone_number`, `image`, `address_1`, `address_2`, `city`, `country`, `postal_code`, `registration_date`, `confirmed`, `confirmed_on`, `password_reset`, `admin`) VALUES (2, 'janemoe@webhshop.com', 'jane', '12345', 'Jane', 'Moe', 'Female', '1983-05-12', '33923103215', NULL, '320-342 N Spring St', '101-141 S Spring St', 'Los Angeles', 'USA', '90012', NULL, NULL, NULL, NULL, NULL);
-
-COMMIT;
 
