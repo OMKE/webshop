@@ -1,8 +1,10 @@
 (function (angular) {
-    angular.module("app").controller("SubCategoryCtrl", ["$stateParams", "$http", function ($stateParams, $http) {
+    angular.module("app").controller("SubCategoryCtrl", ["$stateParams", "$http", "$rootScope", function ($stateParams, $http, $rootScope) {
         
 
         let that = this;
+
+        $rootScope.isSubCategory = true;
 
         this.products = [];
 

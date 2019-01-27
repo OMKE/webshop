@@ -6,6 +6,9 @@
     color: #03A8F3;
 }
 
+#subcategory {
+    cursor: pointer;
+}
 
 
 .popular_cat_img {
@@ -93,3 +96,5 @@ ul {
         display: none;
     }
 } */
+
+

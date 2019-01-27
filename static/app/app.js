@@ -35,7 +35,7 @@
             controller: "CategoryCtrl",
             controllerAs: "category"
         }).state({
-            name:"subCategory",
+            name:"category.subCategory",
             url: "/subcategory/{id:int}",
             templateUrl:"/app/components/category/subcategory.tpl.html",
             controller: "SubCategoryCtrl",
