@@ -44,13 +44,13 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = None
-
-        if request.cookies.get('token'):
-            token = request.cookies.get('token')
+        
+        if request.headers['access_token']:
+            token = request.headers['access_token']
             token = token.encode()
             token = decrypt_jwt(token)
 
-        elif request.cookies.get('token') == None:
+        elif request.headers['access_token'] == None:
             return "", 205
             
     

@@ -1,8 +1,8 @@
 (function(angular){
     
-    let app = angular.module("app", ["ui.router"]);
+    let app = angular.module("app", ["ui.router", "ngCookies"]);
 
-    app.config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouterProvider) {
+    app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $httpProvider) {
         
         $stateProvider.state({
             name: "home", 
@@ -62,6 +62,16 @@
             templateUrl:"/app/components/help_and_contact/termsandconditions.tpl.html"
         });
         $urlRouterProvider.otherwise("/");
+
+        $httpProvider.interceptors.push(function($q, $cookies) {
+            return {
+             'request': function(config) {
+                  config.headers['access_token'] = $cookies.get('token');
+                  return config;
+              }
+            };
+          });
+        
         
         
     }])
