@@ -194,7 +194,7 @@ def change_password(current_user):
     user["password"] = generate_password_hash(data["newPass"], method='sha256')
     
     user["password_reset"] = False
-    cursor.execute("UPDATE users SET password=%(password)s, password_reset=%(password_reset)s WHERE email=%(email)s", current_user)
+    cursor.execute("UPDATE users SET password=%(password)s, password_reset=%(password_reset)s WHERE email=%(email)s", user)
     db.commit()
     return jsonify({"message":"Password successfully changed"}), 200
 
