@@ -5,9 +5,10 @@
 <div class="row mt-5">
     <div class="col-sm-12 col-md-4  sub-cats mb-3">
         <h4>Shop by Sub-Category</h4>
-        <ul class="list-group list-group-flush mt-3" ui-sref-active="active">
+        <ul class="list-group list-group-flush mt-3">
             <!-- Set currently showing category to active link-->
-            <li ng-repeat="cat in category.subCategories" id="subcategory" ui-sref="category.subCategory({id: cat.id})" class="list-group-item" ui-sref-active="active">{{cat.sub_category_name}}</li>
+            <li ng-repeat="cat in category.subCategories" id="subcategory" ui-sref="category.subCategory({id2: cat.id})"
+                class="list-group-item" ui-sref-active="active">{{cat.sub_category_name}}</li>
         </ul>
         <article class="card-group-item mt-4">
             <!-- <i class="icon-action fa fa-chevron-down"></i> -->
@@ -24,10 +25,10 @@
                             <label>Max</label>
                             <input class="form-control" placeholder="$1,0000" type="number">
                         </div>
-                    </div> 
+                    </div>
                     <button class="btn btn-block btn-outline-success">Apply</button>
-                </div> 
-            </div> 
+                </div>
+            </div>
         </article>
     </div>
     <div class="col-md-8" ng-hide="isSubCategory">
@@ -39,7 +40,7 @@
                     </aside> <!-- col.// -->
                     <article class="col-sm-6">
                         <h4 class="title">{{p.name}}</h4>
-    
+
                         <p> {{p.desc}} </p>
                         <dl class="dlist-align">
                             <dt>Color</dt>
@@ -53,7 +54,7 @@
                             <dt>Delivery</dt>
                             <dd>Global</dd>
                         </dl>
-    
+
                     </article>
                     <aside class="col-sm-3 border-left">
                         <div class="action-wrap">
@@ -79,7 +80,7 @@
         <ui-view></ui-view>
     </div>
 
-    
+
     <div class="col-md-12 mt-5">
         <p class="copyright-text text-center">Copyright © 2019 WebShop by Omar Iriskic. All Rights Reserved. <a href="https://omaririskic.com/">www.omaririskic.com</a></p>
 

@@ -72,3 +72,19 @@ def get_products_subcategory(id):
    cursor.execute("SELECT * FROM products WHERE sub_category_id=%s", (id, ))
    products = cursor.fetchall()
    return jsonify(products)
+
+
+# Search route
+@api.route('/api/search/<string:params>')
+def search(params):
+   cursor = mysql_db.get_db().cursor()
+   query = "SELECT * FROM products WHERE name LIKE '%" + params + "%'"
+   cursor.execute(query)
+   search_result = cursor.fetchall()
+   count = len(search_result)
+   # if len(params) <= 3: # If search params is les than 3 characters, return quarter of search results number
+      
+   #    return jsonify(search_result[:round(count/4)])
+   if not search_result:
+      return "", 205
+   return jsonify(search_result)

@@ -13,6 +13,25 @@
     <link href="css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" />
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
+    <!-- Cookie popup plugin -->
+    <link rel="stylesheet" type="text/css" href="css/cookieconsent.min.css" />
+    <script src="scripts/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+        "palette": {
+            "popup": {
+            "background": "#edeff5",
+            "text": "#838391"
+            },
+            "button": {
+            "background": "#4b81e8"
+            }
+        }
+        })});
+    </script>
+    
+
     <title>Webshop by Omar Iriskic</title>
 </head>
 
@@ -23,10 +42,12 @@
             <div class="sub-nav">
                 <a ui-sref="login" ng-if="!loggedIn">Login</a>
                 <a ui-sref="register" ng-if="!loggedIn">Register</a>
-                <span data-toggle="tooltip" title="View profile" data-placement="bottom"><a ui-sref="user({username:user.username})" id="loggedUser" ng-if="loggedIn">Hi <b>{{user.first_name}}</b></a></span>
+                <span data-toggle="tooltip" title="View profile" data-placement="bottom"><a ui-sref="user({username:user.username})"
+                        id="loggedUser" ng-if="loggedIn">Hi <b>{{user.first_name}}</b></a></span>
                 <a ui-sref="dailydeals">Daily Deals</a>
                 <a ui-sref="helpcontact" id="helpcontact">Help & Contact</a>
-                <a ng-controller="LoginCtrl as login" ng-if="loggedIn" id="cartBtn"><i class="fas fa-cart-plus"></i> Cart</a>
+                <a ng-controller="LoginCtrl as login" ng-if="loggedIn" id="cartBtn"><i class="fas fa-cart-plus"></i>
+                    Cart</a>
                 <a ng-controller="LoginCtrl as login" ng-if="loggedIn" ng-click="login.logOut()" id="logoutBtn">Logout</a>
             </div>
         </div>
@@ -58,11 +79,11 @@
 
 
 
-    <div class="container">
+    <div class="container" ng-controller="SearchCtrl as search">
         <div class="row">
             <div class="mt-4 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <form class="form-inline mx-auto text-center">
-                    <input class="form-control mr-sm-2 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 text-center"
+                    <input ng-change='search.searchProducts(params)' ng-model='params' class="form-control mr-sm-2 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 text-center"
                         type="search" placeholder="Search for anything">
                     <div class="mx-auto">
                         <button class="btn btn-outline-primary my-2 my-sm-2" type="submit">Search</button>
@@ -71,6 +92,7 @@
             </div>
         </div>
     </div>
+    
 
     <div class="container mt-5">
         <ui-view></ui-view>
@@ -79,7 +101,7 @@
 
 
 
-    
+
 
 
     <!-- Include scripts -->
@@ -100,6 +122,7 @@
     <script src="app/components/category/subcategory.ctrl.js"></script>
     <script src="app/components/password_reset/password_reset.ctrl.js"></script>
     <script src="app/components/change_password/change_password.ctrl.js"></script>
+    <script src="app/components/search/search.ctrl.js"></script>
 </body>
 
 </html>

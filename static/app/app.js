@@ -24,7 +24,7 @@
             controllerAs: "register"
         }).state({
             name:"user",
-            url:"/user/{username:string}}",
+            url:"/user/{username:string}",
             templateUrl:"/app/components/user/user.tpl.html",
             controller:"UserCtrl",
             controllerAs:"user"
@@ -36,7 +36,7 @@
             controllerAs: "category"
         }).state({
             name:"category.subCategory",
-            url: "/subcategory/{id:int}",
+            url: "/subcategory/{id2:int}",
             templateUrl:"/app/components/category/subcategory.tpl.html",
             controller: "SubCategoryCtrl",
             controllerAs: "subcategory"
@@ -60,6 +60,12 @@
             name:"termsandconditions",
             url:"/termsandconditions",
             templateUrl:"/app/components/help_and_contact/termsandconditions.tpl.html"
+        }).state({
+            name:"search",
+            url:"/search",
+            templateUrl: "/app/components/search/search.tpl.html",
+            controller:"SearchCtrl",
+            controllerAs:"search"
         });
         $urlRouterProvider.otherwise("/");
 

@@ -16,7 +16,7 @@
             })
         }
 
-        this.getProducts($stateParams['id']);
+        this.getProducts($stateParams['id2']);
         
     }]);
 })(angular);
