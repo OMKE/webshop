@@ -82,12 +82,12 @@
     <div class="container" ng-controller="SearchCtrl as search">
         <div class="row">
             <div class="mt-4 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                <form class="form-inline mx-auto text-center">
-                    <input ng-change='search.searchProducts(params)' ng-model='params' class="form-control mr-sm-2 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 text-center"
+                <form>
+                    <input ng-change='search.searchProducts(params)' ng-model='params' class="form-control mx-auto col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 text-center"
                         type="search" placeholder="Search for anything">
-                    <div class="mx-auto">
+                    <!-- <div class="mx-auto">
                         <button class="btn btn-outline-primary my-2 my-sm-2" type="submit">Search</button>
-                    </div>
+                    </div> -->
                 </form>
             </div>
         </div>
