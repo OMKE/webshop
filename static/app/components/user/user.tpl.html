@@ -4,20 +4,33 @@
 
 <hr>
 
+<div class="sub-nav-wrap">
+    <div class="container">
+        <div class="sub-nav">
+            <a ui-sref="#">Orders</a>
+            <a ui-sref="#">Messages</a>
+            <a ui-sref="#">Watch List</a>
+            <a ui-sref="#" id="helpcontact">Resolution Center</a>
+            <a ui-sref="edit_user" id="cartBtn">
+                Edit profile</a>
+        </div>
+    </div>
+</div>
+
 <div class="row mt-2">
     <div class="col-xl-8 col-lg-8 col-md-8 bg-light mx-auto">
         <div class="col-xl-12">
             <!-- img-src treba staviti da hvata url iz baze podataka -->
-            <img src="../../../img/150.jpeg" class="d-block mx-auto rounded-circle p-4">
+            <img src="../../../img/150.jpeg" class="d-block mx-auto rounded p-4">
 
         </div>
         <div class="col-xl-12 col-lg-12 col-md-12 text-center">
 
             <h4>{{user.loggedUser.username}}</h4>
         </div>
-        <div class="col-xl-12 col-lg-12 col-md-12 mt-3">
+        <div class="col-xl-12 col-lg-12 col-md-12 mt-3 mb-3 mx-auto text-center">
             
-            <div class="card mx-auto text-center" style="width: 18rem;">
+            <div class="card mx-auto" style="width: 18rem;">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">Email: <b>{{user.loggedUser.email}}</b></li>
                     <li class="list-group-item">Name: <b>{{user.loggedUser.first_name}} {{user.loggedUser.last_name}}</b></li>
@@ -34,6 +47,7 @@
                     <li class="list-group-item" ng-show="user.loggedUser.phone_number">Phone number: <b>{{user.loggedUser.phone_number}}</b></li>
                     <li class="list-group-item" ng-show="!user.loggedUser.phone_number">Phone number: <b>Not provided</b></li>
                 </ul>
+
             </div>
         </div>
     </div>

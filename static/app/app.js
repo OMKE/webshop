@@ -10,57 +10,81 @@
             templateUrl: "/app/components/homepage/homepage.tpl.html",
             controller: "HomepageCtrl",
             controllerAs: "home" 
-        }).state({
+        })
+        .state({
             name:"login",
             url:"/login",
             templateUrl:"/app/components/login/login.tpl.html",
             controller: "LoginCtrl",
             controllerAs: "login"
-        }).state({
+        })
+        .state({
             name:"register",
             url:"/register",
             templateUrl:"/app/components/register/register.tpl.html",
             controller: "RegisterCtrl",
             controllerAs: "register"
-        }).state({
+        })
+        .state({
             name:"user",
             url:"/user/{username:string}",
             templateUrl:"/app/components/user/user.tpl.html",
             controller:"UserCtrl",
             controllerAs:"user"
-        }).state({
+        })
+        .state({
+            name: "edit_user",
+            url:"/edit",
+            templateUrl: "/app/components/user/edit/edit.tpl.html",
+            controller:"EditUserCtrl",
+            controllerAs: "editUser"
+        })
+        .state({
             name: "category",
             url: "/category/{id:int}",
-            templateUrl: "/app/components/category/category.tpl.html",
+            templateUrl: "/app/components/display_products/category/category.tpl.html",
             controller: "CategoryCtrl",
             controllerAs: "category"
-        }).state({
+        })
+        .state({
             name:"category.subCategory",
             url: "/subcategory/{id2:int}",
-            templateUrl:"/app/components/category/subcategory.tpl.html",
+            templateUrl:"/app/components/display_products/subcategory/subcategory.tpl.html",
             controller: "SubCategoryCtrl",
             controllerAs: "subcategory"
-        }).state({
+        })
+        // .state({
+        //     name:"category.price",
+        //     url:"/price",
+        //     templateUrl:"/app/components/display_products/price/price.tpl.html",
+        //     controller:"PriceCtrl",
+        //     controllerAs: "price"
+        // })
+        .state({
             name:"passwordReset",
             url:"/resetpassword",
             templateUrl: "/app/components/password_reset/password_reset.tpl.html",
             controller:"PasswordResetCtrl",
             controllerAs:"passwordreset"
-        }).state({
+        })
+        .state({
             name:"changePassword",
             url:"/changepassword",
             templateUrl:"/app/components/change_password/change_password.tpl.html",
             controller: "ChangePasswordCtrl",
             controllerAs: "changepassword",
-        }).state({
+        })
+        .state({
             name: "privacypolicy",
             url: "/privacy",
             templateUrl: "/app/components/help_and_contact/privacypolicy.tpl.html"
-        }).state({
+        })
+        .state({
             name:"termsandconditions",
             url:"/termsandconditions",
             templateUrl:"/app/components/help_and_contact/termsandconditions.tpl.html"
-        }).state({
+        })
+        .state({
             name:"search",
             url:"/search",
             templateUrl: "/app/components/search/search.tpl.html",

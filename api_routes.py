@@ -1,5 +1,6 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request, session
 from config import mysql_db, app
+import base64
 
 api = Blueprint('api_routes', __name__)
 
@@ -42,13 +43,18 @@ def get_one_category(id):
     return jsonify(category)
 
 
+# TODO Optimize - PriceCtrl
+# Sort products by price
+
+
 # Get products from main categories Route
 @api.route('/api/categories/<int:id>/products')
 def get_products_category(id):
-    cursor = mysql_db.get_db().cursor()
-    cursor.execute("SELECT * FROM products WHERE category_id=%s", (id, ))
-    products = cursor.fetchall()
-    return jsonify(products)
+   cursor = mysql_db.get_db().cursor()
+   cursor.execute("SELECT * FROM products WHERE category_id=%s", (id, ))
+   products = cursor.fetchall()
+   return jsonify(products)
+
 
 
 
@@ -81,7 +87,7 @@ def search(params):
    query = "SELECT * FROM products WHERE name LIKE '%" + params + "%'"
    cursor.execute(query)
    search_result = cursor.fetchall()
-   count = len(search_result)
+   # count = len(search_result)
    # if len(params) <= 3: # If search params is les than 3 characters, return quarter of search results number
       
    #    return jsonify(search_result[:round(count/4)])
