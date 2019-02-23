@@ -30,14 +30,14 @@
             url:"/user/{username:string}",
             templateUrl:"/app/components/user/user.tpl.html",
             controller:"UserCtrl",
-            controllerAs:"user"
+            controllerAs:"view_user",
         })
         .state({
             name: "edit_user",
-            url:"/edit",
+            url:"/user/edit_profile",
             templateUrl: "/app/components/user/edit/edit.tpl.html",
             controller:"EditUserCtrl",
-            controllerAs: "editUser"
+            controllerAs: "eu",
         })
         .state({
             name: "category",
@@ -116,6 +116,8 @@
             $http.get("/login/user").then(function (response) {
                 if(response.status == 200){
                     $rootScope.user = response.data;
+                    // *FIXME warning about phone number on edit_user state 
+                    $rootScope.user.phone_number = parseInt($rootScope.user.phone_number);
                     $rootScope.loggedIn = true;
                     if($rootScope.user.password_reset == 1){
                         $state.go("changePassword", {}, { reload: false })

@@ -4,13 +4,12 @@
 
 <hr>
 
-<div class="sub-nav-wrap">
+<div class="sub-nav-wrap mt-2">
     <div class="container">
         <div class="sub-nav">
             <a ui-sref="#">Orders</a>
             <a ui-sref="#">Messages</a>
             <a ui-sref="#">Watch List</a>
-            <a ui-sref="#" id="helpcontact">Resolution Center</a>
             <a ui-sref="edit_user" id="cartBtn">
                 Edit profile</a>
         </div>
@@ -26,29 +25,71 @@
         </div>
         <div class="col-xl-12 col-lg-12 col-md-12 text-center">
 
-            <h4>{{user.loggedUser.username}}</h4>
+            <h4>{{user.username}}</h4>
         </div>
         <div class="col-xl-12 col-lg-12 col-md-12 mt-3 mb-3 mx-auto text-center">
             
             <div class="card mx-auto" style="width: 18rem;">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Email: <b>{{user.loggedUser.email}}</b></li>
-                    <li class="list-group-item">Name: <b>{{user.loggedUser.first_name}} {{user.loggedUser.last_name}}</b></li>
-                    <li class="list-group-item">Birth date: <b>{{user.loggedUser.date_of_birth|date:'dd-MM-yyyy'}}</b></li>
-                    <li class="list-group-item" ng-show="user.loggedUser.address_1">Address 1: <b>{{user.loggedUser.address_1}}</b></li>
-                    <li class="list-group-item" ng-show="!user.loggedUser.address_1">Address 1: <b>Not provided</b></li>
-                    <li class="list-group-item" ng-if="user.loggedUser.address_1">Address 2: <b>{{user.loggedUser.address_2}}</b></li>
-                    <li class="list-group-item" ng-show="user.loggedUser.city">City: <b>{{user.loggedUser.city}}</b></li>
-                    <li class="list-group-item" ng-show="!user.loggedUser.city">City: <b>Not provided</b></li>
-                    <li class="list-group-item" ng-show="user.loggedUser.country">Country: <b>{{user.loggedUser.country}}</b></li>
-                    <li class="list-group-item" ng-show="!user.loggedUser.country">Country: <b>Not provided</b></li>
-                    <li class="list-group-item" ng-show="user.loggedUser.postal_code">Postal code: <b>{{user.loggedUser.postal_code}}</b></li>
-                    <li class="list-group-item" ng-show="!user.loggedUser.postal_code">Postal code: <b>Not provided</b></li>
-                    <li class="list-group-item" ng-show="user.loggedUser.phone_number">Phone number: <b>{{user.loggedUser.phone_number}}</b></li>
-                    <li class="list-group-item" ng-show="!user.loggedUser.phone_number">Phone number: <b>Not provided</b></li>
+                    <li class="list-group-item">Email: <b>{{user.email}}</b></li>
+                    <li class="list-group-item">Name: <b>{{user.first_name}} {{user.last_name}}</b></li>
+                    <li class="list-group-item">Birth date: <b>{{user.date_of_birth|date:'dd-MM-yyyy'}}</b></li>
+                    <li class="list-group-item" ng-show="user.address_1">Address 1: <b>{{user.address_1}}</b></li>
+                    <li class="list-group-item" ng-show="!user.address_1">Address 1: <b>Not provided</b></li>
+                    <li class="list-group-item" ng-if="user.address_1">Address 2: <b>{{user.address_2}}</b></li>
+                    <li class="list-group-item" ng-show="user.city">City: <b>{{user.city}}</b></li>
+                    <li class="list-group-item" ng-show="!user.city">City: <b>Not provided</b></li>
+                    <li class="list-group-item" ng-show="user.country">Country: <b>{{user.country}}</b></li>
+                    <li class="list-group-item" ng-show="!user.country">Country: <b>Not provided</b></li>
+                    <li class="list-group-item" ng-show="user.postal_code">Postal code: <b>{{user.postal_code}}</b></li>
+                    <li class="list-group-item" ng-show="!user.postal_code">Postal code: <b>Not provided</b></li>
+                    <li class="list-group-item" ng-show="user.phone_number">Phone number: <b>{{user.phone_number}}</b></li>
+                    <li class="list-group-item" ng-show="!user.phone_number">Phone number: <b>Not provided</b></li>
                 </ul>
 
             </div>
         </div>
     </div>
 </div>
+
+<div class="col-12 mt-4 footer">
+        <hr>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <ul>
+                    <h6>Social media</h6>
+                    <li><a href=""><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href=""><i class="fab fa-twitter-square"></i> Twitter</a></li>
+                    <li><a href=""><i class="fab fa-instagram"></i> Instagram</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <ul>
+                    <h6>About WebShop</h6>
+                    <li><a href="">Company info</a></li>
+                    <li><a href="">News</a></li>
+                    <li><a href="">Investors</a></li>
+                    <li><a href="">Careers</a></li>
+                    <li><a href="">Policies</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <ul>
+                    <h6>Help & Contact</h6>
+                    <li><a ui-sref="termsandconditions">Terms</a></li>
+                    <li><a ui-sref="privacypolicy">Privacy</a></li>
+                    <li><a href="">Resoultion Center</a></li>
+                    <li><a href="">Contact us</a></li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 mt-4">
+                <p class="copyright-text text-center">Copyright © 2019 WebShop by Omar Iriskic. All Rights Reserved.  <a href="https://omaririskic.com/">www.omaririskic.com</a></p>
+                
+            </div>
+        </div>
+
+
+    </div>

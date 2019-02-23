@@ -4,9 +4,18 @@
     
         let that = this;
         this.params = '';
+        this.warning_message = '';
         $rootScope.results = [];
 
         this.searchProducts = function (params) {
+
+            if($state.is('edit_user')){
+                that.warning_message = 'Search is not available while editing';
+                setTimeout(() =>{
+                    that.warning_message = '';
+                }, 1000);
+                return;
+            }
 
             if(params.length >= 2){
                 $http.get(`/api/search/${params}`).then(function (response) {
@@ -27,6 +36,8 @@
             }
         }
 
+        
+        
 
         
 

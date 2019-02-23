@@ -120,6 +120,39 @@ def customer_logout():
     return response
 
 
+# Edit customer info
+@customer.route('/edit', methods=['POST'])
+@token_required
+def edit_user_data(current_user):
+    data = request.get_json()
+    
+    
+
+    current_user['address_1'] = data['address_1']
+    current_user['address_2'] = data['address_2']
+    current_user['city'] = data['city']
+    current_user['country'] = data['country']
+    current_user['postal_code'] = data['postal_code']
+    current_user['phone_number'] = data['phone_number']
+    
+    db = mysql_db.get_db()
+    cursor = db.cursor()
+
+    if data['email'] != current_user['email']:
+        current_user['email'] = data['email']
+        current_user['confirmed'] = False
+        cursor.execute("UPDATE users SET confirmed=%(confirmed)s, email=%(email)s,  address_1=%(address_1)s, address_2=%(address_2)s, city=%(city)s, country=%(country)s, postal_code=%(postal_code)s, phone_number=%(phone_number)s WHERE id=%(id)s", current_user)
+        # Token for email confirmation
+        token = generate_confirmation_token(data['email'])
+        confirm_url = url_for("customer.confirm_email", token=token, _external=True)
+        html = render_template('email_confirmation.html', confirm_url=confirm_url, name=data['first_name'])
+        subject = "WebShop - Email address changed"
+        send_email(data['email'], subject, html)
+    else:
+        cursor.execute("UPDATE users SET address_1=%(address_1)s, address_2=%(address_2)s, city=%(city)s, country=%(country)s, postal_code=%(postal_code)s, phone_number=%(phone_number)s WHERE id=%(id)s", current_user)
+    db.commit()
+    return jsonify({"message":"Updated"}), 200
+
 
 
 # token required decorator checks token from access_token header, if it's correct then user is saved in current_user
