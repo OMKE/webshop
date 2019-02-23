@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from config import mysql_db, app
 from auth import  token_required, isAdmin, encrypt_jwt, decrypt_jwt
 from flask import Flask, request, jsonify, make_response, redirect, url_for, render_template
+from werkzeug.utils import secure_filename
 import datetime
 from email_confirmation import generate_confirmation_token, confirm_token, send_email
 from os import urandom # os module to generate random secret key
@@ -114,7 +115,8 @@ def customer_login():
 
 # Customer logout
 @customer.route('/logout')
-def customer_logout():
+@token_required
+def customer_logout(current_user):
     response = make_response("Logout", 200)
     response.set_cookie('token', expires=0)
     return response
@@ -126,8 +128,8 @@ def customer_logout():
 def edit_user_data(current_user):
     data = request.get_json()
     
-    
 
+    
     current_user['address_1'] = data['address_1']
     current_user['address_2'] = data['address_2']
     current_user['city'] = data['city']
@@ -235,7 +237,8 @@ def change_password(current_user):
 
 # Reset password Route
 @customer.route('/login/resetpassword', methods=['POST'])
-def reset_password():
+@token_required
+def reset_password(current_user):
     data = dict(request.json)
     cursor = mysql_db.get_db().cursor()
     cursor.execute("SELECT * FROM users WHERE email=%s", (data['email'], ))

@@ -55,7 +55,7 @@ def token_required(f):
                 except cryptography.fernet.InvalidToken:
                     return "Invalid Token", 205
         except KeyError:
-            return "No user logged in", 205
+            return "Could not authenticate", 205
 
             
         if not token:
