@@ -1,6 +1,6 @@
 (function(angular){
     
-    let app = angular.module("app", ["ui.router", "ngCookies"]);
+    let app = angular.module("app", ["ui.router", "ngCookies", "ngFileUpload"]);
 
     app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $httpProvider) {
         
@@ -37,7 +37,14 @@
             url:"/user/edit_profile",
             templateUrl: "/app/components/user/edit/edit.tpl.html",
             controller:"EditUserCtrl",
-            controllerAs: "eu",
+            controllerAs: "eu"
+        })
+        .state({
+            name:"edit_user_image",
+            url:"/user/edit_profile/profile_image",
+            templateUrl:"/app/components/user/edit_image/edit_image.tpl.html",
+            controller:"EditUserImageCtrl",
+            controllerAs:"eui"
         })
         .state({
             name: "category",
@@ -119,6 +126,9 @@
                     // *FIXME warning about phone number on edit_user state 
                     $rootScope.user.phone_number = parseInt($rootScope.user.phone_number);
                     $rootScope.loggedIn = true;
+                    if($rootScope.user.image == ""){
+                        $rootScope.user.image = "no_picture.png";
+                    }
                     if($rootScope.user.password_reset == 1){
                         $state.go("changePassword", {}, { reload: false })
                     }

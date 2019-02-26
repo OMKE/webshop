@@ -1,0 +1,67 @@
+<h1>Edit profile image</h1>
+
+<hr>
+
+<div class="sub-nav-wrap mt-2">
+    <div class="container">
+        <div class="sub-nav">
+            <a ui-sref="#">Orders</a>
+            <a ui-sref="#">Messages</a>
+            <a ui-sref="#">Watch List</a>
+            <a ui-sref="user({username:user.username})" id="cartBtn">
+                Cancel</a>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-8 mx-auto">
+        <div class="col text-center">
+            <img src="{{eui.host}}/profile_image/{{user.image}}" class="profile_image" alt="{{user.username}} Profile picture">
+        </div>
+        <div class="col mt-4">
+            <hr>
+            <form ng-submit="eui.uploadImage()">
+                <div class="form-group">
+                    <label for="uploadImage">Choose new image</label>
+                    
+                    <!-- <input type="file" class="form-control-file" id="uploadImage"> -->
+                    <div class="col text-center">
+                        <div class="btn btn-warning text-white" ngf-max-size="5MB" ngf-select="upload($file)">Upload image</div>
+                        <!-- Button trigger modal -->
+                        <button ng-show="eui.editedUser.image != 'no_picture.png'" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                            Delete image
+                        </button>
+                        <!-- <div class="btn btn-danger" ng-click="eui.deleteImage()">Delete image</div> -->
+                        <div class="col">
+                                <small>Maximum size is 5MB</small>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Delete image</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Are you sure?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <div class="btn btn-danger" data-dismiss="modal" ng-click="eui.deleteImage()">Yes</div>
+            </div>
+          </div>
+        </div>
+      </div>

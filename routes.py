@@ -1,5 +1,5 @@
-from flask import Blueprint, jsonify, request
-from config import mysql_db, app
+from flask import Blueprint, jsonify, request, send_from_directory
+from config import mysql_db, app, ALLOWED_EXTENSIONS, UPLOAD_FOLDER
 from auth import  token_required, isAdmin, encrypt_jwt, decrypt_jwt
 from flask import Flask, request, jsonify, make_response, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
@@ -9,6 +9,7 @@ from os import urandom # os module to generate random secret key
 from werkzeug.security import generate_password_hash, check_password_hash
 from uuid import uuid4
 import jwt, base64
+import os
 
 
 customer = Blueprint("customer", __name__)
@@ -122,12 +123,62 @@ def customer_logout(current_user):
     return response
 
 
+
+# Upload images
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@customer.route("/profile_image/<filename>")
+def get_profile_image(filename):
+    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
+    
+
+
+# Upload profile picture
+@customer.route('/edit/profile_picture', methods=['POST'])
+@token_required
+def upload_profile_picture(current_user):
+    if 'file' not in request.files:
+        return "No file part", 205
+    file = request.files["file"]
+    if file.filename == "":
+        return "No images selected", 205
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        if os.path.exists("images/profile_photos/"+ str(current_user['image'])) and current_user['image'] != "":
+            os.remove("images/profile_photos/"+str(current_user['image']))
+        file.save(os.path.join(app.config["UPLOAD_FOLDER"], file.filename))
+
+        db = mysql_db.get_db()
+        cursor = db.cursor()
+        current_user['image'] = file.filename
+        cursor.execute("UPDATE users SET image=%(image)s WHERE id=%(id)s", current_user)
+        db.commit()
+        # print("File uploaded: " + filename + " to test_images/profile_photos")
+        return filename, 200
+
+
+@customer.route("/edit/profile_picture/delete", methods=["GET"])
+@token_required
+def delete_profile_picture(current_user):
+    if os.path.exists("images/profile_photos/"+ str(current_user['image'])):
+        try:
+            os.remove("images/profile_photos/"+str(current_user['image']))
+        except PermissionError:
+            return "Error", 404
+        current_user['image'] = ""
+        db = mysql_db.get_db()
+        cursor = db.cursor()
+        cursor.execute("UPDATE users SET image=%(image)s WHERE id=%(id)s", current_user)
+        db.commit()
+        return "", 200
+
 # Edit customer info
 @customer.route('/edit', methods=['POST'])
 @token_required
 def edit_user_data(current_user):
     data = request.get_json()
-    
 
     
     current_user['address_1'] = data['address_1']
@@ -154,6 +205,8 @@ def edit_user_data(current_user):
         cursor.execute("UPDATE users SET address_1=%(address_1)s, address_2=%(address_2)s, city=%(city)s, country=%(country)s, postal_code=%(postal_code)s, phone_number=%(phone_number)s WHERE id=%(id)s", current_user)
     db.commit()
     return jsonify({"message":"Updated"}), 200
+
+
 
 
 

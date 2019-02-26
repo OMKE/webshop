@@ -20,7 +20,7 @@
     <div class="col-xl-8 col-lg-8 col-md-8 bg-light mx-auto">
         <div class="col-xl-12">
             <!-- img-src treba staviti da hvata url iz baze podataka -->
-            <img src="../../../img/150.jpeg" class="d-block mx-auto rounded p-4">
+            <a ui-sref="edit_user_image"><img width="200" src="{{view_user.host}}/profile_image/{{user.image}}" alt="{{user.username}} Profile picture" class="d-block mx-auto rounded p-4"></a>
 
         </div>
         <div class="col-xl-12 col-lg-12 col-md-12 text-center">

@@ -1,5 +1,6 @@
 (function (angular) {
-    angular.module("app").controller("EditUserCtrl", ["$http", "$rootScope", "$state", function ($http, $rootScope, $state) {
+    angular.module("app")
+    .controller("EditUserCtrl", ["$http", "$rootScope", "$state", function ($http, $rootScope, $state) {
         let that = this;
 
         
@@ -15,14 +16,10 @@
         }
         
 
-
-
-
-        
         
 
-        
 
         
     }]);
+    
 })(angular);

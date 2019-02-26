@@ -16,15 +16,10 @@
 
 <div class="row mt-2">
     <div class="col-md-6 mx-auto mt-4">
-        <form method="post" ng-submit="eu.save()">
+        <form method="post" ng-submit="eu.save()" enctype=multipart/form-data>
             <div class="col">
 
-                <!-- Image upload -->
-                <div class="form-group">
-                    <label for="image">Profile image</label>
-                    <input type="file" class="form-control-file" name="image" id="image" ng-model="eu.editedUser.image">
-                </div>
-
+                
                 <!-- Username -->
                 <label for="username">Username</label>
                 <div class="input-group mb-3">
