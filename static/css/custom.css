@@ -1,3 +1,9 @@
+
+/* AngularJS Flicker Fix */
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+  }
+
 .btn-login {
     background-color: #03A8F3;
     color: white;

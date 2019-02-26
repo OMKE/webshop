@@ -1,6 +1,8 @@
 (function (angular) {
-    angular.module("app").controller("CategoryCtrl", ["$stateParams","$http", "$rootScope", function ($stateParams, $http, $rootScope) {
+    angular.module("app").controller("CategoryCtrl", ["$stateParams","$http", "$rootScope", "$location", function ($stateParams, $http, $rootScope, $location) {
         let that = this;
+
+        this.host = "http://" + $location.host() + ":" + $location.port(); // dynamic for localhost, when in production delete port
         this.categories = {};
         this.subCategories = {};
         this.products = [];
@@ -12,8 +14,8 @@
                 that.category = response.data;
             }, function (response) {
                 
-            })
-        }
+            });
+        };
 
         this.getSubCategories = function (id) {
             $http.get("/api/subcategories/"+id).then(function (response) {
@@ -21,8 +23,8 @@
                 
             }, function (response) {
                 
-            })
-        }
+            });
+        };
 
         // Gets products from main category
         this.getProducts = function (id) {
@@ -31,9 +33,10 @@
                 
             }, function (response) {
                 
-            })
-        }
-
+            });
+            
+        };
+        
         
 
         this.getCategory($stateParams["id"]);

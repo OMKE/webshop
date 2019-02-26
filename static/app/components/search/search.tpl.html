@@ -12,7 +12,7 @@
             <div class="card-body">
                 <div class="row">
                     <aside class="col-sm-3">
-                        <div class="img-wrap"><img src="https://via.placeholder.com/150/"></div>
+                        <div class="img-wrap"><img ng-src="{{search.host}}/product_image/{{p.image}}"></div>
                     </aside> <!-- col.// -->
                     <article class="col-sm-6">
                         <h4 class="title">{{p.name}}</h4>
@@ -41,7 +41,7 @@
                             <p class="text-warning">Calculating shipping?</p>
                             <br>
                             <p>
-                                <a href="#" class="btn btn-primary"> Buy now </a>
+                                <a href="#" class="btn btn-primary"> Add to cart </a>
                                 <a href="#" class="btn btn-secondary"> Details </a>
                             </p>
                             <!-- <a href="#"><i class="fa fa-heart"></i> Add to wishlist</a> -->

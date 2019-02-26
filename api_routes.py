@@ -1,9 +1,14 @@
-from flask import Blueprint, jsonify, request, session
-from config import mysql_db, app
+from flask import Blueprint, jsonify, request, session, send_from_directory
+from config import mysql_db, app, ALLOWED_EXTENSIONS, PRODUCT_IMAGES
 import base64
+import os
 
 api = Blueprint('api_routes', __name__)
 
+
+@api.route("/product_image/<filename>")
+def get_product_images(filename):
+   return send_from_directory(app.config["PRODUCT_IMAGES"], filename)
 
 # Get products Route
 @api.route('/api/products')

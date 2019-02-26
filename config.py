@@ -13,7 +13,10 @@ from flask_mail import Mail
 # APP CONFIG
 app = Flask(__name__, static_url_path="")
 
-UPLOAD_FOLDER = 'images/profile_photos/'
+# Globals
+PROFILE_IMAGES = 'images/profile_images/'
+PRODUCT_IMAGES = "images/product_images/"
+
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
@@ -22,7 +25,9 @@ app.config['MYSQL_DATABASE_DB'] = 'webshop'
 app.config['SECRET_KEY'] = 'dev'
 app.config['SECURITY_PASSWORD_SALT'] = 'email_confirmation_pass'
 app.config['MAIL_DEFAULT_SENDER'] = 'webshop.omaririskic@gmail.com'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['PROFILE_IMAGES'] = PROFILE_IMAGES
+app.config['PRODUCT_IMAGES'] = PRODUCT_IMAGES
+
 
 
 

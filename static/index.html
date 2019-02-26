@@ -35,7 +35,7 @@
     <title>Webshop by Omar Iriskic</title>
 </head>
 
-<body ng-app="app">
+<body ng-app="app" ng-cloak>
 
     <div class="sub-nav-wrap">
         <div class="container">
@@ -55,7 +55,7 @@
 
 
 
-    <div ng-if="loggedIn && !user.confirmed" class="container mt-2 mb-2">
+    <div ng-cloak ng-if="loggedIn && !user.confirmed" class="container mt-2 mb-2">
         <h6 class="text-center text-danger">An email with confirmation link has been sent to you.</h6>
     </div>
 
@@ -90,7 +90,7 @@
 
             </div>
             <div class="col text-center">
-                    <p class="text-danger d-block mt-2" ng-model="search.warning_message">{{search.warning_message}}</p>
+                    <p class="text-danger d-block mt-2" ng-model="search.warning_message" ng-cloak>{{search.warning_message}}</p>
             </div>
             
         </div>
@@ -112,7 +112,6 @@
     <script src="scripts/popper.min.js"></script>
     <script src="scripts/bootstrap.bundle.min.js"></script>
     <!-- Angular -->
-    
     <script src="scripts/angular.min.js"></script>
     <script src="scripts/ng-file-upload-shim.min.js"></script>
     <script src="scripts/ng-file-upload.min.js"></script>

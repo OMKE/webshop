@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, send_from_directory
-from config import mysql_db, app, ALLOWED_EXTENSIONS, UPLOAD_FOLDER
+from config import mysql_db, app, ALLOWED_EXTENSIONS, PROFILE_IMAGES
 from auth import  token_required, isAdmin, encrypt_jwt, decrypt_jwt
 from flask import Flask, request, jsonify, make_response, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
@@ -131,8 +131,8 @@ def allowed_file(filename):
 
 @customer.route("/profile_image/<filename>")
 def get_profile_image(filename):
-    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
-    
+    return send_from_directory(app.config["PROFILE_IMAGES"], filename)
+
 
 
 # Upload profile picture
@@ -146,9 +146,9 @@ def upload_profile_picture(current_user):
         return "No images selected", 205
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        if os.path.exists("images/profile_photos/"+ str(current_user['image'])) and current_user['image'] != "":
-            os.remove("images/profile_photos/"+str(current_user['image']))
-        file.save(os.path.join(app.config["UPLOAD_FOLDER"], file.filename))
+        if os.path.exists("images/profile_images/"+ str(current_user['image'])) and current_user['image'] != "":
+            os.remove("images/profile_images/"+str(current_user['image']))
+        file.save(os.path.join(app.config["PROFILE_IMAGES"], file.filename))
 
         db = mysql_db.get_db()
         cursor = db.cursor()
@@ -162,9 +162,9 @@ def upload_profile_picture(current_user):
 @customer.route("/edit/profile_picture/delete", methods=["GET"])
 @token_required
 def delete_profile_picture(current_user):
-    if os.path.exists("images/profile_photos/"+ str(current_user['image'])):
+    if os.path.exists("images/profile_images/"+ str(current_user['image'])):
         try:
-            os.remove("images/profile_photos/"+str(current_user['image']))
+            os.remove("images/profile_images/"+str(current_user['image']))
         except PermissionError:
             return "Error", 404
         current_user['image'] = ""

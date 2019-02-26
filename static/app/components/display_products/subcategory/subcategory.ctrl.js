@@ -1,8 +1,11 @@
 (function (angular) {
-    angular.module("app").controller("SubCategoryCtrl", ["$stateParams", "$http", "$rootScope", function ($stateParams, $http, $rootScope) {
+    angular.module("app").controller("SubCategoryCtrl", ["$stateParams", "$http", "$rootScope", "$location", function ($stateParams, $http, $rootScope, $location) {
         
-
         let that = this;
+
+        this.host = "http://" + $location.host() + ":" + $location.port(); // dynamic for localhost, when in production delete port
+
+        
 
         $rootScope.isSubCategory = true;
 
