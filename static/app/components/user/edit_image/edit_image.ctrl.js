@@ -20,6 +20,8 @@
             };
 
 
+            // Using ng-file-upload directive 
+            // docs: https://github.com/danialfarid/ng-file-upload  
             $scope.upload = function (file) {
                 Upload.upload({
                     url: '/edit/profile_picture',
