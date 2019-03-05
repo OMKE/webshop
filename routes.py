@@ -216,6 +216,7 @@ def edit_user_data(current_user):
 def get_user_data(current_user):
     if current_user:
         del current_user['password'] # it's not needed on frontend side
+        del current_user["id"]
         return jsonify(current_user), 200
     
 
@@ -269,6 +270,7 @@ def confirm_email(token):
         return render_template('email_confirmed.html', url=url_for('index'), success=True), 201 
     else:
         return render_template('email_confirmed.html', url=url_for('index'), failed=True), 404
+
 
 # Change user password route
 @customer.route('/user/changepassword', methods=['POST'])
@@ -334,9 +336,46 @@ def confirm_reset_password_token(token):
     
     
 
+@customer.route("/cart/items")
+@token_required
+def get_cart_items(current_user):
+    cursor = mysql_db.get_db().cursor()
+    cursor.execute("SELECT * FROM cart_items c LEFT JOIN products p ON c.product_id=p.id LEFT JOIN shopping_cart s ON c.shopping_cart_id=s.id WHERE s.customer_id=%s", (current_user['id'], ))
+    cart_items = cursor.fetchall()
+    for i in cart_items:
+        i["product_id"] = i["p.id"]
+        del i["customer_id"], i["shopping_cart_id"], i["s.id"], i["p.id"]
+    return jsonify(cart_items)
+    
 
+@customer.route("/cart/items/<int:id>")
+@token_required
+def add_item_to_cart(current_user, id):
+    db = mysql_db.get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT customer_id, id FROM shopping_cart WHERE customer_id=%s", (current_user['id'], ))
+    hasCart = cursor.fetchone()
+    cursor.execute("SELECT id FROM products WHERE id=%s", (id, ))
+    product = cursor.fetchone()
+    if hasCart:
+        data = {
+            "product_id": product['id'],
+            "shopping_cart_id": hasCart["id"],
+            "created_at": datetime.datetime.now()
+        }
+        cursor.execute("INSERT INTO cart_items (product_id, shopping_cart_id, created_at) VALUES (%(product_id)s, %(shopping_cart_id)s, %(created_at)s)", data)
+        db.commit()
+        return "Added to cart", 200
+        
 
-
+@customer.route("/cart/items/<int:id>/delete")
+@token_required
+def delete_item_from_cart(current_user, id):
+    db = mysql_db.get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT id FROM shopping_cart WHERE customer_id=%s", (current_user['id'], ))
+    hasCart = cursor.fetchone()
+    cursor.execute("DELETE FROM cart_items WHERE shopping_cart_id")
 
 
 

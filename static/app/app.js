@@ -47,6 +47,20 @@
             controllerAs:"eui"
         })
         .state({
+            name:"product",
+            url:"/product/{id:int}",
+            templateUrl: "/app/components/display_products/product/product.tpl.html",
+            controller: "ProductCtrl",
+            controllerAs: "product"
+        })
+        .state({
+            name:"cart",
+            url:"/cart",
+            templateUrl: "/app/components/cart/cart.tpl.html",
+            controller: "CartCtrl",
+            controllerAs: "cart"
+        })
+        .state({
             name: "category",
             url: "/category/{id:int}",
             templateUrl: "/app/components/display_products/category/category.tpl.html",
@@ -123,14 +137,13 @@
             $http.get("/login/user").then(function (response) {
                 if(response.status == 200){
                     $rootScope.user = response.data;
-                    // *FIXME warning about phone number on edit_user state 
                     $rootScope.user.phone_number = parseInt($rootScope.user.phone_number);
                     $rootScope.loggedIn = true;
                     if($rootScope.user.image == ""){
                         $rootScope.user.image = "no_picture.png";
                     }
                     if($rootScope.user.password_reset == 1){
-                        $state.go("changePassword", {}, { reload: false })
+                        $state.go("changePassword", {}, { reload: false });
                     }
                     
                 }

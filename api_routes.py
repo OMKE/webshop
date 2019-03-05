@@ -30,6 +30,14 @@ def get_one_product(id):
     product["created_at"] = product["created_at"].isoformat()
     return jsonify(product)
 
+# Get similar products, from same sub_category
+@api.route("/api/products/<int:id>/similar")
+def get_similar_products(id):
+   cursor = mysql_db.get_db().cursor()
+   cursor.execute("SELECT * FROM products WHERE sub_category_id=%s", (id, ))
+   products = cursor.fetchmany(4)
+   return jsonify(products)
+
 
 # Get categories Route
 @api.route('/api/categories')
@@ -59,6 +67,7 @@ def get_products_category(id):
    cursor.execute("SELECT * FROM products WHERE category_id=%s", (id, ))
    products = cursor.fetchall()
    return jsonify(products)
+
 
 
 

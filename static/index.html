@@ -46,7 +46,7 @@
                         id="loggedUser" ng-if="loggedIn">Hi <b>{{user.first_name}}</b></a></span>
                 <a ui-sref="dailydeals">Daily Deals</a>
                 <a ui-sref="helpcontact" id="helpcontact">Help & Contact</a>
-                <a ng-controller="LoginCtrl as login" ng-if="loggedIn" id="cartBtn"><i class="fas fa-cart-plus"></i>
+                <a ng-controller="LoginCtrl as login" ng-if="loggedIn" ui-sref="cart" id="cartBtn"><i class="fas fa-cart-plus"></i>
                     Cart</a>
                 <a ng-controller="LoginCtrl as login" ng-if="loggedIn" ng-click="login.logOut()" id="logoutBtn">Logout</a>
             </div>
@@ -127,6 +127,8 @@
     <script src="app/components/categories/categories.ctrl.js"></script>
     <script src="app/components/display_products/category/category.ctrl.js"></script>
     <script src="app/components/display_products/subcategory/subcategory.ctrl.js"></script>
+    <script src="app/components/display_products/product/product.ctrl.js"></script>
+    <script src="app/components/cart/cart.ctrl.js"></script>
     <script src="app/components/display_products/price/price.ctrl.js"></script>
     <script src="app/components/password_reset/password_reset.ctrl.js"></script>
     <script src="app/components/change_password/change_password.ctrl.js"></script>

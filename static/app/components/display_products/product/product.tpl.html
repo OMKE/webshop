@@ -1,0 +1,97 @@
+<a ui-sref="category({id: product.product.category_id})">
+    <h6>← previous page</h6>
+</a>
+
+<hr>
+
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        <main class="card">
+            <div class="row no-gutters">
+                <aside class="col-sm-6 border-right">
+                    <article class="gallery-wrap">
+                        <div class="img-big-wrap">
+                            <div> <img ng-src="{{product.host}}/product_image/{{product.product.image}}"></div>
+                        </div> <!-- slider-product.// -->
+                        <!-- <div class="img-small-wrap"> -->
+                        <!-- <div class="item-gallery"> </div> -->
+                        <!-- <div class="item-gallery"> <img src="images/items/2.jpg"></div>
+          <div class="item-gallery"> <img src="images/items/3.jpg"></div>
+          <div class="item-gallery"> <img src="images/items/4.jpg"></div> -->
+                        <!-- </div>  -->
+                    </article> <!-- gallery-wrap .end// -->
+                </aside>
+                <aside class="col-sm-6">
+                    <article class="card-body">
+                        <!-- short-info-wrap -->
+                        <h3 class="title mb-3">{{product.product.name}}</h3>
+
+                        <div class="mb-3">
+                            <var class="price h3 text-warning">
+                                <span class="currency">US $</span><span class="num">{{product.product.price}}</span>
+                            </var>
+
+                        </div> <!-- price-detail-wrap .// -->
+                        <dl>
+                            <dt>Description</dt>
+                            <dd>
+                                <p>{{product.product.desc}}</p>
+                            </dd>
+                        </dl>
+                        <dl class="row">
+
+                            <dt class="col-sm-3">Color</dt>
+                            <dd class="col-sm-9">{{product.product.color}}</dd>
+
+                            <dt class="col-sm-3">Delivery</dt>
+                            <dd class="col-sm-9 text-warning">Calculating shipping?</dd>
+                        </dl>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <dl class="dlist-inline">
+                                    <dt>Quantity: </dt>
+                                    <dd>
+                                        <select class="form-control form-control-sm" style="width:70px;">
+                                            <option> 1 </option>
+                                            <option> 2 </option>
+                                            <option> 3 </option>
+                                        </select>
+                                    </dd>
+                                </dl> <!-- item-property .// -->
+                            </div> <!-- col.// -->
+
+                        </div> <!-- row.// -->
+                        <hr>
+                        <button  class="btn  btn-primary" ng-controller="CartCtrl as cart" ng-click="cart.addToCart(product.product.id)"> Add to cart </button>
+                        
+                        <a href="#" class="btn  btn-outline-warning"> Add to wishlist </a>
+                        <!-- short-info-wrap .// -->
+                    </article> <!-- card-body.// -->
+                </aside> <!-- col.// -->
+            </div> <!-- row.// -->
+        </main> <!-- card.// -->
+    </div>
+
+    <div class="col-md-10 mt-3 mb-3">
+        <p class="mb-3" ng-hide="!product.similar.length > 0">You may like</p>
+        <div class="row">
+            <div class="card-group">
+                <div class="card ml-3" ng-repeat="p in product.similar" ng-show="p.name != product.product.name" style="width: 18rem;">
+                    <img class="card-img-top" width="50" ng-src="{{product.host}}/product_image/{{p.image}}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{p.name}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">$ {{p.price}}</h6>
+                        <p class="card-text">{{p.desc}}</p>
+                        <a ui-sref="product({id: p.id})" class="btn btn-primary">Details</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>

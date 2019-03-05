@@ -1,4 +1,5 @@
-WebShop eCommerce Website. 
-Frontend: AngularJS
-Backend: Python(Flask)
-DB: MySQL
+<p align="center">WebShop eCommerce Website. <br />
+Frontend: AngularJS <br />
+Backend: Python(Flask) <br />
+DB: MySQL <br />
+</p>

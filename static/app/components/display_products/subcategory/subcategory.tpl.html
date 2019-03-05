@@ -3,7 +3,7 @@
         <div class="card-body">
             <div class="row">
                 <aside class="col-sm-3">
-                    <div class="img-wrap"><img ng-src="{{subcategory.host}}/product_image/{{p.image}}"></div>
+                    <div class="img-wrap"><img ng-src="{{subcategory.host}}/product_image/{{p.image}}" style="max-width:150px; max-height:150px;"></div>
                 </aside> <!-- col.// -->
                 <article class="col-sm-6">
                     <h4 class="title">{{p.name}}</h4>
@@ -33,7 +33,7 @@
                         <br>
                         <p>
                             <a href="#" class="btn btn-primary mb-2"> Add to cart </a>
-                            <a href="#" class="btn btn-secondary"> Details </a>
+                            <a ui-sref="product({id:p.id})" class="btn btn-secondary"> Details </a>
                         </p>
                         <!-- <a href="#"><i class="fa fa-heart"></i> Add to wishlist</a> -->
                     </div>
