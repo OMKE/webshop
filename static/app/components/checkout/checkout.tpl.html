@@ -1,0 +1,24 @@
+<h1>Checkout</h1>
+<hr>
+
+
+
+<div ui-view="" class="row mt-2 d-block">
+    <div class="col-md-8 mx-auto">
+        <div class="card text-center">
+            <div class="card-body card2">
+                <p class="card-title">Choose your payment method</p>
+                <div class="card card-hover" ui-sref="checkout.mastercard" ui-sref-active="active">
+                    <div class="card-body"><i class="fab fa-cc-mastercard"></i></div>
+                </div>
+                <div class="card card-hover" ui-sref="checkout.visa" ui-sref-active="active">
+                    <div class="card-body"><i class="fab fa-cc-visa"></i></div>
+                </div>
+                <div class="card card-hover" ui-sref="checkout.paypal" ui-sref-active="active">
+                    <div class="card-body"><i class="fab fa-cc-paypal"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
