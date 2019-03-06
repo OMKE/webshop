@@ -6,7 +6,7 @@
 
 <div class="row mt-5">
     <div class="col-md-10" ng-if="results">
-    
+
 
         <article ng-repeat="p in results" class="card card-product">
             <div class="card-body">
@@ -16,7 +16,7 @@
                     </aside> <!-- col.// -->
                     <article class="col-sm-6">
                         <h4 class="title">{{p.name}}</h4>
-    
+
                         <p> {{p.desc}} </p>
                         <dl class="dlist-align">
                             <dt>Color</dt>
@@ -30,7 +30,7 @@
                             <dt>Delivery</dt>
                             <dd>Global</dd>
                         </dl>
-    
+
                     </article>
                     <aside class="col-sm-3 border-left">
                         <div class="action-wrap">
@@ -41,11 +41,12 @@
                             <p class="text-warning">Calculating shipping?</p>
                             <br>
                             <p>
-                                    <form ng-controller="CartCtrl as cart" ng-submit="cart.addToCart2(p.id)">
-                                            <!-- <a href="#" class="btn btn-primary mb-2"> Add to cart </a> -->
-                                            <input type="submit" value="{{cart.message2}}" class="btn {{cart.className}} mb-2" ng-click="cart.clicked()">
-                                            </form>
-                                <a href="#" class="btn btn-secondary"> Details </a>
+                                <form ng-controller="CartCtrl as cart" ng-submit="cart.addToCart2(p.id)">
+                                    <!-- <a href="#" class="btn btn-primary mb-2"> Add to cart </a> -->
+                                    <input type="submit" value="{{cart.message2}}" class="btn {{cart.className}} mb-2"
+                                        ng-click="cart.clicked()">
+                                </form>
+                                <a ui-sref="product({id:p.id})" class="btn btn-secondary"> Details </a>
                             </p>
                             <!-- <a href="#"><i class="fa fa-heart"></i> Add to wishlist</a> -->
                         </div>
