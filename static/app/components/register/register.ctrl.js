@@ -1,5 +1,5 @@
 (function (angular) {
-    angular.module("app").controller("RegisterCtrl", ["$http" ,"$state", "$timeout", function ($http, $state, $timeout) {
+    angular.module("app").controller("RegisterCtrl", ["$http" ,"$state", "$timeout", "$rootScope", function ($http, $state, $timeout, $rootScope) {
         let that = this;
         
         this.newCustomer = {
@@ -28,7 +28,13 @@
             }, function (response) {
                 alert("Unsuccessful regitration!");
             });
-        }
+        };
+        this.checkUser = function () {
+            if($state.is("login") && ($rootScope.user != undefined)){
+                $state.go("home");
+            }
+        };
+        this.checkUser();
 
         
 

@@ -157,6 +157,7 @@ def upload_profile_picture(current_user):
         db.commit()
         # print("File uploaded: " + filename + " to test_images/profile_photos")
         return filename, 200
+    
 
 
 @customer.route("/edit/profile_picture/delete", methods=["GET"])
@@ -173,6 +174,8 @@ def delete_profile_picture(current_user):
         cursor.execute("UPDATE users SET image=%(image)s WHERE id=%(id)s", current_user)
         db.commit()
         return "", 200
+    else:
+        return "", 400
 
 # Edit customer info
 @customer.route('/edit', methods=['POST'])
@@ -219,6 +222,9 @@ def get_user_data(current_user):
         del current_user["id"]
         return jsonify(current_user), 200
     
+    else:
+        return "", 205
+    
 
         
 
@@ -235,6 +241,7 @@ def customer_registration():
     data['date_of_birth'] = datetime.datetime.strptime(data['date_of_birth'][:-5], "%Y-%m-%dT%H:%M:%S") + datetime.timedelta(hours=1)
     data['registration_date'] = datetime.datetime.now()
     data['admin'] = False
+    data['image'] = "no_picture.png"
     token = generate_confirmation_token(data['email'])
     confirm_url = url_for("customer.confirm_email", token=token, _external=True)
     html = render_template('email_confirmation.html', confirm_url=confirm_url, name=data['first_name'])
@@ -242,7 +249,7 @@ def customer_registration():
     send_email(data['email'], subject, html)
 
     
-    cursor.execute("INSERT INTO users (email, username, password, first_name, last_name, gender, date_of_birth, registration_date, admin) VALUES(%(email)s, %(username)s, %(password)s, %(first_name)s, %(last_name)s, %(gender)s, %(date_of_birth)s, %(registration_date)s, %(admin)s)", data)
+    cursor.execute("INSERT INTO users (email, username, password, first_name, last_name, gender, date_of_birth, registration_date, admin, image) VALUES(%(email)s, %(username)s, %(password)s, %(first_name)s, %(last_name)s, %(gender)s, %(date_of_birth)s, %(registration_date)s, %(admin)s, %(image)s)", data)
     db.commit()
     return jsonify({"message":"A confirmation email has been sent to your email address"}), 201
 
@@ -339,16 +346,19 @@ def confirm_reset_password_token(token):
 @customer.route("/cart/items")
 @token_required
 def get_cart_items(current_user):
-    cursor = mysql_db.get_db().cursor()
-    cursor.execute("SELECT * FROM cart_items c LEFT JOIN products p ON c.product_id=p.id LEFT JOIN shopping_cart s ON c.shopping_cart_id=s.id WHERE s.customer_id=%s", (current_user['id'], ))
-    cart_items = cursor.fetchall()
-    for i in cart_items:
-        i["product_id"] = i["p.id"]
-        del i["customer_id"], i["shopping_cart_id"], i["s.id"], i["p.id"]
-    return jsonify(cart_items)
+    if current_user:
+        cursor = mysql_db.get_db().cursor()
+        cursor.execute("SELECT * FROM cart_items c LEFT JOIN products p ON c.product_id=p.id LEFT JOIN shopping_cart s ON c.shopping_cart_id=s.id WHERE s.customer_id=%s", (current_user['id'], ))
+        cart_items = cursor.fetchall()
+        for i in cart_items:
+            i["product_id"] = i["p.id"]
+            del i["customer_id"], i["shopping_cart_id"], i["s.id"], i["p.id"]
+        return jsonify(cart_items)
+    else:
+        return "Not authenticated", 401
     
 
-@customer.route("/cart/items/<int:id>")
+@customer.route("/cart/items/<int:id>", methods=['POST'])
 @token_required
 def add_item_to_cart(current_user, id):
     db = mysql_db.get_db()
@@ -357,15 +367,37 @@ def add_item_to_cart(current_user, id):
     hasCart = cursor.fetchone()
     cursor.execute("SELECT id FROM products WHERE id=%s", (id, ))
     product = cursor.fetchone()
+    try:
+        quantity = int(request.data)
+    except TypeError:
+        return "", 205
     if hasCart:
         data = {
             "product_id": product['id'],
             "shopping_cart_id": hasCart["id"],
-            "created_at": datetime.datetime.now()
+            "created_at": datetime.datetime.now(),
+            "quantity": quantity
         }
-        cursor.execute("INSERT INTO cart_items (product_id, shopping_cart_id, created_at) VALUES (%(product_id)s, %(shopping_cart_id)s, %(created_at)s)", data)
+        cursor.execute("INSERT INTO cart_items (product_id, shopping_cart_id, created_at, quantity) VALUES (%(product_id)s, %(shopping_cart_id)s, %(created_at)s, %(quantity)s)", data)
         db.commit()
-        return "Added to cart", 200
+        
+        return jsonify({"message":"Added to cart"}), 200
+    else:
+        cursor.execute("INSERT INTO shopping_cart (customer_id, created_at) VALUES (%s, %s)", (current_user['id'], datetime.datetime.now()))
+        db.commit()
+        cursor.execute("SELECT customer_id, id FROM shopping_cart WHERE customer_id=%s", (current_user['id'], ))
+        hasCart = cursor.fetchone()
+        data = {
+            "product_id": product['id'],
+            "shopping_cart_id": hasCart["id"],
+            "created_at": datetime.datetime.now(),
+            "quantity": quantity
+        }
+        
+        
+        cursor.execute("INSERT INTO cart_items (product_id, shopping_cart_id, created_at, quantity) VALUES (%(product_id)s, %(shopping_cart_id)s, %(created_at)s, %(quantity)s)", data)
+        db.commit()
+        return jsonify({"message":"Added to cart"}), 200
         
 
 @customer.route("/cart/items/<int:id>/delete")
@@ -373,13 +405,20 @@ def add_item_to_cart(current_user, id):
 def delete_item_from_cart(current_user, id):
     db = mysql_db.get_db()
     cursor = db.cursor()
-    cursor.execute("SELECT id FROM shopping_cart WHERE customer_id=%s", (current_user['id'], ))
-    hasCart = cursor.fetchone()
-    cursor.execute("DELETE FROM cart_items WHERE shopping_cart_id")
+    cursor.execute("DELETE FROM cart_items WHERE id=%s",(id, ))
+    db.commit()
+    return "", 200
 
 
 
-
+@customer.route("/cart/items/<int:id>/update_quantity", methods=['PUT'])
+@token_required
+def update_cart_item_quantity(current_user, id):
+    db = mysql_db.get_db()
+    cursor = db.cursor()
+    cursor.execute("UPDATE cart_items SET quantity=%s WHERE id=%s", (int(request.data), id))
+    db.commit()
+    return "", 200
 
 
 

@@ -2,6 +2,8 @@
     
     let app = angular.module("app", ["ui.router", "ngCookies", "ngFileUpload"]);
 
+    
+
     app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $httpProvider) {
         
         $stateProvider.state({
@@ -16,14 +18,28 @@
             url:"/login",
             templateUrl:"/app/components/login/login.tpl.html",
             controller: "LoginCtrl",
-            controllerAs: "login"
+            controllerAs: "login",
+            resolve: {
+                security: ['$q', '$rootScope', function ($q, $rootScope) {
+                    if ($rootScope.user != undefined) {
+                        return $q.reject("Not authorized");
+                    }
+                }]
+            }
         })
         .state({
             name:"register",
             url:"/register",
             templateUrl:"/app/components/register/register.tpl.html",
             controller: "RegisterCtrl",
-            controllerAs: "register"
+            controllerAs: "register",
+            resolve: {
+                security: ['$q', '$rootScope', function ($q, $rootScope) {
+                    if ($rootScope.user != undefined) {
+                        return $q.reject("Not authorized");
+                    }
+                }]
+            }
         })
         .state({
             name:"user",
@@ -37,14 +53,16 @@
             url:"/user/edit_profile",
             templateUrl: "/app/components/user/edit/edit.tpl.html",
             controller:"EditUserCtrl",
-            controllerAs: "eu"
+            controllerAs: "eu",
+            
         })
         .state({
             name:"edit_user_image",
             url:"/user/edit_profile/profile_image",
             templateUrl:"/app/components/user/edit_image/edit_image.tpl.html",
             controller:"EditUserImageCtrl",
-            controllerAs:"eui"
+            controllerAs:"eui",
+            
         })
         .state({
             name:"product",
@@ -58,7 +76,8 @@
             url:"/cart",
             templateUrl: "/app/components/cart/cart.tpl.html",
             controller: "CartCtrl",
-            controllerAs: "cart"
+            controllerAs: "cart",
+            
         })
         .state({
             name: "category",
@@ -94,6 +113,7 @@
             templateUrl:"/app/components/change_password/change_password.tpl.html",
             controller: "ChangePasswordCtrl",
             controllerAs: "changepassword",
+            
         })
         .state({
             name: "privacypolicy",
@@ -132,7 +152,7 @@
     }])
 
     // On every state change it sends a request to check if it's valid token, if it is then user info is saved in rootScope.user
-    .run(function($rootScope, $http, $state){
+    .run(function($rootScope, $http, $state, $q){
         $rootScope.$on('$locationChangeStart', function () {
             $http.get("/login/user").then(function (response) {
                 if(response.status == 200){
@@ -147,10 +167,16 @@
                     }
                     
                 }
+                if(response.status == 205){
+                    $rootScope.user = undefined;
+                    $rootScope.loggedIn = false;
+                }
             }, function (response) {
                 
             });
+            
         });
+        
     });
 
 

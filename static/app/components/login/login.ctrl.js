@@ -47,15 +47,21 @@
             
             $http.get("/logout").then(function () {
                 $rootScope.loggedIn = false;
+                $rootScope.user = undefined;
                 $state.go("home", {}, { reload:true });
             }, function (response) {
                 console.log("Error");
-            })
-        }
+            });
+        };
         
 
        
-        
+        this.checkUser = function () {
+            if($state.is("login") && ($rootScope.user != undefined)){
+                $state.go("home");
+            }
+        };
+        this.checkUser();
         
 
     }]);

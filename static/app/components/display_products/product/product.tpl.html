@@ -48,15 +48,15 @@
                         </dl>
 
                         <hr>
+                        <form ng-controller="CartCtrl as cart" ng-submit="cart.addToCart(product.product.id)">
                         <div class="row">
                             <div class="col-sm-5">
+
                                 <dl class="dlist-inline">
                                     <dt>Quantity: </dt>
                                     <dd>
-                                        <select class="form-control form-control-sm" style="width:70px;">
-                                            <option> 1 </option>
-                                            <option> 2 </option>
-                                            <option> 3 </option>
+                                        <select class="form-control form-control-sm" style="width:70px;" ng-model="cart.quantity" ng-options="o for o in [1,2,3,4,5,6,7,8,9,10]">
+                                            
                                         </select>
                                     </dd>
                                 </dl> <!-- item-property .// -->
@@ -64,9 +64,13 @@
 
                         </div> <!-- row.// -->
                         <hr>
-                        <button  class="btn  btn-primary" ng-controller="CartCtrl as cart" ng-click="cart.addToCart(product.product.id)"> Add to cart </button>
+                        <input type="submit" value="Add to cart" class="btn btn-primary">
+                        <button href="#" class="btn  btn-outline-warning"> Add to wishlist </button>
+                        <p ng-cloak ng-show="cart.message" class="text-success mt-2">{{cart.message.message}}</p>
+                        </form>
+                        <!-- <button  class="btn  btn-primary" ng-controller="CartCtrl as cart" ng-click="cart.addToCart(product.product.id)"> Add to cart </button> -->
+
                         
-                        <a href="#" class="btn  btn-outline-warning"> Add to wishlist </a>
                         <!-- short-info-wrap .// -->
                     </article> <!-- card-body.// -->
                 </aside> <!-- col.// -->

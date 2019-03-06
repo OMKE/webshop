@@ -3,3 +3,4 @@ db_model.mwb.bak
 db_model.mwb
 .DS_Store
 tmp/
+.vscode/

@@ -23,14 +23,14 @@
                                          </div>
                                          <div class="col-4 col-sm-4 col-md-5 col-lg-4">
                                              <div class="quantity">
-                                                 <input type="button" value="+" class="plus">
+                                                 <input type="button" value="+" class="plus" ng-click="cart.add(p.id)">
                                                  <input type="number" step="1" max="99" min="1" ng-value="{{p.quantity}}" title="Qty" class="qty"
                                                         size="4">
-                                                 <input type="button" value="-" class="minus">
+                                                 <input type="button" value="-" class="minus" ng-click="cart.subtract(p.id)">
                                              </div>
                                          </div>
                                          <div class="col-2 col-sm-2 col-md-2 text-right">
-                                             <button type="button" class="btn btn-outline-danger btn-xs">
+                                             <button type="button" class="btn btn-outline-danger btn-xs" ng-click="cart.deleteItem(p.id)">
                                                  <i class="fa fa-trash" aria-hidden="true"></i>
                                              </button>
                                          </div>
@@ -40,16 +40,12 @@
                                  <!-- END PRODUCT -->
                              
                          </div>
-                         <div class="float-right mb-3 mr-2">
-                                <a href="" class="btn btn-outline-secondary float-right">
-                                    Update shopping cart
-                                </a>
-                            </div>
+                         
                          <div class="card-footer">
                              <div class="pull-right" style="margin: 10px">
                                  <a href="" class="btn btn-success float-right">Checkout</a>
                                  <div class="pull-right" style="margin: 5px">
-                                     Total price: <b>{{cart.totalPrice}} $</b>
+                                     Total price: <b>{{cart.totalPrice | limitTo: 10}}{{cart.totalPrice.length > 10 ? '':''}} $</b>
                                  </div>
                              </div>
                          </div>
