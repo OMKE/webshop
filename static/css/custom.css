@@ -134,6 +134,27 @@ ul {
     margin-top: 20px;
 }
 
+/* Checkout payment methods icons */
+.card2 {
+    background-color:rgb(244, 244, 244);
+}
+.card-hover:hover {
+    background-color: rgb(244, 244, 244);
+    cursor: pointer;
+}
+.fa-cc-mastercard {
+    font-size: 50px;
+    color: #FF5F00;
+}
+.fa-cc-visa {
+    font-size: 50px;
+    color: #192061;
+}
+.fa-cc-paypal {
+    font-size: 50px;
+    color: #3b7bbf;
+}
+
 
 @media all and (max-width: 576px){
     .ml-sm-3 {

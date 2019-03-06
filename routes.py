@@ -351,6 +351,10 @@ def get_cart_items(current_user):
         cursor = mysql_db.get_db().cursor()
         cursor.execute("SELECT * FROM cart_items c LEFT JOIN products p ON c.product_id=p.id LEFT JOIN shopping_cart s ON c.shopping_cart_id=s.id WHERE s.customer_id=%s", (current_user['id'], ))
         cart_items = cursor.fetchall()
+        no_duplicates = []
+
+        
+            
         for i in cart_items:
             i["product_id"] = i["p.id"]
             del i["customer_id"], i["shopping_cart_id"], i["s.id"], i["p.id"]

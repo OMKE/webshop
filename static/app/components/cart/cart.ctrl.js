@@ -21,6 +21,8 @@
             }, 3000);
         };
 
+        
+
         // Adds one to quantity
         this.add = function (id) {
             for (let i = 0; i < that.cartItems.length; i++) {

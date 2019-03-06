@@ -43,7 +43,7 @@
                          
                          <div class="card-footer">
                              <div class="pull-right" style="margin: 10px">
-                                 <a href="" class="btn btn-success float-right">Checkout</a>
+                                 <a ui-sref="checkout" class="btn btn-success float-right">Checkout</a>
                                  <div class="pull-right" style="margin: 5px">
                                      Total price: <b>{{cart.totalPrice | limitTo: 10}}{{cart.totalPrice.length > 10 ? '':''}} $</b>
                                  </div>

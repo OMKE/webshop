@@ -80,6 +80,35 @@
             
         })
         .state({
+            name:"checkout",
+            url:"/checkout",
+            templateUrl: "/app/components/checkout/checkout.tpl.html",
+            controller: "CheckoutCtrl",
+            controllerAs: "checkout",
+            
+        })
+        .state({
+            name:"checkout.mastercard",
+            url:"/mastercard",
+            templateUrl:"/app/components/checkout/mastercard/mastercard.tpl.html",
+            controler: "MasterCardCtrl",
+            controllerAs: "mastercard"
+        })
+        .state({
+            name:"checkout.visa",
+            url:"/visa",
+            templateUrl:"/app/components/checkout/visa/visa.tpl.html",
+            controler: "VisaCtrl",
+            controllerAs: "visa"
+        })
+        .state({
+            name:"checkout.paypal",
+            url:"/paypal",
+            templateUrl:"/app/components/checkout/paypal/paypal.tpl.html",
+            controler: "PaypalCtrl",
+            controllerAs: "paypal"
+        })
+        .state({
             name: "category",
             url: "/category/{id:int}",
             templateUrl: "/app/components/display_products/category/category.tpl.html",
