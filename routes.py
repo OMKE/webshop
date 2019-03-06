@@ -165,7 +165,8 @@ def upload_profile_picture(current_user):
 def delete_profile_picture(current_user):
     if os.path.exists("images/profile_images/"+ str(current_user['image'])):
         try:
-            os.remove("images/profile_images/"+str(current_user['image']))
+            if not str(current_user['image']) == "no_image.png":
+                os.remove("images/profile_images/"+str(current_user['image']))
         except PermissionError:
             return "Error", 404
         current_user['image'] = ""
