@@ -10,12 +10,15 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from uuid import uuid4
 import jwt, base64
 import os
+import stripe
 
 
 customer = Blueprint("customer", __name__)
 admin = Blueprint("admin", __name__)
 
-
+stripe_public_key = "pk_test_ldUAyToKHxFojOBDjNwiYYAZ"
+stripe_secret_key = "sk_test_5JpCSCbSDGO98Emu7NNeODu5"
+stripe.api_key = stripe_secret_key
 
 #TODO FIX ADMIN LOGIN
 
@@ -424,6 +427,49 @@ def update_cart_item_quantity(current_user, id):
     cursor.execute("UPDATE cart_items SET quantity=%s WHERE id=%s", (int(request.data), id))
     db.commit()
     return "", 200
+
+
+# Payment
+# Stripe
+@customer.route("/stripe/public_key")
+@token_required
+def get_stripe_public_key(current_user):
+    return stripe_public_key, 200
+
+@customer.route("/stripe/pay", methods=["POST"])
+def stripe_pay():
+    customer = stripe.Customer.create(email=request.form['stripeEmail'], source=request.form['stripeToken'])
+    db = mysql_db.get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users WHERE email=%s", (request.form['stripeEmail']))
+    customer_db = cursor.fetchone()
+    if not customer_db:
+        return "No user with email provided found", 205
+    
+    cursor.execute("SELECT * FROM cart_items c LEFT JOIN products p ON c.product_id=p.id LEFT JOIN shopping_cart s ON c.shopping_cart_id=s.id WHERE s.customer_id=%s", (customer_db['id'], ))
+    cart_items = cursor.fetchall()
+    
+
+    # Get amount to be charged
+    total_price = 0
+    for i in cart_items:
+        total_price += (i["price"] * i["quantity"])
+    
+
+    charge = stripe.Charge.create(
+        customer=customer.id,
+        amount=int(total_price*100),
+        currency='usd',
+        description=customer_db["username"] + " cart items"
+    )
+
+    cursor.execute("SELECT id FROM shopping_cart WHERE customer_id=%s", (customer_db['id']))
+    shopping_cart_id = cursor.fetchone()
+    cursor.execute("DELETE FROM cart_items WHERE shopping_cart_id=%s", (int(shopping_cart_id['id'])))
+    db.commit()
+
+    
+    return redirect(url_for('index'))
 
 
 

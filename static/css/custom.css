@@ -142,14 +142,11 @@ ul {
     background-color: rgb(244, 244, 244);
     cursor: pointer;
 }
-.fa-cc-mastercard {
+.fa-cc-stripe {
     font-size: 50px;
-    color: #FF5F00;
+    color: #30A4D7;
 }
-.fa-cc-visa {
-    font-size: 50px;
-    color: #192061;
-}
+
 .fa-cc-paypal {
     font-size: 50px;
     color: #3b7bbf;

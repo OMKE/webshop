@@ -8,12 +8,22 @@
         <div class="card text-center">
             <div class="card-body card2">
                 <p class="card-title">Choose your payment method</p>
-                <div class="card card-hover" ui-sref="checkout.mastercard" ui-sref-active="active">
-                    <div class="card-body"><i class="fab fa-cc-mastercard"></i></div>
+                <div class="card card-hover">
+                    <!-- <div class="card-body"><i class="fab fa-cc-stripe"></i></div> -->
+
+                    <div class="card-body">
+                        <script src="https://checkout.stripe.com/checkout.js"></script>
+                        <!-- <i class="fab fa-cc-stripe" id="customButton"></i> -->
+
+                        <form ng-controller="StripeCtrl as stripe" action="/stripe/pay" method="POST">                                
+                            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_ldUAyToKHxFojOBDjNwiYYAZ"
+                                data-amount="{{stripe.totalPrice}}" data-name="WebShop" data-description="by Omar Iriskic" data-image="https://img.icons8.com/plasticine/100/000000/shopping-cart.png"
+                                data-locale="auto">
+                            </script>
+                        </form>
+                    </div>
                 </div>
-                <div class="card card-hover" ui-sref="checkout.visa" ui-sref-active="active">
-                    <div class="card-body"><i class="fab fa-cc-visa"></i></div>
-                </div>
+                
                 <div class="card card-hover" ui-sref="checkout.paypal" ui-sref-active="active">
                     <div class="card-body"><i class="fab fa-cc-paypal"></i></div>
                 </div>
@@ -21,4 +31,3 @@
         </div>
     </div>
 </div>
-

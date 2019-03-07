@@ -88,18 +88,11 @@
             
         })
         .state({
-            name:"checkout.mastercard",
-            url:"/mastercard",
-            templateUrl:"/app/components/checkout/mastercard/mastercard.tpl.html",
-            controler: "MasterCardCtrl",
-            controllerAs: "mastercard"
-        })
-        .state({
-            name:"checkout.visa",
-            url:"/visa",
-            templateUrl:"/app/components/checkout/visa/visa.tpl.html",
-            controler: "VisaCtrl",
-            controllerAs: "visa"
+            name:"checkout.stripe",
+            url:"/stripe",
+            templateUrl:"/app/components/checkout/stripe/stripe.tpl.html",
+            controler: "StripeCtrl",
+            controllerAs: "stripe"
         })
         .state({
             name:"checkout.paypal",
