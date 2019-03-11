@@ -65,6 +65,18 @@
             
         })
         .state({
+            name: "orders",
+            url: "/orders",
+            templateUrl: "/app/components/user/orders/orders.tpl.html",
+            controller: "OrdersCtrl",
+            controllerAs: "orders"
+        })
+        .state({
+            name: "orders.details",
+            url:'/details/{id:int}',
+            templateUrl: "/app/components/user/orders/details/details.tpl.html"
+        })
+        .state({
             name:"product",
             url:"/product/{id:int}",
             templateUrl: "/app/components/display_products/product/product.tpl.html",
@@ -91,15 +103,22 @@
             name:"checkout.stripe",
             url:"/stripe",
             templateUrl:"/app/components/checkout/stripe/stripe.tpl.html",
-            controler: "StripeCtrl",
+            controller: "StripeCtrl",
             controllerAs: "stripe"
         })
         .state({
             name:"checkout.paypal",
             url:"/paypal",
             templateUrl:"/app/components/checkout/paypal/paypal.tpl.html",
-            controler: "PaypalCtrl",
+            controller: "PaypalCtrl",
             controllerAs: "paypal"
+        })
+        .state({
+            name: "dailydeals",
+            url: "/dailydeals",
+            templateUrl: "/app/components/display_products/daily_deals/daily_deals.tpl.html",
+            controller: "DailyDealsCtrl",
+            controllerAs: "daily_deals"
         })
         .state({
             name: "category",
@@ -172,6 +191,12 @@
         
         
     }])
+    app.filter('dateFormat', function myDateFormat($filter){
+        return function(text){
+          var  tempdate= new Date(text.replace(/-/g,"/"));
+          return $filter('date')(tempdate, "dd MMMM yyyy");
+        };
+      })
 
     // On every state change it sends a request to check if it's valid token, if it is then user info is saved in rootScope.user
     .run(function($rootScope, $http, $state, $q){

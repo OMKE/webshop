@@ -4,17 +4,8 @@
 
 <hr>
 
-<div class="sub-nav-wrap mt-2">
-    <div class="container">
-        <div class="sub-nav">
-            <a ui-sref="#">Orders</a>
-            <a ui-sref="#">Messages</a>
-            <a ui-sref="#">Watch List</a>
-            <a ui-sref="edit_user" id="cartBtn">
-                Edit profile</a>
-        </div>
-    </div>
-</div>
+<!-- User Navbar Directive -->
+<user-navbar></user-navbar>
 
 <div class="row mt-2">
     <div class="col-xl-8 col-lg-8 col-md-8 bg-light mx-auto">
@@ -33,7 +24,7 @@
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">Email: <b>{{user.email}}</b></li>
                     <li class="list-group-item">Name: <b>{{user.first_name}} {{user.last_name}}</b></li>
-                    <li class="list-group-item">Birth date: <b>{{user.date_of_birth|date:'dd-MM-yyyy'}}</b></li>
+                    <li class="list-group-item">Birth date: <b>{{user.date_of_birth|dateFormat}}</b></li>
                     <li class="list-group-item" ng-show="user.address_1">Address 1: <b>{{user.address_1}}</b></li>
                     <li class="list-group-item" ng-show="!user.address_1">Address 1: <b>Not provided</b></li>
                     <li class="list-group-item" ng-if="user.address_1">Address 2: <b>{{user.address_2}}</b></li>

@@ -48,12 +48,12 @@
             <div class="card-body">
                 <div class="row">
                     <aside class="col-sm-3">
-                        <div class="img-wrap"><img ng-src="{{category.host}}/product_image/{{p.image}}" style="max-width:150px; max-height:150px;"></div>
+                        <div class="img-wrap"><img ng-src="{{category.host}}/product_image/thumbs/{{p.image}}" style="max-width:150px; max-height:150px;"></div>
                     </aside> <!-- col.// -->
                     <article class="col-sm-6">
                         <h4 class="title">{{p.name}}</h4>
 
-                        <p> {{p.desc}} </p>
+                        <p> {{p.desc | limitTo: 100}}{{p.desc.length > 20 ? '...':''}}</p>
                         <dl class="dlist-align">
                             <dt>Color</dt>
                             <dd>{{p.color}}</dd>

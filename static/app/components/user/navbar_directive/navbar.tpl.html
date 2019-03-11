@@ -1,0 +1,16 @@
+<div class="sub-nav-wrap mt-2">
+    <div class="container">
+        <div class="sub-nav">
+            <a ui-sref="orders" ui-sref-active="active">Orders</a>
+            <a ui-sref="#">Messages</a>
+            <a ui-sref="#">Watch List</a>
+            <a ng-if=" 'user' | isState " ui-sref="edit_user" id="cartBtn">
+                    Edit profile</a>
+
+            <a ng-if=" 'edit_user' | isState "  ui-sref="user({username:user.username})" id="cartBtn">
+                Cancel</a>
+            <a ng-if=" 'edit_user_image' | isState "  ui-sref="user({username:user.username})" id="cartBtn">
+                    Cancel</a>
+        </div>
+    </div>
+</div>

@@ -83,7 +83,7 @@
         <div class="row">
             <div class="card-group">
                 <div class="card ml-3" ng-repeat="p in product.similar" ng-show="p.name != product.product.name" style="width: 18rem;">
-                    <img class="card-img-top" width="50" ng-src="{{product.host}}/product_image/{{p.image}}" alt="Card image cap">
+                    <img class="card-img-top" width="50" ng-src="{{product.host}}/product_image/{{p.image}}"  alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">{{p.name}}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">$ {{p.price}}</h6>

@@ -1,13 +1,27 @@
 from flask import Blueprint, jsonify, request, session, send_from_directory
 from config import mysql_db, app, ALLOWED_EXTENSIONS, PRODUCT_IMAGES
-import base64
-import os
+import base64, os
+from PIL import Image
+
 
 api = Blueprint('api_routes', __name__)
 
 
+# This func makes thumbnail pictures out of originals so it makes page loading faster
+@api.route("/product_image/thumbs/<filename>")
+def get_thumb_product_images(filename):
+   size = 150, 150
+   img = Image.open(app.config['PRODUCT_IMAGES']+filename)
+   img.thumbnail(size, Image.ANTIALIAS)
+   img.save("images/product_images/thumbs/"+filename)
+   
+   return send_from_directory(app.config["PRODUCT_IMAGES"]+"thumbs/", filename)
+
+
+# Get full size image
 @api.route("/product_image/<filename>")
-def get_product_images(filename):
+def get_full_product_images(filename):
+   
    return send_from_directory(app.config["PRODUCT_IMAGES"], filename)
 
 # Get products Route
@@ -37,6 +51,16 @@ def get_similar_products(id):
    cursor.execute("SELECT * FROM products WHERE sub_category_id=%s", (id, ))
    products = cursor.fetchmany(4)
    return jsonify(products)
+
+
+# Daily deals Route
+@api.route("/api/daily_deals")
+def get_daily_deals_products():
+   cursor = mysql_db.get_db().cursor()
+   cursor.execute("SELECT p.id, p.category_id, p.sub_category_id, p.name, p.price, p.color, p.size, p.desc, p.image, p.created_at FROM daily_deals d LEFT JOIN products p ON p.id = d.product_id")
+   daily_deals = cursor.fetchall()
+   return jsonify(daily_deals)
+   
 
 
 # Get categories Route

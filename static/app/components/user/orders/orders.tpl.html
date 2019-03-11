@@ -1,0 +1,82 @@
+<h1>Orders</h1>
+
+<hr>
+
+<!-- User Navbar directive -->
+<user-navbar></user-navbar>
+
+
+<p class="mt-4">Your orders</p>
+
+<!-- <div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="dropdown" ng-repeat='p in orders.orders'>
+            <button class="btn btn-block btn-secondary dropdown-toggle" ng-repeat="i in p" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="span" ng-repeat="j in i">{{j.name}}</div>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+        </div>
+    </div>
+</div> -->
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="list-group" id="list-tab" role="tablist">
+
+            <!-- This works but can be better -->
+            <!-- <span ng-repeat="p in orders.orders" ng-show="$first">
+                <a class='list-group-item list-group-item-action text-white bg-primary' id='list-home-list' ng-repeat="i in p"
+                    role='tab'>{{i.name}}</a>
+                <br>
+            </span>
+            <span ng-repeat="p in orders.orders" ng-show="!$first">
+                <a class='list-group-item list-group-item-action text-white bg-secondary' id='list-home-list' ng-repeat="i in p"
+                    role='tab'>{{i.name}}</a>
+                <br>
+            </span> -->
+
+            <div class="table-responsive" ng-if='orders.orders.length > 0'>
+                <table class="table table-hover mt-4" ng-repeat="p in orders.orders">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr ng-repeat="i in p">
+                            <th scope="row">{{$index+1}}</th>
+                            <td>{{i.name}}</td>
+                            <td>{{i.order_item_price}} $</td>
+                            <td>{{i.order_item_quantity}}</td>
+                            <td>{{i.order_date| dateFormat}}</td>
+                            <td ng-show="$first">{{orders.getOrderStatus(i.order_status_code)}}</td>
+                            <!-- TODO - SHOW TOTAL PRICE AT THE END OF EACH ORDER -->
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="card col-2 mx-auto mt-5"  ng-if="orders.orders.length == 0">
+                    
+                    <img class="card-img-top" src="../../../img/empty_orders.png" alt="Card image cap">
+                    <h5 class="card-body text-center">No orders found</h5>
+                  </div>
+                  
+
+
+        </div>
+    </div>
+    <ui-view></ui-view>
+</div>

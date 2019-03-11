@@ -14,7 +14,7 @@
                     <div class="card-body">
                         <script src="https://checkout.stripe.com/checkout.js"></script>
                         <!-- <i class="fab fa-cc-stripe" id="customButton"></i> -->
-
+                        <!-- TODO - Change this to module https://www.npmjs.com/package/angularjs-stripe-elements  -->
                         <form ng-controller="StripeCtrl as stripe" action="/stripe/pay" method="POST">                                
                             <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_ldUAyToKHxFojOBDjNwiYYAZ"
                                 data-amount="{{stripe.totalPrice}}" data-name="WebShop" data-description="by Omar Iriskic" data-image="https://img.icons8.com/plasticine/100/000000/shopping-cart.png"

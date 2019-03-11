@@ -8,7 +8,7 @@ from email_confirmation import generate_confirmation_token, confirm_token, send_
 from os import urandom # os module to generate random secret key
 from werkzeug.security import generate_password_hash, check_password_hash
 from uuid import uuid4
-import jwt, base64
+import jwt, base64, itertools, operator
 import os
 import stripe
 
@@ -354,8 +354,6 @@ def get_cart_items(current_user):
         cursor = mysql_db.get_db().cursor()
         cursor.execute("SELECT * FROM cart_items c LEFT JOIN products p ON c.product_id=p.id LEFT JOIN shopping_cart s ON c.shopping_cart_id=s.id WHERE s.customer_id=%s", (current_user['id'], ))
         cart_items = cursor.fetchall()
-        no_duplicates = []
-
         
             
         for i in cart_items:
@@ -436,6 +434,7 @@ def update_cart_item_quantity(current_user, id):
 def get_stripe_public_key(current_user):
     return stripe_public_key, 200
 
+
 @customer.route("/stripe/pay", methods=["POST"])
 def stripe_pay():
     customer = stripe.Customer.create(email=request.form['stripeEmail'], source=request.form['stripeToken'])
@@ -466,10 +465,40 @@ def stripe_pay():
     cursor.execute("SELECT id FROM shopping_cart WHERE customer_id=%s", (customer_db['id']))
     shopping_cart_id = cursor.fetchone()
     cursor.execute("DELETE FROM cart_items WHERE shopping_cart_id=%s", (int(shopping_cart_id['id'])))
+    cursor.execute("INSERT INTO orders (customer_id, order_status_code) VALUES (%s, %s)", (customer_db['id'], 1))
+    db.commit()
+
+    cursor.execute("SELECT * FROM orders WHERE customer_id=%s ORDER BY orders.order_date DESC", (customer_db['id']))
+    order = cursor.fetchone()
+    cursor.execute("INSERT INTO invoices (order_id, invoice_desc) VALUES (%s, %s)", (order['id'], str(customer_db['first_name'] + " " + customer_db['last_name'])))
+    for i in cart_items:
+        cursor.execute("INSERT INTO order_items (product_id, order_id, order_item_quantity, order_item_price) VALUES (%s, %s, %s, %s)", (i['product_id'], order['id'], i['quantity'], i['price']))
+    
+        
+    # TODO - Place order
+    
+    
     db.commit()
 
     
     return redirect(url_for('index'))
+
+
+# Get orders
+@customer.route("/orders")
+@token_required
+def get_orders(current_user):
+    db = mysql_db.get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT o.id, o.order_date, o.order_status_code, p.name, oi.order_item_quantity, oi.order_item_price FROM order_items oi LEFT JOIN orders o ON oi.order_id=o.id LEFT JOIN products p ON oi.product_id=p.id WHERE o.customer_id=%s ORDER BY o.order_date DESC", (current_user['id']))
+    orders = cursor.fetchall()
+    sorted_orders = sorted(orders, key=operator.itemgetter('id'))
+    
+    list_orders = []
+    for key, group in itertools.groupby(sorted_orders, key=lambda x:x['id']):
+        list_orders.append(list(group))
+    
+    return jsonify(list_orders)
 
 
 
