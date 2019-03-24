@@ -173,6 +173,22 @@
             controller:"SearchCtrl",
             controllerAs:"search"
         });
+
+        // Admin state provider
+        $stateProvider.state({
+            name: "private",
+            abstract: true,
+            template: "<ui-view/>"
+        })
+        .state({
+            name: "private.admin",
+            url: "/admin",
+            controller: "AdminCtrl",
+            controllerAs: "admin",
+            templateUrl: "/app/components/admin/index/admin.tpl.html"
+        });
+
+
         $urlRouterProvider.otherwise("/");
 
 

@@ -35,7 +35,7 @@
     <title>Webshop by Omar Iriskic</title>
 </head>
 
-<body ng-app="app" ng-cloak>
+<body ng-app="app" ng-cloak >
 
     <div class="sub-nav-wrap">
         <div class="container">
@@ -45,7 +45,9 @@
                 <span data-toggle="tooltip" title="View profile" data-placement="bottom"><a ui-sref="user({username:user.username})"
                         id="loggedUser" ng-if="loggedIn">Hi <b>{{user.first_name}}</b></a></span>
                 <a ui-sref="dailydeals">Daily Deals</a>
-                <a ui-sref="helpcontact" id="helpcontact">Help & Contact</a>
+                
+                <a ng-if='!user.admin' ui-sref="helpcontact" id="helpcontact">Help & Contact</a>
+                <a ng-if='user.admin' ui-sref='private.admin' id='helpcontact'>Control Panel</a>
                 <a ng-controller="LoginCtrl as login" ng-if="loggedIn" ui-sref="cart" id="cartBtn"><i ng-controller="CartCtrl as cart" class="fas fa-shopping-cart"></i>
                     Cart</a>
                 <a ng-controller="LoginCtrl as login" ng-if="loggedIn" ng-click="login.logOut()" id="logoutBtn">Logout</a>
@@ -139,6 +141,8 @@
     <script src="app/components/password_reset/password_reset.ctrl.js"></script>
     <script src="app/components/change_password/change_password.ctrl.js"></script>
     <script src="app/components/search/search.ctrl.js"></script>
+
+    <script src="app/components/admin/index/admin.ctrl.js"></script>
     
 </body>
 

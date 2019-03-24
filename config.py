@@ -6,9 +6,7 @@ from flask_mail import Mail
 
 
 
-
-
-    
+   
 
 # APP CONFIG
 app = Flask(__name__, static_url_path="")
@@ -19,8 +17,8 @@ PRODUCT_IMAGES = "images/product_images/"
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'desoarmmraosed'
+app.config['MYSQL_DATABASE_USER'] = 'omar'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'omardb'
 app.config['MYSQL_DATABASE_DB'] = 'webshop'
 app.config['SECRET_KEY'] = 'dev'
 app.config['SECURITY_PASSWORD_SALT'] = 'email_confirmation_pass'
