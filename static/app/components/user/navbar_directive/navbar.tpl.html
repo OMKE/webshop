@@ -1,9 +1,9 @@
 <div class="sub-nav-wrap mt-2">
     <div class="container">
         <div class="sub-nav">
-            <a ui-sref="orders" ui-sref-active="active">Orders</a>
+            <a ui-sref="orders" ng-if="!user.admin" ui-sref-active="active">Orders</a>
             <a ui-sref="#">Messages</a>
-            <a ui-sref="#">Watch List</a>
+            <a ui-sref="#" ng-if="!user.admin">Watch List</a>
             <a ng-if=" 'user' | isState " ui-sref="edit_user" id="cartBtn">
                     Edit profile</a>
 

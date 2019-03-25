@@ -15,6 +15,12 @@
 #subcategory {
     cursor: pointer;
 }
+#helpcontact {
+    cursor: pointer;
+}
+#pagesDropdown {
+    cursor: pointer;
+}
 
 
 .popular_cat_img {
@@ -189,5 +195,6 @@ ul {
         display: none;
     }
 } */
+
 
 

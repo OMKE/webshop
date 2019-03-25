@@ -34,7 +34,9 @@
                 $state.go("home");
             }
         };
-        this.checkUser();
+        angular.element(document).ready(function () {
+            that.checkUser();
+        });
 
         
 

@@ -1,0 +1,68 @@
+<div class="sub-nav-wrap">
+        <div class="container">
+            <div class="sub-nav">
+                <a ui-sref="login" ng-if="!loggedIn">Login</a>
+                <a ui-sref="register" ng-if="!loggedIn">Register</a>
+                <span data-toggle="tooltip" title="View profile" data-placement="bottom"><a
+                        ui-sref="user({username:user.username})" id="loggedUser" ng-if="loggedIn">Hi
+                        <b>{{user.first_name}}</b></a></span>
+                <a ui-sref="dailydeals">Daily Deals</a>
+
+                <a ng-if='!user.admin' ui-sref="helpcontact" id="helpcontact">Help & Contact</a>
+
+                <a ui-sref="admin" ng-click="toggleCp = ! toggleCp" ng-show='user.admin' id='helpcontact'>Control Panel</a>
+
+                <a ng-controller="LoginCtrl as login" ng-if="loggedIn && !user.admin" ui-sref="cart" id="cartBtn"><i
+                        ng-controller="CartCtrl as cart" class="fas fa-shopping-cart"></i>
+                    Cart</a>
+                <a ng-controller="LoginCtrl as login" ng-show="loggedIn" ng-click="login.logOut()"
+                    id="logoutBtn">Logout</a>
+            </div>
+        </div>
+    </div>
+
+<div ng-cloak ng-if="loggedIn && !user.confirmed" class="container mt-2 mb-2">
+    <h6 class="text-center text-danger">An email with confirmation link has been sent to you.</h6>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">Webshop</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div ng-controller="CategoriesCtrl as categories" class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li ng-repeat="cat in categories.categories" class="nav-item" ui-sref-active="active">
+                    <a class="nav-link" ui-sref="category({id:cat.id})">{{cat.category_name}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+<div class="container" ng-controller="SearchCtrl as search">
+    <div class="row">
+        <div class="mt-4 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <form>
+                <input ng-change='search.searchProducts(params)' ng-model='params' class="form-control mx-auto col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 text-center"
+                    type="search" placeholder="Search for anything">
+                
+            </form>
+
+        </div>
+        <div class="col text-center">
+                <p class="text-danger d-block mt-2" ng-model="search.warning_message" ng-cloak>{{search.warning_message}}</p>
+        </div>
+        
+    </div>
+</div>
+
+
+<div class="container mt-5 animated fadeInRight">
+    <ui-view></ui-view>
+</div>

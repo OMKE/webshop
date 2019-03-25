@@ -7,7 +7,7 @@
 <!-- User Navbar Directive -->
 <user-navbar></user-navbar>
 
-<div class="row mt-2">
+<div class="row mt-2 animated fadeInUp">
     <div class="col-xl-8 col-lg-8 col-md-8 bg-light mx-auto">
         <div class="col-xl-12">
             <!-- img-src treba staviti da hvata url iz baze podataka -->
@@ -27,7 +27,8 @@
                     <li class="list-group-item">Birth date: <b>{{user.date_of_birth|dateFormat}}</b></li>
                     <li class="list-group-item" ng-show="user.address_1">Address 1: <b>{{user.address_1}}</b></li>
                     <li class="list-group-item" ng-show="!user.address_1">Address 1: <b>Not provided</b></li>
-                    <li class="list-group-item" ng-if="user.address_1">Address 2: <b>{{user.address_2}}</b></li>
+                    <li class="list-group-item" ng-if="user.address_2">Address 2: <b>{{user.address_2}}</b></li>
+                    <li class="list-group-item" ng-show="!user.address_2">Address 2: <b>Not provided</b></li>
                     <li class="list-group-item" ng-show="user.city">City: <b>{{user.city}}</b></li>
                     <li class="list-group-item" ng-show="!user.city">City: <b>Not provided</b></li>
                     <li class="list-group-item" ng-show="user.country">Country: <b>{{user.country}}</b></li>
@@ -43,7 +44,7 @@
     </div>
 </div>
 
-<div class="col-12 mt-4 footer">
+<div class="col-12 mt-4 footer animated fadeInUp">
         <hr>
         <div class="row mt-4">
             <div class="col-md-4">

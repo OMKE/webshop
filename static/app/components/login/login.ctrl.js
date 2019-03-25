@@ -1,5 +1,5 @@
 (function (angular) {
-    angular.module("app").controller("LoginCtrl", ["$http" ,"$state", "$rootScope", function ($http, $state, $rootScope) {
+    angular.module("app").controller("LoginCtrl", ["$http" ,"$state", "$rootScope", "$scope", function ($http, $state, $rootScope, $scope) {
         let that = this;
         
         this.userCred = {
@@ -49,6 +49,7 @@
                 $rootScope.loggedIn = false;
                 $rootScope.user = undefined;
                 $state.go("home", {}, { reload:true });
+                
             }, function (response) {
                 console.log("Error");
             });
@@ -61,7 +62,9 @@
                 $state.go("home");
             }
         };
-        this.checkUser();
+        angular.element(document).ready(function () {
+            that.checkUser();
+        });
         
 
     }]);

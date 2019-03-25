@@ -176,16 +176,11 @@
 
         // Admin state provider
         $stateProvider.state({
-            name: "private",
-            abstract: true,
-            template: "<ui-view/>"
-        })
-        .state({
-            name: "private.admin",
+            name: "admin",
             url: "/admin",
-            controller: "AdminCtrl",
-            controllerAs: "admin",
-            templateUrl: "/app/components/admin/index/admin.tpl.html"
+            templateUrl: "/app/components/admin/index/dashboard.tpl.html",
+            controller: "DashboardCtrl",
+            controllerAs: "dashboard",
         });
 
 
@@ -206,17 +201,22 @@
         
         
         
-    }])
+    }]);
     app.filter('dateFormat', function myDateFormat($filter){
         return function(text){
-          var  tempdate= new Date(text.replace(/-/g,"/"));
-          return $filter('date')(tempdate, "dd MMMM yyyy");
+            if(!text){
+                return;
+            }
+            var  tempdate= new Date(text.replace(/-/g,"/"));
+            return $filter('date')(tempdate, "dd MMMM yyyy");
         };
       })
 
     // On every state change it sends a request to check if it's valid token, if it is then user info is saved in rootScope.user
     .run(function($rootScope, $http, $state, $q){
+        
         $rootScope.$on('$locationChangeStart', function () {
+
             $http.get("/login/user").then(function (response) {
                 if(response.status == 200){
                     $rootScope.user = response.data;
@@ -233,6 +233,11 @@
                 if(response.status == 205){
                     $rootScope.user = undefined;
                     $rootScope.loggedIn = false;
+                }
+                if($state.is("admin")){
+                    $rootScope.toggleCp = true;
+                } else {
+                    $rootScope.toggleCp = false;
                 }
             }, function (response) {
                 
