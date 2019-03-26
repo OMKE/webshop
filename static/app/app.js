@@ -175,13 +175,37 @@
         });
 
         // Admin state provider
+        // TODO - Try to make it work with nested views
         $stateProvider.state({
-            name: "admin",
-            url: "/admin",
+            name: "admin_dashboard",
+            url: "/admin/dashboard",
             templateUrl: "/app/components/admin/index/dashboard.tpl.html",
             controller: "DashboardCtrl",
-            controllerAs: "dashboard",
+            controllerAs: "dashboard"
+        })
+        .state({
+            name: "admin_categories",
+            url: "/admin/categories",
+            templateUrl: "/app/components/admin/categories/main/display/main.tpl.html",
+            controller: "MainCategoriesCtrl",
+            controllerAs: "main_cats"
+        })
+        .state({
+            name:"admin_add_categories",
+            url: "/admin/categories/add",
+            templateUrl: "/app/components/admin/categories/main/add/add.tpl.html",
+            controller: "AddMainCategoriesCtrl",
+            controllerAs: "add_main_cats"
+        })
+        .state({
+            name: "admin_category",
+            url: "/admin/categories/{id:int}",
+            templateUrl: "/app/components/admin/categories/main/display_one/display_one.tpl.html",
+            controller: "MainCategoryCtrl",
+            controllerAs: "main_cat"
         });
+
+        
 
 
         $urlRouterProvider.otherwise("/");
@@ -212,6 +236,8 @@
         };
       })
 
+    
+
     // On every state change it sends a request to check if it's valid token, if it is then user info is saved in rootScope.user
     .run(function($rootScope, $http, $state, $q){
         
@@ -234,7 +260,11 @@
                     $rootScope.user = undefined;
                     $rootScope.loggedIn = false;
                 }
-                if($state.is("admin")){
+                
+                
+
+
+                if($state.is("admin_dashboard") || $state.is("admin_categories") || $state.is("admin_add_categories") || $state.is("admin_category")){
                     $rootScope.toggleCp = true;
                 } else {
                     $rootScope.toggleCp = false;

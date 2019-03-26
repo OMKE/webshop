@@ -3,7 +3,7 @@
     .directive('mainDirective', function () {
         return {
             restrict: 'E',
-            templateUrl: "/app/components/main_directive/main.tpl.html",
+            templateUrl: "/app/components/main_directive/main_directive.tpl.html",
         };
 
     });

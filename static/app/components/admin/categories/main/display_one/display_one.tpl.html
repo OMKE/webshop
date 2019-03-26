@@ -1,0 +1,54 @@
+<h4>{{main_cat.cat_title}}</h4>
+<hr>
+<div class="row mt-3 animated fadeInRight">
+    <div class="col-md-8 mx-auto mt-5">
+        Toggle options below
+        <div id="accordion">
+            <div class="card my-1">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
+                            aria-expanded="true" aria-controls="collapseOne">
+                            Show sub categories
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush" ng-repeat="c in main_cat.subCategories">
+                            <a>
+                                <li class="list-group-item cats">{{c.sub_category_name}}</li>
+                            </a>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card my-1">
+                <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
+                            aria-expanded="false" aria-controls="collapseTwo">
+                            <span class="text-warning">Edit category name</span>
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <div class="card-body">
+                        <form ng-submit=main_cat.editName()>
+                            <div class="form-group">
+                                <label for="name">Category name</label>
+                                <input type="text" class="form-control" value="{{main_cat.category.category_name}}"
+                                    ng-model="main_cat.category.category_name">
+                                <button class="btn btn-warning text-white d-block my-2 mx-auto"><i
+                                        class="fas fa-edit"></i> Edit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

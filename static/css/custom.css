@@ -23,6 +23,7 @@
 }
 
 
+
 .popular_cat_img {
     margin-bottom: 5px;
 }
@@ -198,3 +199,9 @@ ul {
 
 
 
+/* Admin panel  */
+
+.cats:hover {
+    background-color: #03A8F3;
+    color: white;
+}

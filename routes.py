@@ -30,37 +30,6 @@ def index():
     return app.send_static_file('index.html')
 
 
-# Admin CMS
-@admin.route('/admin/login', methods=['POST'])
-def admin_login():
-    auth = request.authorization
-    cursor = mysql_db.get_db().cursor()
-    cursor.execute("SELECT * FROM admins WHERE username=%(username)s", auth)
-    admin = cursor.fetchone()
-    
-    if not auth or not auth.username or not auth.password:
-        return make_response("Could not verify 1", 401, {"WWW-Authenticate": "Basic realm='Login required!'"})
-    
-    
-    if check_password_hash(admin.get('password'), auth.password):
-        token = jwt.encode({'id':admin.get('id'), 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=12)}, app.config['SECRET_KEY'])
-        return jsonify({'token':token.decode('UTF-8')})
-
-    return make_response("Could not verify 3", 401, {"WWW-Authenticate": "Basic realm='Login required!'"})
-    
-
-
-@admin.route('/admin/register', methods=['POST'])
-def admin_register(current_user):
-    data = request.get_json()
-    hashed_password = generate_password_hash(data['password'], method='sha256')
-    db = mysql_db.get_db()
-    cursor = db.cursor()
-    data['password'] = hashed_password
-    cursor.execute("INSERT INTO admins (email, username, password, first_name, last_name, phone_number, gender) VALUES(%(email)s, %(username)s, %(password)s, %(first_name)s, %(last_name)s, %(phone_number)s, %(gender)s)", data)
-    db.commit()
-    return "Admin successfully created", 201
-   
 
     
 
@@ -499,6 +468,40 @@ def get_orders(current_user):
         list_orders.append(list(group))
     
     return jsonify(list_orders)
+
+
+
+
+# Admin panel routes
+
+# Add category
+@admin.route("/admin/categories/add", methods=['POST'])
+@token_required
+def add_category(current_user):
+    if isAdmin(current_user):
+        data = dict(request.json)
+        db = mysql_db.get_db()
+        cursor = db.cursor()
+        cursor.execute("INSERT INTO categories VALUES (0, %s)", data['category_name'])
+        db.commit()
+        return jsonify({"message":"Category added"}), 200
+    else:
+        return jsonify({"message":"Not authorized"}), 401
+
+# Edit category name
+@admin.route("/admin/categories/<int:id>/edit", methods=['PUT'])
+@token_required
+def edit_category(current_user, id):
+    if isAdmin(current_user):
+        data = dict(request.json)
+        db = mysql_db.get_db()
+        cursor = db.cursor()
+        cursor.execute("UPDATE categories SET category_name=%s WHERE id=%s", (data['category_name'], id))
+        db.commit()
+        return jsonify({"messsage":"Category name updated"}), 200
+    else:
+        return jsonify({"message":"Not authorized"}), 401
+
 
 
 

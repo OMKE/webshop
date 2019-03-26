@@ -39,7 +39,7 @@
         
         
 
-        this.getCategory($stateParams["id"]);
+        // this.getCategory($stateParams["id"]);
         this.getSubCategories($stateParams['id']);
         this.getProducts($stateParams['id']);
 
