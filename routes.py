@@ -272,8 +272,7 @@ def change_password(current_user):
 
 # Reset password Route
 @customer.route('/login/resetpassword', methods=['POST'])
-@token_required
-def reset_password(current_user):
+def reset_password():
     data = dict(request.json)
     cursor = mysql_db.get_db().cursor()
     cursor.execute("SELECT * FROM users WHERE email=%s", (data['email'], ))
@@ -502,7 +501,42 @@ def edit_category(current_user, id):
     else:
         return jsonify({"message":"Not authorized"}), 401
 
+# Add subcategory
+@admin.route("/admin/subcategories/add", methods=['POST'])
+@token_required
+def add_subcategory(current_user):
+    if isAdmin(current_user):
+        data = dict(request.json)
+        db = mysql_db.get_db()
+        cursor = db.cursor()
+        cursor.execute("INSERT INTO sub_categories (category_id, sub_category_name) VALUES (%(category_id)s, %(sub_category_name)s)", data)
+        db.commit()
+        return jsonify({"message":"Category added"}), 200
+    else:
+        return jsonify({"message":"Not authorized"}), 401
 
+
+# Get one subcategory
+@admin.route('/admin/subcategories/<int:id>')
+def get_one_subcategory(id):
+    cursor = mysql_db.get_db().cursor()
+    cursor.execute("SELECT * FROM sub_categories WHERE id=%s", (id, ))
+    subcategory = cursor.fetchone()
+    return jsonify(subcategory)
+
+# Edit category name
+@admin.route("/admin/subcategories/<int:id>/edit", methods=['PUT'])
+@token_required
+def edit_subcategory(current_user, id):
+    if isAdmin(current_user):
+        data = dict(request.json)
+        db = mysql_db.get_db()
+        cursor = db.cursor()
+        cursor.execute("UPDATE sub_categories SET sub_category_name=%s WHERE id=%s", (data['sub_category_name'], id))
+        db.commit()
+        return jsonify({"messsage":"Subcategory name updated"}), 200
+    else:
+        return jsonify({"message":"Not authorized"}), 401
 
 
 # Error handler route

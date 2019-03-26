@@ -1,0 +1,30 @@
+<h4>{{sub_cat.subcat_title}}</h4>
+<hr>
+<div class="row mt-3 animated fadeInRight">
+    <div class="col-md-8 mx-auto mt-5">
+        
+        <div class="card my-1">
+                <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
+                            aria-expanded="false" aria-controls="collapseTwo">
+                            <span class="text-warning">Edit subcategory name</span>
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent=".card">
+                    <div class="card-body">
+                        <form ng-submit=sub_cat.editName()>
+                            <div class="form-group">
+                                <label for="name">Subcategory name</label>
+                                <input type="text" class="form-control" value="{{sub_cat.subcategory.sub_category_name}}"
+                                    ng-model="sub_cat.subcategory.sub_category_name">
+                                <button class="btn btn-warning text-white d-block my-2 mx-auto"><i
+                                        class="fas fa-edit"></i> Edit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

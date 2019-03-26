@@ -8,6 +8,10 @@
     background-color: #03A8F3;
     color: white;
 }
+.subcats:hover {
+    background-color: #C75123;
+    color: white;
+}
 .login-a {
     color: #03A8F3;
 }
@@ -198,8 +202,15 @@ ul {
 } */
 
 
+.default {
+    cursor: default;
+}
 
+.pointer {
+    cursor: pointer;
+}
 /* Admin panel  */
+
 
 .cats:hover {
     background-color: #03A8F3;

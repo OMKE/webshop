@@ -1,0 +1,23 @@
+<h4>Add sub category</h4>
+<hr>
+<div class="row mt-3 animated fadeInRight">
+
+
+    <form class="col-md-6 mx-auto" ng-submit="add_sub_cat.addSubCategory()">
+        <label for="category_name">Select main category</label>
+        <br>
+        <select ng-model="add_sub_cat.newSubCategory.category_id" id="category_name" class="form-control" ng-click="isInputShown = true">
+            <option value="" selected disabled hidden>Not selected</option>
+            <option ng-repeat="o in add_sub_cat.categories" value="{{o.id}}}">{{o.category_name}}</option>
+        </select>
+
+        <div ng-show="isInputShown" class="mt-3">
+            <label for="subname">Subcategory name</label>
+            <input type="text" class="form-control" id="subname" ng-model="add_sub_cat.newSubCategory.sub_category_name">
+        </div>
+
+        <button class="btn btn-login d-block mx-auto my-3"><i class="fas fa-plus"></i> Add</button>
+        <p class="mt-3 text-success text-center">{{add_main_cats.message.message}}</p>
+    </form>
+
+</div>

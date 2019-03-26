@@ -203,9 +203,31 @@
             templateUrl: "/app/components/admin/categories/main/display_one/display_one.tpl.html",
             controller: "MainCategoryCtrl",
             controllerAs: "main_cat"
+        })
+        .state({
+            name: "admin_add_subcategory",
+            url: "/admin/subcategories/add",
+            templateUrl: "/app/components/admin/categories/subcategories/add/add.tpl.html",
+            controller: "AdminAddSubCategoryCtrl",
+            controllerAs: "add_sub_cat"
+        })
+        .state({
+            name: "admin_subcategories",
+            url: "/admin/subcategories",
+            templateUrl: "/app/components/admin/categories/subcategories/display/subcategories_all.tpl.html",
+            controller: "AdminSubCategoriesCtrl",
+            controllerAs: "sub_cats"
+
+        })
+        .state({
+            name:"admin_subcategory",
+            url: "/admin/subcategories/{id:int}",
+            templateUrl:"/app/components/admin/categories/subcategories/display_one/display_one.tpl.html",
+            controller:"AdminSubCategoryCtrl",
+            controllerAs: "sub_cat"
         });
 
-        // TODO Sub categories crud
+        
 
 
         $urlRouterProvider.otherwise("/");
@@ -264,7 +286,8 @@
                 
 
 
-                if($state.is("admin_dashboard") || $state.is("admin_categories") || $state.is("admin_add_categories") || $state.is("admin_category")){
+                if($state.is("admin_dashboard") || $state.is("admin_categories") || $state.is("admin_add_categories") || $state.is("admin_category") || $state.is("admin_add_subcategory")|| $state.is("admin_subcategories") || $state.is("admin_subcategory"))
+                {
                     $rootScope.toggleCp = true;
                 } else {
                     $rootScope.toggleCp = false;

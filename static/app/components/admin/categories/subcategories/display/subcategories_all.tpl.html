@@ -1,0 +1,14 @@
+<h4>Subcategories</h4>
+<hr>
+<div class="row mt-3 animated fadeInRight">
+
+
+    <div class="col-md-6 mx-auto mt-5 mb-5">
+        <ul class="list-group" ng-repeat="c in sub_cats.subcategories">
+            <a ui-sref="admin_subcategory({id:c.id})"><li class="list-group-item my-2 cats">{{c.sub_category_name}}</li></a>
+            
+        </ul>
+        
+    </div>
+
+</div>

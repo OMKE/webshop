@@ -1,16 +1,26 @@
 <div class="sub-nav-wrap mt-2">
     <div class="container">
         <div class="sub-nav">
-            <a ui-sref="orders" ng-if="!user.admin" ui-sref-active="active">Orders</a>
-            <a ui-sref="#">Messages</a>
-            <a ui-sref="#" ng-if="!user.admin">Watch List</a>
-            <a ng-if=" 'user' | isState " ui-sref="edit_user" id="cartBtn">
-                    Edit profile</a>
-
-            <a ng-if=" 'edit_user' | isState "  ui-sref="user({username:user.username})" id="cartBtn">
-                Cancel</a>
-            <a ng-if=" 'edit_user_image' | isState "  ui-sref="user({username:user.username})" id="cartBtn">
-                    Cancel</a>
+            <div ng-if=user.admin>
+                    <a ng-if=" 'user' | isState " ui-sref="edit_user">
+                            Edit profile</a>
+        
+                    <a ng-if=" 'edit_user' | isState "  ui-sref="user({username:user.username})">
+                        Cancel</a>
+            </div>
+            <div ng-if="!user.admin">
+                    <a ui-sref="orders" ng-if="!user.admin" ui-sref-active="active">Orders</a>
+                    <a ui-sref="#" ng-if="!user.admin">Messages</a>
+                    <a ui-sref="#" ng-if="!user.admin">Watch List</a>
+                    <a ng-if=" 'user' | isState " ui-sref="edit_user" id="cartBtn" >
+                            Edit profile</a>
+        
+                    <a ng-if=" 'edit_user' | isState "  ui-sref="user({username:user.username})" id="cartBtn">
+                        Cancel</a>
+                    <a ng-if=" 'edit_user_image' | isState "  ui-sref="user({username:user.username})" id="cartBtn">
+                            Cancel</a>
+            </div>
+            
         </div>
     </div>
 </div>

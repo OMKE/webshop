@@ -106,6 +106,16 @@ def get_sub_categories(id):
    return jsonify(sub_categories)
 
 
+# Get all subcategories
+@api.route("/api/subcategories")
+def get_all_subcategories():
+    cursor = mysql_db.get_db().cursor()
+    cursor.execute("SELECT * FROM sub_categories")
+    sub_cats = cursor.fetchall()
+    return jsonify(sub_cats), 200
+
+
+
 
 
 
