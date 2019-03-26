@@ -205,7 +205,7 @@
             controllerAs: "main_cat"
         });
 
-        
+        // TODO Sub categories crud
 
 
         $urlRouterProvider.otherwise("/");
