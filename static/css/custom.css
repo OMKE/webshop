@@ -26,6 +26,13 @@
     cursor: pointer;
 }
 
+.carousel{
+    -moz-border-radius: 10px; /* FF1+ */
+    -webkit-border-radius: 10px; /* Saf3-4, iOS 1+, Android 1.5+ */
+    border-radius: 10px; /* Opera 10.5, IE9, Saf5, Chrome, FF4 */
+    overflow:hidden;
+    z-index: 1000;
+}
 
 
 .popular_cat_img {

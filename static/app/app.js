@@ -181,42 +181,84 @@
             url: "/admin/dashboard",
             templateUrl: "/app/components/admin/index/dashboard.tpl.html",
             controller: "DashboardCtrl",
-            controllerAs: "dashboard"
+            controllerAs: "dashboard",
+            resolve: {
+                security: ['$q', '$rootScope', function ($q, $rootScope) {
+                    if ($rootScope.user.admin == false) {
+                        return $q.reject("Not authorized");
+                    }
+                }]
+            }
         })
         .state({
             name: "admin_categories",
             url: "/admin/categories",
             templateUrl: "/app/components/admin/categories/main/display/main.tpl.html",
             controller: "MainCategoriesCtrl",
-            controllerAs: "main_cats"
+            controllerAs: "main_cats",
+            resolve: {
+                security: ['$q', '$rootScope', function ($q, $rootScope) {
+                    if ($rootScope.user.admin == false) {
+                        return $q.reject("Not authorized");
+                    }
+                }]
+            }
         })
         .state({
             name:"admin_add_categories",
             url: "/admin/categories/add",
             templateUrl: "/app/components/admin/categories/main/add/add.tpl.html",
             controller: "AddMainCategoriesCtrl",
-            controllerAs: "add_main_cats"
+            controllerAs: "add_main_cats",
+            resolve: {
+                security: ['$q', '$rootScope', function ($q, $rootScope) {
+                    if ($rootScope.user.admin == false) {
+                        return $q.reject("Not authorized");
+                    }
+                }]
+            }
         })
         .state({
             name: "admin_category",
             url: "/admin/categories/{id:int}",
             templateUrl: "/app/components/admin/categories/main/display_one/display_one.tpl.html",
             controller: "MainCategoryCtrl",
-            controllerAs: "main_cat"
+            controllerAs: "main_cat",
+            resolve: {
+                security: ['$q', '$rootScope', function ($q, $rootScope) {
+                    if ($rootScope.user.admin == false) {
+                        return $q.reject("Not authorized");
+                    }
+                }]
+            }
         })
         .state({
             name: "admin_add_subcategory",
             url: "/admin/subcategories/add",
             templateUrl: "/app/components/admin/categories/subcategories/add/add.tpl.html",
             controller: "AdminAddSubCategoryCtrl",
-            controllerAs: "add_sub_cat"
+            controllerAs: "add_sub_cat",
+            resolve: {
+                security: ['$q', '$rootScope', function ($q, $rootScope) {
+                    if ($rootScope.user.admin == false) {
+                        return $q.reject("Not authorized");
+                    }
+                }]
+            }
         })
         .state({
             name: "admin_subcategories",
             url: "/admin/subcategories",
             templateUrl: "/app/components/admin/categories/subcategories/display/subcategories_all.tpl.html",
             controller: "AdminSubCategoriesCtrl",
-            controllerAs: "sub_cats"
+            controllerAs: "sub_cats",
+            resolve: {
+                security: ['$q', '$rootScope', function ($q, $rootScope) {
+                    if ($rootScope.user.admin == false) {
+                        return $q.reject("Not authorized");
+                    }
+                }]
+            }
 
         })
         .state({
@@ -224,7 +266,14 @@
             url: "/admin/subcategories/{id:int}",
             templateUrl:"/app/components/admin/categories/subcategories/display_one/display_one.tpl.html",
             controller:"AdminSubCategoryCtrl",
-            controllerAs: "sub_cat"
+            controllerAs: "sub_cat",
+            resolve: {
+                security: ['$q', '$rootScope', function ($q, $rootScope) {
+                    if ($rootScope.user.admin == false) {
+                        return $q.reject("Not authorized");
+                    }
+                }]
+            }
         });
 
         
