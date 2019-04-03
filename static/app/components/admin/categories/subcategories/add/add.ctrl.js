@@ -4,7 +4,7 @@
         let that = this;
         this.newSubCategory = {
             "sub_category_name": "",
-            "category_id": ""
+            "category_id": null
 
         };
         this.categories = {};
