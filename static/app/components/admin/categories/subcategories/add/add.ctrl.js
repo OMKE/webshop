@@ -5,7 +5,6 @@
         this.newSubCategory = {
             "sub_category_name": "",
             "category_id": null
-
         };
         this.categories = {};
         this.message = "";
@@ -16,7 +15,7 @@
                 that.categories = response.data;
             }, function (response) {
                 
-            })
+            });
         };
         
 

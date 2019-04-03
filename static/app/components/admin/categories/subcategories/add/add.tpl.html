@@ -8,7 +8,7 @@
         <br>
         <select ng-model="add_sub_cat.newSubCategory.category_id" id="category_name" class="form-control" ng-click="isInputShown = true">
             <option value="" selected disabled hidden>Not selected</option>
-            <option ng-repeat="o in add_sub_cat.categories" value="{{o.id}}}">{{o.category_name}}</option>
+            <option ng-repeat="o in add_sub_cat.categories" value="{{o.id}}">{{o.category_name}}</option>
         </select>
 
         <div ng-show="isInputShown" class="mt-3">
