@@ -77,11 +77,11 @@ def customer_login():
         token = jwt.encode({'id':customer.get('id'), 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=12)}, app.config['SECRET_KEY'], 'HS256')
         response = make_response("Verified", 200)
         # Check if cookie with token exists
-        get_cookie = request.cookies.get('token')
+        get_cookie = request.cookies.get('_tkws')
         
         
         if not get_cookie:
-            response.set_cookie('token', encrypt_jwt(token), max_age=60*60*13), 200
+            response.set_cookie('_tkws', encrypt_jwt(token), max_age=60*60*13), 200
         return response
 
     return make_response("Could not verify", 401, {"WWW-Authenticate": "Basic realm='Login required!'"})
@@ -91,7 +91,7 @@ def customer_login():
 @token_required
 def customer_logout(current_user):
     response = make_response("Logout", 200)
-    response.set_cookie('token', expires=0)
+    response.set_cookie('_tkws', expires=0)
     return response
 
 

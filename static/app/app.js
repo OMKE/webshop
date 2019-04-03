@@ -287,7 +287,7 @@
         $httpProvider.interceptors.push(function($q, $cookies) {
             return {
              'request': function(config) {
-                  config.headers['access_token'] = $cookies.get('token');
+                  config.headers['access_token'] = $cookies.get('_tkws');
                   
                   return config;
               }
