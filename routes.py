@@ -60,20 +60,16 @@ def get_all_admins(current_user):
 # Login Route
 @customer.route('/login', methods=["POST"])
 def customer_login():
-    auth = request.authorization
+    auth = request.get_json()
     cursor = mysql_db.get_db().cursor()
     cursor.execute("SELECT * FROM users WHERE username=%(username)s", auth)
     customer = cursor.fetchone()
 
-    
-
-    if not auth or not auth.username or not auth.password:
-        return make_response("Could not verify", 401, {"WWW-Authenticate": "Basic realm='Login required!'"})
 
     if not customer:
-        return jsonify({"message":"No user found"}), 401   
+        return jsonify({"message":"Invalid credentials"}), 401   
     
-    if check_password_hash(customer.get('password'), auth.password):
+    if check_password_hash(customer.get('password'), auth['password']):
         token = jwt.encode({'id':customer.get('id'), 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=12)}, app.config['SECRET_KEY'], 'HS256')
         response = make_response("Verified", 200)
         # Check if cookie with token exists

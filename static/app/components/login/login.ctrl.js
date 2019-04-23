@@ -23,11 +23,6 @@
         
 
         this.login = function (callback) {
-            // We take user's input and we need to encode it to base64 with window.btoa function
-            let str = this.userCred.username + ":" + this.userCred.password;
-            let enc = window.btoa(str);
-            let auth_header = "Basic "+ enc;
-            $http.defaults.headers.common['Authorization'] = auth_header; // we set the auth header with encoded string and type of auth
             
 
             $http.post("/login", that.userCred).then(function (response) {

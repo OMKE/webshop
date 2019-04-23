@@ -283,16 +283,7 @@
 
 
 
-        // In every http request it sends access token from cookie storage in header access_token
-        $httpProvider.interceptors.push(function($q, $cookies) {
-            return {
-             'request': function(config) {
-                  config.headers['access_token'] = $cookies.get('_tkws');
-                  
-                  return config;
-              }
-            };
-          });
+        
         
         
         
