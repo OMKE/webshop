@@ -3,7 +3,7 @@
         let that = this;
         this.loggedUser = $rootScope.user;
         
-        this.host = "http://" + $location.host() + ":" + $location.port(); // dynamic for localhost, when in production delete port
+        this.host = "https://" + $location.host() + ":" + $location.port(); // dynamic for localhost, when in production delete port
         
         this.orders = [];
         this.getOrderStatus = function (int) {

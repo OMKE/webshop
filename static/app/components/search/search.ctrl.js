@@ -4,7 +4,7 @@
     
         let that = this;
 
-        this.host = "http://" + $location.host() + ":" + $location.port(); // dynamic for localhost, when in production delete port
+        this.host = "https://" + $location.host() + ":" + $location.port(); // dynamic for localhost, when in production delete port
         
         this.params = '';
         this.warning_message = '';

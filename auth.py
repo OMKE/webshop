@@ -47,8 +47,8 @@ def token_required(f):
         token = None
         
         try:
-            if request.headers['access_token']:
-                token = request.headers['access_token']
+            if request.cookies.get('_tkws'):
+                token = request.cookies.get('_tkws')
                 token = token.encode()
                 try:
                     token = decrypt_jwt(token)
@@ -59,7 +59,7 @@ def token_required(f):
 
             
         if not token:
-            return jsonify({"message":'Missing token'}), 401
+            return jsonify({"message":'Missing token'}), 205
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
             cursor = mysql_db.get_db().cursor()

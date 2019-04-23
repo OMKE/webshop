@@ -22,12 +22,12 @@
 
         
 
-        this.login = function (callback) {
+        this.login = function () {
             
 
             $http.post("/login", that.userCred).then(function (response) {
                 $rootScope.loggedIn = true;
-                callback();
+                that.userData();
                 $state.go("home", {}, { reload:true });
                 
                

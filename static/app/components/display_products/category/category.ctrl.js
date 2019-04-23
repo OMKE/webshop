@@ -2,7 +2,7 @@
     angular.module("app").controller("CategoryCtrl", ["$stateParams","$http", "$rootScope", "$location", function ($stateParams, $http, $rootScope, $location) {
         let that = this;
 
-        this.host = "http://" + $location.host() + ":" + $location.port(); // dynamic for localhost, when in production delete port
+        this.host = "https://" + $location.host() + ":" + $location.port(); // dynamic for localhost, when in production delete port
         this.categories = {};
         this.subCategories = {};
         this.products = [];

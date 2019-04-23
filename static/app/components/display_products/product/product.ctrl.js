@@ -2,7 +2,7 @@
     angular.module("app").controller("ProductCtrl", ["$stateParams", "$http", "$state", "$rootScope", "$location", function ($stateParams, $http, $state, $rootScope, $location) {
         
         let that = this;
-        this.host = "http://" + $location.host() + ":" + $location.port(); // dynamic for localhost, when in production delete port
+        this.host = "https://" + $location.host() + ":" + $location.port(); // dynamic for localhost, when in production delete port
         this.product = {};
         this.similar = [];
 
