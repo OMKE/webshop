@@ -7,12 +7,12 @@
     app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function ($stateProvider, $urlRouterProvider, $httpProvider) {
 
         $stateProvider.state({
-            name: "home",
-            url: "/",
-            templateUrl: "/app/components/homepage/homepage.tpl.html",
-            controller: "HomepageCtrl",
-            controllerAs: "home"
-        })
+                name: "home",
+                url: "/",
+                templateUrl: "/app/components/homepage/homepage.tpl.html",
+                controller: "HomepageCtrl",
+                controllerAs: "home"
+            })
             .state({
                 name: "login",
                 url: "/login",
@@ -274,7 +274,50 @@
                         }
                     }]
                 }
-            });
+            })
+            .state({
+                name: "admin_popular_categories",
+                url: "/admin/popular_categories",
+                templateUrl: "/app/components/admin/categories/popular_categories/display_popular_categories/display_popular_categories.tpl.html",
+                controller: "AdminPopCategoriesCtrl",
+                controllerAs: "pop_cats",
+                // resolve: {
+                //     security: ['$q', '$rootScope', function ($q, $rootScope) {
+                //         if ($rootScope.user.admin == false) {
+                //             return $q.reject("Not authorized");
+                //         }
+                //     }]
+                // }
+            })
+            .state({
+                name: "admin_add_popular_category",
+                url: "/admin/popular_categories/add",
+                templateUrl: "/app/components/admin/categories/popular_categories/add_popular_category/add_popular_category.tpl.html",
+                controller: "AdminAddPopCategoryCtrl",
+                controllerAs: "add_pop_cat",
+                // resolve: {
+                //     security: ['$q', '$rootScope', function ($q, $rootScope) {
+                //         if ($rootScope.user.admin == false) {
+                //             return $q.reject("Not authorized");
+                //         }
+                //     }]
+                // }
+            })
+            .state({
+                name: "admin_popular_category",
+                url: "/admin/popular_categories/{id:int}",
+                templateUrl: "/app/components/admin/categories/popular_categories/display_one_popular_category/display_one.tpl.html",
+                controller: "AdminPopCategoryCtrl",
+                controllerAs: "pop_cat",
+                // resolve: {
+                //     security: ['$q', '$rootScope', function ($q, $rootScope) {
+                //         if ($rootScope.user.admin == false) {
+                //             return $q.reject("Not authorized");
+                //         }
+                //     }]
+                // }
+            })
+            ;
 
 
 
@@ -329,15 +372,15 @@
 
 
 
-                    if ($state.is("admin_dashboard") || $state.is("admin_categories") || $state.is("admin_add_categories") || $state.is("admin_category") || $state.is("admin_add_subcategory") || $state.is("admin_subcategories") || $state.is("admin_subcategory")) {
+                    if ($state.is("admin_dashboard") || $state.is("admin_categories") || $state.is("admin_add_categories") || $state.is("admin_category") || $state.is("admin_add_subcategory") || $state.is("admin_subcategories") || $state.is("admin_subcategory") || $state.is("admin_popular_categories") || $state.is("admin_add_popular_category") || $state.is("admin_popular_category")) {
                         $rootScope.toggleCp = true;
                     } else {
                         $rootScope.toggleCp = false;
                     }
                 }, function (response) {
-                        if(response.status == 401){
-                            console.log('ovdje');
-                        }
+                    if (response.status == 401) {
+                        
+                    }
                 });
 
             });

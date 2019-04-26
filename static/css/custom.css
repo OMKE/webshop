@@ -1,4 +1,11 @@
 
+
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
 /* AngularJS Flicker Fix */
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;

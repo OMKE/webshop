@@ -1,11 +1,32 @@
 from flask import Blueprint, jsonify, request, session, send_from_directory
-from config import mysql_db, app, ALLOWED_EXTENSIONS, PRODUCT_IMAGES
+from config import mysql_db, app, ALLOWED_EXTENSIONS, PRODUCT_IMAGES, POPULAR_CATEGORIES
 import base64, os
 from PIL import Image
 
 
 api = Blueprint('api_routes', __name__)
 
+
+
+
+@api.route("/api/categories/popular/images/<filename>")
+def get_popular_categories_images(filename):
+   return send_from_directory(app.config["POPULAR_CATEGORIES"], filename)
+
+
+@api.route("/api/categories/popular")
+def get_popular_categories():
+   cursor = mysql_db.get_db().cursor()
+   cursor.execute("SELECT * FROM popular_categories")
+   popular_cats = cursor.fetchall()
+   return jsonify(popular_cats)
+
+@api.route("/api/categories/popular/<int:id>")
+def get_one_popular_category(id):
+   cursor = mysql_db.get_db().cursor()
+   cursor.execute("SELECT * FROM popular_categories WHERE id=%s", (id, ))
+   cat = cursor.fetchone()
+   return jsonify(cat)
 
 # This func makes thumbnail pictures out of originals so it makes page loading faster
 @api.route("/product_image/thumbs/<filename>")

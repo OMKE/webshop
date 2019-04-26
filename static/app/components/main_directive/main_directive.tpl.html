@@ -10,7 +10,7 @@
 
                 <a ng-if='!user.admin' ui-sref="helpcontact" id="helpcontact">Help & Contact</a>
 
-                <a ui-sref="admin_dashboard" ng-click="toggleCp = ! toggleCp" ng-show='user.admin' id='helpcontact'>Control Panel</a>
+                <a ui-sref="admin_dashboard" ng-click="toggleCp = ! toggleCp" ng-show='user.admin'>Control Panel</a>
 
                 <a ng-controller="LoginCtrl as login" ng-if="loggedIn && !user.admin" ui-sref="cart" id="cartBtn"><i
                         ng-controller="CartCtrl as cart" class="fas fa-shopping-cart"></i>

@@ -36,12 +36,8 @@
 
             <div class="mx-auto">
                 <div class="col ml-sm-3">
-                    <img src="../../../img/popular_categories/1.png" class="popular_cat_img" width="160" alt="Under 10$">
-                    <img src="../../../img/popular_categories/2.png" class="popular_cat_img" width="160" alt="Makeup">
-                    <img src="../../../img/popular_categories/3.png" class="popular_cat_img" width="160" alt="Parts and Accessories">
-                    <img src="../../../img/popular_categories/4.png" class="popular_cat_img" width="160" alt="Sneakers">
-                    <img src="../../../img/popular_categories/5.png" class="popular_cat_img" width="160" alt="Smartphones">
-                    <img src="../../../img/popular_categories/6.png" class="popular_cat_img" width="160" alt="Watches">
+                    <img ng-repeat="p in home.popular_categories" class="popular_cat_img" width="160" ng-src="{{home.host}}/api/categories/popular/images/{{p.image}}" alt="{{p.name}}">
+
                 </div>
             </div>
 

@@ -1,0 +1,93 @@
+<h4>{{pop_cat.cat_name}}</h4>
+<hr>
+<div class="row mt-3 animated fadeInRight">
+    <div class="col-md-8 mx-auto mt-5">
+        Toggle options below
+        <div id="accordion">
+            <div class="card my-1">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
+                            aria-expanded="true" aria-controls="collapseOne">
+                            Show products
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <a>
+                                <li class="list-group-item cats" ng-repeat="c in main_cat.subCategories">
+                                    {{c.sub_category_name}}</li>
+                            </a>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card my-1">
+                <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
+                            aria-expanded="false" aria-controls="collapseTwo">
+                            <span class="text-warning">Edit category</span>
+                        </button>
+                    </h5>
+                </div>
+
+
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <div class="card-body">
+                        <form name="editform">
+                            <div class="form-group">
+                                <label for="name">Category name</label>
+                                <input type="text" class="form-control" value="{{pop_cat.popular_category.name}}"
+                                    ng-model="pop_cat.popular_category.name">
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Image</label>
+                                <img class="d-block mx-auto" width="160"
+                                    ng-src="{{pop_cat.host}}/api/categories/popular/images/{{pop_cat.popular_category.image}}">
+                                <br>
+                            </div>
+                            <div class="form-group">
+                                <label for="file">Select new image</label>
+                                <input type="file" ngf-select ng-model="picFile" name="file" accept="image/*"
+                                    ngf-max-size="2MB" required ngf-model-invalid="errorFile"
+                                    class="btn btn-warning text-white d-block mx-auto">
+
+                                <i ng-show="editform.file.$error.maxSize">File too large
+                                    {{errorFile.size / 1000000|number:1}}MB: max 2M</i>
+                            </div>
+                            <button ng-click="editCat(picFile)" class="btn btn-dark text-white d-block my-2 mx-auto">
+                                <i class="fas fa-edit"></i> Edit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card my-1">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseThree"
+                            aria-expanded="true" aria-controls="collapseOne">
+                            <span class="text-danger">
+                                Delete category
+                            </span>
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseThree" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+
+                        <button class="btn btn-danger d-block mx-auto" ng-click="pop_cat.delete()"><i class="fas fa-trash"></i> Delete</button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

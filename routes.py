@@ -128,6 +128,7 @@ def upload_profile_picture(current_user):
     
 
 
+
 @customer.route("/edit/profile_picture/delete", methods=["GET"])
 @token_required
 def delete_profile_picture(current_user):
@@ -534,6 +535,86 @@ def edit_subcategory(current_user, id):
     else:
         return jsonify({"message":"Not authorized"}), 401
 
+
+@admin.route("/admin/popular_categories", methods=['POST'])
+@token_required
+def add_popular_category(current_user):
+    if isAdmin(current_user):
+        
+        if 'file' not in request.files:
+            return "No file part", 205
+        file = request.files["file"]
+        popular_category_name = request.form['name']
+        if file.filename == "":
+            return "No images selected", 205
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            if os.path.exists("images/popular_categories/"+ str(file.filename)):
+                os.remove("images/popular_categories/"+str(file.filename))
+            file.save(os.path.join(app.config["POPULAR_CATEGORIES"], file.filename))
+
+            db = mysql_db.get_db()
+            cursor = db.cursor()
+            
+            cursor.execute("INSERT INTO popular_categories (name, image) VALUES(%s, %s) ", (popular_category_name, file.filename))
+            db.commit()
+            # print("File uploaded: " + filename + " to test_images/profile_photos")
+            return jsonify({"message":"Added"}), 200
+    else:
+        return jsonify({"message":"Not authorized"}), 401
+
+
+@admin.route("/admin/popular_categories/edit", methods=['POST'])
+@token_required
+def edit_popular_category(current_user):
+    if isAdmin(current_user):
+        if 'file' not in request.files:
+            return "No file part found", 205
+        file = request.files['file']
+        popular_category_name = request.form['name']
+        id = request.form['id']
+        if file.filename == "":
+            return "No images selected", 205
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            if os.path.exists("images/popular_categories/"+ str(file.filename)):
+                os.remove("images/popular_categories/"+str(file.filename))
+            
+            # Remove old image
+            db = mysql_db.get_db()
+            cursor = db.cursor()
+            cursor.execute("SELECT image FROM popular_categories WHERE id=%s", (id, ))
+            old_name = cursor.fetchone()
+            try:
+                os.remove("images/popular_categories/"+str(old_name))
+            except FileNotFoundError as fne:
+                print(fne)
+            cursor.execute("UPDATE popular_categories SET name=%s, image=%s WHERE id=%s", (popular_category_name, str(file.filename), id))
+            file.save(os.path.join(app.config["POPULAR_CATEGORIES"], file.filename))
+            db.commit()
+            return jsonify({"message": "Edited"}), 200
+            
+
+    else:
+        return jsonify({"message":"Not authorized"}), 401
+
+
+# TODO Prompt to accept action
+@admin.route("/admin/popular_categories/<int:id>", methods=['DELETE'])
+@token_required
+def delete_popular_category(current_user, id):
+    if isAdmin(current_user):
+        db = mysql_db.get_db()
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM popular_categories WHERE id=%s", (id, ))
+        cat = cursor.fetchone()
+        try:
+                os.remove("images/popular_categories/"+str(cat['image']))
+        except FileNotFoundError as fne:
+            print(fne)
+        cursor.execute("DELETE FROM popular_categories WHERE id=%s", (id, ))
+        db.commit()
+        return jsonify({"message":"Deleted"})
 
 # Error handler route
 @app.errorhandler(400)

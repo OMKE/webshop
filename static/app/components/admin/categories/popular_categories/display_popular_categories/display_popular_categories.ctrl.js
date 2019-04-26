@@ -1,10 +1,9 @@
 (function (angular) {
-    angular.module("app").controller("HomepageCtrl", ["$stateParams", "$http", "$rootScope", "$state", "$timeout", "$location" ,function ($stateParams, $http, $rootScope, $state, $timeout, $location) {
+    angular.module("app").controller("AdminPopCategoriesCtrl", ["$stateParams", "$http", "$state", "$rootScope", "$location", function ($stateParams, $http, $state, $rootScope, $location) {
+        
         let that = this;
         this.host = "http://" + $location.host() + ":" + $location.port(); // dynamic for localhost, when in production delete port
-        this.products = []
-        this.popular_categories = [];
-        
+        this.popular_categories = {};
 
         this.getPopularCategories = function () {
             $http.get("/api/categories/popular").then(function (response) {
@@ -16,24 +15,30 @@
 
         this.getPopularCategories();
         
+
+
+
+
+        this.checkUser = function () {
+            if($state.is("admin_popular_categories") && $rootScope.user.admin == false){
+                $state.go("home");
+            }
+        };
         
-        // this.getProducts = function () {
-        //     $http.get("/api/products").then(function (response) {
-        //         that.products = response.data;
-        //     }, function (response) {
-                
-        //     })
-        // }
+        angular.element(document).ready(function () {
+            that.checkUser();
+        });
 
         
         
+    
         
+        
+
         
         
 
         
 
-        
-        
     }]);
 })(angular);

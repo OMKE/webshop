@@ -14,6 +14,7 @@ app = Flask(__name__, static_url_path="")
 # Globals
 PROFILE_IMAGES = 'images/profile_images/'
 PRODUCT_IMAGES = "images/product_images/"
+POPULAR_CATEGORIES = 'images/popular_categories/'
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
@@ -25,7 +26,7 @@ app.config['SECURITY_PASSWORD_SALT'] = 'email_confirmation_pass'
 app.config['MAIL_DEFAULT_SENDER'] = 'webshop.omaririskic@gmail.com'
 app.config['PROFILE_IMAGES'] = PROFILE_IMAGES
 app.config['PRODUCT_IMAGES'] = PRODUCT_IMAGES
-
+app.config["POPULAR_CATEGORIES"] = POPULAR_CATEGORIES
 
 
 

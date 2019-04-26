@@ -16,9 +16,9 @@
 
                 <div id="collapseOne" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
-                        <ul class="list-group list-group-flush" ng-repeat="c in main_cat.subCategories">
-                            <a>
-                                <li class="list-group-item cats">{{c.sub_category_name}}</li>
+                        <ul class="list-group list-group-flush" >
+                            <a class="list-group-item cats" ng-repeat="c in main_cat.subCategories">
+                                <li >{{c.sub_category_name}}</li>
                             </a>
 
                         </ul>

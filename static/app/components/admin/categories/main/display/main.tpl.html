@@ -4,8 +4,8 @@
 
 
     <div class="col-md-6 mx-auto mt-5">
-        <ul class="list-group" ng-repeat="c in main_cats.categories">
-            <a ui-sref="admin_category({id:c.id})"><li class="list-group-item my-2 cats">{{c.category_name}}</li></a>
+        <ul class="list-group" >
+            <a ng-repeat="c in main_cats.categories" ui-sref="admin_category({id:c.id})"><li class="list-group-item my-2 cats">{{c.category_name}}</li></a>
             
         </ul>
         <a ui-sref="admin_add_categories" class="btn btn-login btn-block my-2"><i class="fas fa-plus"></i> Add</a>
