@@ -32,7 +32,7 @@
                         <p class="text-warning">Calculating shipping?</p>
                         <br>
                         <p>
-                                <form ng-controller="CartCtrl as cart" ng-submit="cart.addToCart2(p.id)">
+                                <form ng-if="user && !user.admin" ng-controller="CartCtrl as cart" ng-submit="cart.addToCart2(p.id)">
                                         <!-- <a href="#" class="btn btn-primary mb-2"> Add to cart </a> -->
                                         <input type="submit" value="{{cart.message2}}" class="btn {{cart.className}} mb-2" ng-click="cart.clicked()">
                                 </form>

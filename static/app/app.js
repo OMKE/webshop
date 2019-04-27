@@ -295,13 +295,13 @@
                 templateUrl: "/app/components/admin/categories/popular_categories/add_popular_category/add_popular_category.tpl.html",
                 controller: "AdminAddPopCategoryCtrl",
                 controllerAs: "add_pop_cat",
-                // resolve: {
-                //     security: ['$q', '$rootScope', function ($q, $rootScope) {
-                //         if ($rootScope.user.admin == false) {
-                //             return $q.reject("Not authorized");
-                //         }
-                //     }]
-                // }
+                resolve: {
+                    security: ['$q', '$rootScope', function ($q, $rootScope) {
+                        if ($rootScope.user.admin == false) {
+                            return $q.reject("Not authorized");
+                        }
+                    }]
+                }
             })
             .state({
                 name: "admin_popular_category",
@@ -309,6 +309,20 @@
                 templateUrl: "/app/components/admin/categories/popular_categories/display_one_popular_category/display_one.tpl.html",
                 controller: "AdminPopCategoryCtrl",
                 controllerAs: "pop_cat",
+                resolve: {
+                    security: ['$q', '$rootScope', function ($q, $rootScope) {
+                        if ($rootScope.user.admin == false) {
+                            return $q.reject("Not authorized");
+                        }
+                    }]
+                }
+            })
+            .state({
+                name: "admin_orders",
+                url: "/admin/orders",
+                templateUrl: "/app/components/admin/orders/orders.tpl.html",
+                controller: "AdminOrdersCtrl",
+                controllerAs: "admin_orders",
                 // resolve: {
                 //     security: ['$q', '$rootScope', function ($q, $rootScope) {
                 //         if ($rootScope.user.admin == false) {
@@ -372,7 +386,7 @@
 
 
 
-                    if ($state.is("admin_dashboard") || $state.is("admin_categories") || $state.is("admin_add_categories") || $state.is("admin_category") || $state.is("admin_add_subcategory") || $state.is("admin_subcategories") || $state.is("admin_subcategory") || $state.is("admin_popular_categories") || $state.is("admin_add_popular_category") || $state.is("admin_popular_category")) {
+                    if ($state.is("admin_dashboard") || $state.is("admin_categories") || $state.is("admin_add_categories") || $state.is("admin_category") || $state.is("admin_add_subcategory") || $state.is("admin_subcategories") || $state.is("admin_subcategory") || $state.is("admin_popular_categories") || $state.is("admin_add_popular_category") || $state.is("admin_popular_category") || $state.is("admin_orders")) {
                         $rootScope.toggleCp = true;
                     } else {
                         $rootScope.toggleCp = false;

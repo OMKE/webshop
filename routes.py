@@ -56,10 +56,10 @@ def get_all_admins(current_user):
 
 
 
-# Customer Routes
+
 # Login Route
-@customer.route('/login', methods=["POST"])
-def customer_login():
+@app.route('/login', methods=["POST"])
+def login():
     auth = request.get_json()
     cursor = mysql_db.get_db().cursor()
     cursor.execute("SELECT * FROM users WHERE username=%(username)s", auth)
@@ -82,10 +82,9 @@ def customer_login():
 
     return make_response("Could not verify", 401, {"WWW-Authenticate": "Basic realm='Login required!'"})
 
-# Customer logout
-@customer.route('/logout')
+@app.route('/logout')
 @token_required
-def customer_logout(current_user):
+def logout(current_user):
     response = make_response("Logout", 200)
     response.set_cookie('_tkws', expires=0)
     return response
@@ -615,6 +614,31 @@ def delete_popular_category(current_user, id):
         cursor.execute("DELETE FROM popular_categories WHERE id=%s", (id, ))
         db.commit()
         return jsonify({"message":"Deleted"})
+
+
+@admin.route("/admin/orders", methods=['GET'])
+@token_required
+def get_admin_orders(current_user):
+    if isAdmin(current_user):
+        cursor = mysql_db.get_db().cursor()
+        cursor.execute("SELECT o.id, o.customer_id, o.order_status_code, o.order_date, SUM(oi.order_item_quantity) order_item_quantity, SUM(oi.order_item_price) total, u.username  FROM orders o INNER JOIN order_items oi ON o.id = oi.order_id INNER JOIN users u ON o.customer_id=u.id GROUP BY o.id")
+        orders = cursor.fetchall()
+        return jsonify(orders);
+    else:
+        return jsonify({"message": "Not authorized"}), 401
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Error handler route
 @app.errorhandler(400)

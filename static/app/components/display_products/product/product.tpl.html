@@ -48,7 +48,7 @@
                         </dl>
 
                         <hr>
-                        <form ng-controller="CartCtrl as cart" ng-submit="cart.addToCart(product.product.id)">
+                        <form ng-if="user && !user.admin" ng-controller="CartCtrl as cart" ng-submit="cart.addToCart(product.product.id)">
                         <div class="row">
                             <div class="col-sm-5">
 
