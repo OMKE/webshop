@@ -26,6 +26,13 @@
                 console.log(response.status);
             })
         }
+        this.getOrdersByStatusCode = function (status) {
+            $http.get("/admin/orders/" + status).then(function (response) {
+                that.orders = response.data;
+            }, function (response) {
+                console.log(response.status);
+            })
+        }
 
 
         this.getOrders();

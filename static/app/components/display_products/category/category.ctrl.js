@@ -6,6 +6,14 @@
         this.categories = {};
         this.subCategories = {};
         this.products = [];
+        // this.currentCategory = $stateParams['id'];
+        
+        $rootScope.getByPrice = {
+            "active": false,
+            "minPrice": "",
+            "maxPrice": ""
+        };
+
         $rootScope.isSubCategory = false; // when user clicks on subcategory link, hide products which come from show products by main category
 
 
@@ -25,17 +33,30 @@
                 
             });
         };
+        this.shopByPrice = function () {
+            let id = $stateParams['id'];
+            $http.get(`/api/categories/${id}/products/${$rootScope.getByPrice.minPrice}&${$rootScope.getByPrice.maxPrice}`).then(function (response) {
+                that.products = response.data;
+                $rootScope.getByPrice.active = true;
+            }, function (response) {
+                console.log(response.status);
+            })
+        }
 
         // Gets products from main category
         this.getProducts = function (id) {
             $http.get(`/api/categories/${id}/products`).then(function (response) {
                 that.products = response.data;
-                
             }, function (response) {
                 
             });
             
         };
+
+        this.reset = function () {
+            this.getProducts($stateParams['id']);
+            $rootScope.getByPrice.active = false;
+        }
         
         
 

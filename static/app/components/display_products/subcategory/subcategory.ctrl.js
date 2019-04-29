@@ -12,11 +12,20 @@
         this.products = [];
 
         this.getProducts = function (id) {
-            $http.get(`/api/subcategories/${id}/products`).then(function (response) {
-                that.products = response.data;
-            }, function (response) {
-                
-            })
+            if($rootScope.getByPrice.active){
+                $http.get(`/api/subcategories/${id}/products/${$rootScope.getByPrice.minPrice}&${$rootScope.getByPrice.maxPrice}`).then(function (response) {
+                    that.products = response.data;
+                }, function (response) {
+                    
+                })
+            } else {
+                $http.get(`/api/subcategories/${id}/products`).then(function (response) {
+                    that.products = response.data;
+                    
+                }, function (response) {
+                    
+                })
+            }
         }
 
         this.getProducts($stateParams['id2']);

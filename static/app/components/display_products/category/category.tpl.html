@@ -13,31 +13,31 @@
         <article class="card-group-item mt-4" ng-controller="PriceCtrl as price">
             <!-- <i class="icon-action fa fa-chevron-down"></i> -->
             <h4>Shop by Price</h4>
-            <form method="post" ng-submit="price.apply()">
+            <form method="post">
             <div class="filter-content collapse show" id="collapse33" ng-if="!price.check()">
                 <div class="card-body">
                     <!-- <input type="range" class="custom-range" min="0" max="100" name=""> -->
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Min</label>
-                            <input class="form-control" placeholder="$0" type="number" ng-model="price.priceParams.minPrice" name="minPrice">
+                            <input class="form-control" placeholder="$0" type="number" ng-model="getByPrice.minPrice" name="minPrice">
                         </div>
                         <div class="form-group text-right col-md-6">
                             <label>Max</label>
-                            <input class="form-control" placeholder="$1,0000" type="number" ng-model="price.priceParams.maxPrice" name="maxPrice">
+                            <input class="form-control" placeholder="$1,0000" type="number" ng-model="getByPrice.maxPrice" name="maxPrice">
                         </div>
                     </div>
-                    <input type="submit" class="btn btn-block btn-outline-success" value="Apply">
+                    <input type="submit" ng-if="!getByPrice.active" ng-click="category.shopByPrice()" class="btn btn-block btn-outline-success" value="Apply">
                 </div>
             </div>
             </form>
             <!-- If shop by price is applied -->
 
-            <div class="filter-content collapse show" id="collapse33" ng-if="price.check()">
+            <div class="filter-content collapse show" id="collapse33" ng-if="getByPrice.active">
                 <div class="card-body">
                     <!-- <input type="range" class="custom-range" min="0" max="100" name=""> -->
                     
-                    <button class="btn btn-block btn-outline-danger" ng-click="price.reset()">Reset</button>
+                    <button class="btn btn-block btn-outline-danger" ng-click="category.reset()">Reset</button>
                 </div>
             </div>
 

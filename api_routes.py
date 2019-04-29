@@ -163,3 +163,21 @@ def search(params):
    if not search_result:
       return "", 205
    return jsonify(search_result)
+
+
+# Shop by price route
+@api.route("/api/categories/<int:id>/products/<int:minPrice>&<int:maxPrice>")
+def get_by_price_cateogries(id, minPrice, maxPrice):
+   cursor = mysql_db.get_db().cursor()
+   cursor.execute("SELECT * FROM products WHERE price >=%s AND price <=%s AND category_id=%s;", (minPrice, maxPrice, id))
+   products = cursor.fetchall()
+   return jsonify(products)
+
+
+# Shop by price route
+@api.route("/api/subcategories/<int:id>/products/<int:minPrice>&<int:maxPrice>")
+def get_by_price_subcateogries(id, minPrice, maxPrice):
+   cursor = mysql_db.get_db().cursor()
+   cursor.execute("SELECT * FROM products WHERE price >=%s AND price <=%s AND sub_category_id=%s;", (minPrice, maxPrice, id))
+   products = cursor.fetchall()
+   return jsonify(products)

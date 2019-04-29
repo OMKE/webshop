@@ -628,7 +628,16 @@ def get_admin_orders(current_user):
         return jsonify({"message": "Not authorized"}), 401
 
 
-
+@admin.route("/admin/orders/<int:status>", methods=['GET'])
+@token_required
+def get_admin_orders_by_status(current_user, status):
+    if isAdmin(current_user):
+        cursor = mysql_db.get_db().cursor()
+        cursor.execute("SELECT o.id, o.customer_id, o.order_status_code, o.order_date, SUM(oi.order_item_quantity) order_item_quantity, SUM(oi.order_item_price) total, u.username  FROM orders o INNER JOIN order_items oi ON o.id = oi.order_id INNER JOIN users u ON o.customer_id=u.id WHERE o.order_status_code=%s GROUP BY o.id", (status, ))
+        orders = cursor.fetchall()
+        return jsonify(orders);
+    else:
+        return jsonify({"message": "Not authorized"}), 401
 
 
 
