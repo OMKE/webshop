@@ -31,6 +31,18 @@ def index():
 
 
 
+@app.route("/mail", methods=['POST'])
+def temporary_mail_proxy():
+    name = request.form['name']
+    email = request.form['email']
+    phone = request.form['phone']
+    message = request.form['message']
+    
+    email_template = render_template("omaririskic_mail.html", sender_name=name, sender_email=email, sender_phone=phone, sender_message=message)
+    # Email subject
+    subject = "omaririskic.com - Contact form"
+    send_email("omaririskic.dev@gmail.com", subject, email_template)
+    return "Email sent", 200
     
 
 
